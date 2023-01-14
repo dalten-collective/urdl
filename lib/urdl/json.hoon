@@ -10,7 +10,7 @@
   ++  days
     |=  [d=@ud w=@t a=?]
     %~  scry  pack
-    ['CURRENT-DAY' (pairs ~[day+(play d) word+s/w] accepting+b/a)]
+    ['CURRENT-DAY' (pairs ~[day+(play d) word+s/w accepting+b/a])]
   ++  pack
     |_  [f=cord j=json]
     ++  fact
@@ -103,6 +103,9 @@
   ::
   ++  user
     |%
+    ++  accept
+      ^-  $-(? json)
+      |=(acc=? ~(scry pack ['OPEN' b/acc]))
     ++  day
       ^-  $-(@ud json)
       |=  u=@ud
@@ -112,7 +115,7 @@
       |=  hu=(unit @p)
       ?~  hu  ~(scry pack ['NO-HOST-SET' ~])
       ~(scry pack ['CURRENT-HOST' (frond 'HOST' (ship (need hu)))])
-    ++  host
+    ++  word
       ^-  $-((unit @t) json)
       |=  tw=(unit @t)
       ?~  tw  ~(scry pack ['SECRET-WORD-UNKNOWN' ~])
