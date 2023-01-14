@@ -1,14 +1,14 @@
 /-  u=urdl
 /+  u-j=urdl-json
-|_  act=action:host:u
+|_  act=action:user:u
 ++  grad  %noun
 ++  grow
   |%
   ++  noun  act
-  ++  json  (action:host:enjs:u-j act)
+  ++  json  (action:user:enjs:u-j act)
   --
 ++  grab
   |%
-  ++  noun  action:host:u
+  ++  noun  action:user:u
   --
 --

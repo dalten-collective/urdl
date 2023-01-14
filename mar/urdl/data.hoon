@@ -5,6 +5,7 @@
 ++  grow
   |%
   ++  noun  data
+  ++  json  (days:enjs:u-j data)
   --
 ++  grab
   |%

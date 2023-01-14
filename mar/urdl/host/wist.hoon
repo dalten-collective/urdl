@@ -1,14 +1,14 @@
 /-  u=urdl
 /+  u-j=urdl-json
-|_  load=?
+|_  wist=path
 ++  grad  %noun
 ++  grow
   |%
-  ++  noun  load
-  ++  json  (loaded:host:enjs:u-j face)
+  ++  noun  wist
+  ++  json  (wist:enjs:u-j wist)
   --
 ++  grab
   |%
-  ++  noun  ?
+  ++  noun  path
   --
 --

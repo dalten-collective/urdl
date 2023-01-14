@@ -5,7 +5,7 @@
 ++  grow
   |%
   ++  noun  ace
-  ++  json  (accept:host:enjs:t-j ace)
+  ++  json  (accept:host:enjs:u-j ace)
   --
 ++  grab
   |%

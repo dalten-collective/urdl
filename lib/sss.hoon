@@ -96,7 +96,7 @@
       ~[(~(request hc bowl) !<(request:poke vase))]
     ::
         %sss-response
-      =^  cards  state  abet:(response:handler !<((response:poke sub) vase))
+      =^  cards  state  abet:(response:handler ;;((response:poke sub) !<(* vase)))
       [cards this]
     ::
         %sss-solidify
@@ -241,7 +241,8 @@
         |=  [=card =_sss]
         ?+    card  (emit:sss `card:agent:gall`card)
             [%slip %agent * %surf *]    ~|(%slip-surf !!)
-            [%give %wave *]             sss(endo (give [path wave]:p.card))
+            [%give %wave *]
+          sss(endo (give [path wave]:p.card))
             [%pass * %agent * %surf *]
           (emit:sss (pine %wave [ship name path.task]:q.card))
         ==
@@ -261,6 +262,7 @@
         ++  pine
           ^+  flow-core
           =.  aeon.flow  (max aeon.flow aeon.res)
+          ~&  >>  [%res aeon.res %flo aeon.rok.flow]
           ?-    what.res
               %rock
             =?  sss  |((lth aeon.rok.flow aeon.res) =(aeon.res 0))
@@ -278,11 +280,11 @@
                 %pass  (zoom pine/(scot %p src.bowl)^from.res^path)
                 %arvo  %b  %wait  (add ~s10 now.bowl)
               ==
-            =?  sss  (gth aeon.res +(aeon.flow))
+            =?  sss  (gth aeon.res +(aeon.rok.flow))
               (emit (^pine %rock current))
-            =?  sss  (gth aeon.res aeon.flow)
+            =?  sss  (gth aeon.res aeon.rok.flow)
               %-  emil
-              %+  turn  (gulf +(aeon.flow) aeon.res)
+              %+  turn  (gulf +(aeon.rok.flow) aeon.res)
               |=  =aeon
               :*  %pass   /
                   %agent  [src.bowl from.res]
@@ -313,6 +315,7 @@
           ==
           ++  swim
             |=  wave=(unit wave:sub)
+            ~&  >  "in-swim"
             ^+  flow-core
             =*  ag
               %~  .  agent

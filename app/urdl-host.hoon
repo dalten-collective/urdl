@@ -15,10 +15,10 @@
       |%
       ::  $rock: our shared state, as a rocky coast
       ::
-      +$  rock  board
+      +$  rock  (map @p [played=@ud =streak =totals])
       ::  $wave: a broadcast from a host, as a wave
       ::
-      +$  wave  daily
+      +$  wave  (map @p outcome)
       ::  +wash:
       ::
       ::    a subscription is like a rocky coast,
@@ -28,6 +28,21 @@
       ++  wash
         |=  [rok=rock wav=wave]
         ^+  rok
+        ~&  >>  "im washing out {<rok>}"
+        =;  peb=_rok
+          %-  ~(rep by wav)
+          |=  [[p=@p o=outcome] r=_peb]
+          ~&  >>>  r
+          ?:  (~(has by peb) p)  r
+          ?-  o
+            %dnf  (~(put by r) p [1 [0 0] [0 0 0 0 0 0 0]])
+            %one  (~(put by r) p [1 [1 1] [1 1 0 0 0 0 0]])
+            %two  (~(put by r) p [1 [1 1] [1 0 1 0 0 0 0]])
+            %tre  (~(put by r) p [1 [1 1] [1 0 0 1 0 0 0]])
+            %for  (~(put by r) p [1 [1 1] [1 0 0 0 1 0 0]])
+            %fiv  (~(put by r) p [1 [1 1] [1 0 0 0 0 1 0]])
+            %six  (~(put by r) p [1 [1 1] [1 0 0 0 0 0 1]])
+          ==
         %-  ~(rut by rok)
         |=  [p=@p [pl=@ud st=streak to=totals]]
         ?~  hav=(~(get by wav) p)  [pl st(now 0) to]
@@ -66,14 +81,29 @@
         ==
       ::
       +$  wave
-        $%  [[%leader %board ~] daily]
+        $%  [[%leader %board ~] (map @p outcome)]
         ==
       ::
       ++  wash
         |=  [rok=rock wav=wave]
         ^+  rok
+        ~&  >>  "im washing in"
         ?>  =(-.rok -.wav)
         :-  -.rok
+        =;  peb=_+.rok
+          %-  ~(rep by +.wav)
+          |=  [[p=@p o=outcome] r=_peb]
+          ~&  >>  r
+          ?:  (~(has by peb) p)  r
+          ?-  o
+            %dnf  (~(put by r) p [1 [0 0] [0 0 0 0 0 0 0]])
+            %one  (~(put by r) p [1 [1 1] [1 1 0 0 0 0 0]])
+            %two  (~(put by r) p [1 [1 1] [1 0 1 0 0 0 0]])
+            %tre  (~(put by r) p [1 [1 1] [1 0 0 1 0 0 0]])
+            %for  (~(put by r) p [1 [1 1] [1 0 0 0 1 0 0]])
+            %fiv  (~(put by r) p [1 [1 1] [1 0 0 0 0 1 0]])
+            %six  (~(put by r) p [1 [1 1] [1 0 0 0 0 0 1]])
+          ==
         %-  ~(rut by +.rok)
         |=  [p=@p [pl=@ud st=streak to=totals]]
         ?~  hav=(~(get by +.wav) p)  [pl st(now 0) to]
@@ -117,7 +147,6 @@
   $:  %0
       day=@ud
       =ledger:host
-      leader=board
       words=path
       accepting=_|
   ==
@@ -142,12 +171,13 @@
           sub=(map [ship dude:gall path] [? rock:in])
       ==
   +*  this  .
-      eng   ~(. +> [bowl ~])
+      eng   ~(. +> [bowl pub sub ~])
   ++  on-rock
     |=  [d=dude:gall r=rock:in w=(unit wave:in)]
     ^-  (quip card _this)
     ~>  %bout.[0 '%urdl-host +on-rock']
-    `this
+    =^  cards  state  abet:(wear:eng d r w)
+    [cards this]
   ++  on-init
     ^-  (quip card _this)
     ~>  %bout.[0 '%urdl-host +on-init']
@@ -177,7 +207,7 @@
     |=  =path
     ~>  %bout.[0 '%urdl-host +on-peek']
     ^-  (unit (unit cage))
-    [~ ~]
+    (peek:eng path)
   ::
   ++  on-agent
     |=  [wir=wire sig=sign:agent:gall]
@@ -196,7 +226,8 @@
     |=  pat=path
     ~>  %bout.[0 '%urdl-host +on-watch']
     ^-  (quip card _this)
-    `this
+    =^  cards  state  abet:(peer:eng pat)
+    [cards this]
   ::
   ++  on-fail
     |=  [=term =tang]
@@ -208,10 +239,14 @@
     ~>  %bout.[0 '%urdl-host +on-leave']
     _`this
   --
-|_  [bol=bowl:gall dek=(list card)]
-+*  dok  [our.bol %urdl-host]
+|_  $:  bol=bowl:gall
+        pob=(map path rock:out)
+        sob=(map [ship dude:gall path] [? rock:in])
+        dek=(list card)
+    ==
++*  dat  .
+    dok  [our.bol %urdl-host]
     dir  /(scot %p our.bol)/urdl/(scot %da now.bol)
-++  dat  .
 ++  emit  |=(c=card dat(dek [c dek]))
 ++  emil  |=(lac=(list card) dat(dek (welp lac dek)))
 ++  abet  ^-((quip card _state) [(flop dek) state])
@@ -232,8 +267,7 @@
 ::
 ++  init
   ^+  dat
-  dat
-  :: [%pass /start/surf %agent dok %surf /leader/board]
+  (emit %pass /start/surf %agent dok %surf /leader/board)
 ::  +load: handle on-load
 ::
 ++  load
@@ -241,26 +275,55 @@
   ^+  dat
   ?>  ?=([%0 *] q.vaz)
   dat(state !<(state-0 vaz))
+::  +word: get daily words
+::
+++  word
+  ^-  cord
+  =+  list=.^((list cord) %cx (welp dir words))
+  ?.  (gth (lent list) (dec day))  'death'
+  =+  werd=(snag (dec day) list)
+  ?.(=(5 (met 3 werd)) 'cheat' werd)
 ::  +wear: handle on-rock
 ::
 ++  wear
   |=  [dud=dude:gall rok=rock:in wav=(unit wave:in)]
   ^+  dat
-  ?>  ?=([%leader %board ~] -.rok)
-  ~&  >  [%ship src.bol %agent dud %path `path`-.rok]
-  ~?  >  ?=(^ wav)  [%rcvd wav]
-  ~&  >  [%rok +.rok]
-  ~&  >  [%sub-map sub]
-  dat(leader +.rok)
-::  +dude: handle on-agent
+  ?>(?=([%leader %board ~] -.rok) dat)
+::  +peer: handle on-watch
 ::
-++  dude
-  |=  [pol=(pole knot) sig=sign:agent:gall]
-  ^+  dat
-  ?+    pol  ~|(urdl-host-panic-dude/[pol sig] !!)
-      [%start %surf ~]
-    ~&  >  'i got touched'
-    dat
+++  peer
+  |=  pol=(pole knot)
+  ?+    pol  ~|(urdl-panic-bad-watch/pol !!)
+      [%urdl-host ~]
+    (emit %give %fact ~ urdl-data+!>(`[@ud @t]`[day word]))
+      [%web-ui ~]
+    =+  lb=(~(got by sob) [~zod %urdl-host /leader/board])
+    =~  (show urdl-leader+!>(`board`+>.lb))
+        (show urdl-host-wist+!>(`path`words))
+        (show urdl-data+!>(`[@ud @t]`[day word]))
+        (show urdl-host-ledger+!>(`daily`(~(got by ledger) day)))
+    ==
+  ==
+::  +peek: handle on-peek
+::
+++  peek
+  |=  pol=(pole knot)
+  ^-  (unit (unit cage))
+  ?+    pol  !!
+      [%x %today ~]
+    ``urdl-data+!>(`[@ud @t]`[day word])
+      [%x %ledger ~]
+    ``urdl-host-ledger+!>(`_ledger`ledger)
+      [%x %ledger day=@ ~]
+    =+  then=(slav %ud day.pol)
+    ``urdl-host-ledger+!>(`daily`(~(got by ledger) then))
+      [%x %leader ~]
+    =+  lb=(~(got by sob) [~zod %urdl-host /leader/board])
+    ``urdl-leader+!>(`board`+>.lb)
+      [%x %leader %formatted ~]
+    !!  ::  coming soon
+      [%x %word-list ~]
+    ``urdl-host-wist+!>(`path`words)
   ==
 ::  +poke: handle on-poke
 ::
@@ -269,16 +332,17 @@
   ^+  dat
   ?+    mar  ~|(urdl-panic-bad-poke/[mar vaz] !!)
       %urdl-submit
-    ~&  >  "here"
     =+  mit=!<(submit vaz)
     ?>  ?&  =(day day.mit)
             accepting
+            !(~(has bi ledger) day src.bol)
             ?|  =(%dnf out.mit)
                 =-  =(- wor.mit)
                 %+  snag  (dec day)
                 .^((list cord) %cx (welp dir words))
             ==
         ==
+    ~&  >  "{<src.bol>} got {<out.mit>}"
     dat(ledger (~(put bi ledger) day src.bol out.mit))
   ::
       %urdl-host-action
@@ -287,7 +351,7 @@
       ?-    -.act
           %load
         %.  urdl-host-action+!>(`action:host`act)
-        show:(behn ~s0 /load/(scot %ud (jam `path`+.act)))
+        show:(behn ~s1 (welp /load +.act))
           %validate
         dat
       ==
@@ -295,7 +359,6 @@
       day        0
       words      *path
       ledger     *ledger:host
-      leader     *board
       accepting  %|
     ==
   ==
@@ -306,78 +369,87 @@
   |=  [pol=(pole knot) sig=sign-arvo]
   ^+  dat
   ?+    pol  ~|(urdl-host-panic-arvo/[pol sig] !!)
-      [%load jam=@ ~]
+      [%load pat=*]
     ~_  %urdl-panic-already-loaded
-    ?>  =(0 day)
-    =+  pat=;;(path (cue (slav %ud jam.pol)))
-    ::  testing
-    =+  when=`@da`(add ~s15 now.bol)
-    ::  production
-    :: =+  when=`@da`(add ~h8 (sub now.bol (mod now.bol ~d1)))
+    ?>  ?=([%behn %wake *] sig)
+    ?^  error.sig
+      ((slog 'urdl-host-panic-arvo' u.error.sig) dat)
+    ?.  =(0 day)
+      ((slog 'urdl-host-panic-drop-first' ~) dat)
+    :: ::  testing
+    =+  when=`@da`(add ~s45 now.bol)
+    :: ::  production
+    :: :: =+  when=`@da`(add ~h8 (sub now.bol (mod now.bol ~d1)))
     =/  then=@dr
       ?.  (gth now.bol when)
         (sub when now.bol)
       (add ~d1 (sub when now.bol))
-    ?.  ?&  .^(? %cu (welp dir pat))
-            =(~.txt (rear pat))
+    ?.  ?&  .^(? %cu (welp dir pat.pol))
+            =(~.txt (rear pat.pol))
         ==
       (show urdl-host-loading-done+!>(%|))
     =;  sta=_state
       =~  %+  behn(state sta)  then
-          /paws/(scot %ud (jam [1 pat]))
+          (weld /paws/(scot %ud 1) pat.pol)
         ::
           (show urdl-host-loading-done+!>(%&))
         ::
-          =-  (tell urdl-data+!>(-))
-          ^-  [@ud @t]
-          :-  day
-          (snag (dec day) .^((list cord) %cx (welp dir pat)))
+          ~&  >>  "today's secret word is {<word>}"
+          (tell urdl-data+!>(`[@ud @t]`[day word]))
       ==
     %=  state
       day        1
-      words      pat
+      words      pat.pol
       ledger     (~(put by *ledger:host) 1 *daily)
-      leader     *board
       accepting  %&
     ==
   ::
-      [%paws jam=@ ~]
-    =/  ole=[day=@ud words=path]
-      ;;([@ud path] (cue (slav %ud jam.pol)))
-    ~_  %urdl-panic-bad-day
-    ?>  &(=(day day.ole) =(words words.ole))
+      [%paws day=@ud pat=*]
+    ~_  %urdl-panic-paws-failed
+    ?>  ?=([%behn %wake *] sig)
+    ?^  error.sig
+      ((slog 'urdl-host-panic-arvo' u.error.sig) dat)
+    =+  last=(slav %ud day.pol)
+    ?.  &(=(day last) =(words pat.pol))
+      ((slog 'urdl-host-panic-changed-game' ~) dat)
     ::  testing
-     =+  then=`@dr`~s5
+    =+  then=`@dr`~s15
+    ::  production
     :: =+  then=`@dr`(sub (add ~h10 (sub now.bol (mod now.bol ~d1))) now.bol)
     =;  sta=_state
       ~&  >  "day {<day>} has ended"
+      ~&  >  [%pub pob]
+      ~&  >  [%sub sob]
       %+  behn(state sta)  then
-      /next/(scot %ud (jam day words))
+      (welp /next/(scot %ud day) pat.pol)
     %=  state
       accepting  %|
       ledger     (~(put by ledger) +(day) *daily)
     ==
   ::
-      [%next jam=@ ~]
-    =/  ole=[day=@ud words=path]
-      ;;([@ud path] (cue (slav %ud jam.pol)))
-    ~_  %urdl-panic-bad-day
-    ?>  &(=(day day.ole) =(words words.ole))
-    =+  have=(~(got by ledger) day)
+      [%next day=@ pat=*]
+    ~_  %urdl-panic-next-failed
+    ?>  ?=([%behn %wake *] sig)
+    ?^  error.sig
+      ((slog 'urdl-host-panic-arvo' u.error.sig) dat)
+    =+  last=(slav %ud day.pol)
+    ?.  &(=(day last) =(words pat.pol))
+      ((slog 'urdl-host-panic-changed-game' ~) dat)
     ~&  >  "day {<+(day)>} has begun"
     =+  last=`@da`(add ~h8 (sub now.bol (mod now.bol ~d1)))
     ::  testing
-    =+  then=~s15
+    =+  then=~s45
+    ::  production
     :: =+  then=`@dr`(sub (add ~d1 (sub last now.bol)) now.bol)
-    ~&  >>  [%the-secret-word-is (snag day .^((list cord) %cx (welp dir words)))]
+    ~&  >>>  (~(got by ledger) day)
     =~  %+  behn(day +(day), accepting %&)  then
-        /paws/(scot %ud (jam [+(day) words]))
+        (welp /paws/(scot %ud +(day)) words)
+      ::
+        ~&  >>  "today's secret word is {<word>}"
+        (tell urdl-data+!>(`[@ud @t]`[day word]))
       ::
         %-  emit
-        [%give %wave /leader/board (~(got by ledger) (dec day))]
-      ::
-        =-  (tell urdl-data+!>(`[@ud @t]`[day -]))
-        (snag (dec day) .^((list cord) %cx (welp dir words)))
+        [%give %wave /leader/board `daily`(~(got by ledger) (dec day))]
     ==
   ==
 --
