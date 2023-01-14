@@ -330,7 +330,7 @@
     =~  (show urdl-leader+!>(`board`+>.lb))
         (show urdl-user-host+!>(`(unit @p)`host))
         (show urdl-user-day+!>(`@ud`day))
-        (show urdl-user-ledger+!>(`ledger:user`ledger))
+        (show urdl-user-ledger+!>(`_ledger`ledger))
         (show urdl-user-accepting+!>(`?`accepting))
       ::
         %-  show
