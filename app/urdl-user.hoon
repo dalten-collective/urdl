@@ -119,7 +119,6 @@
       day=@ud
       =ledger:user
       =history:user
-      leader=board
       secret=cord
       accepting=?
   ==
@@ -232,9 +231,9 @@
 ::
 ++  behn
   ^+  dat
-  =+  when=`@da`(add ~h7m30 (sub now.bol (mod now.bol ~d1)))
+  =+  when=`@da`(add ~h7.m30 (sub now.bol (mod now.bol ~d1)))
   =/  then=@da
-    ?.((gth when now.bol) when (add ~d1 when))
+    ?:((gth when now.bol) when (add ~d1 when))
   (emit %pass /auto/send %arvo %b %wait `@da`then)
 ::  +send: send submission
 ::
@@ -261,11 +260,7 @@
 ++  wear
   |=  [dud=dude:gall rok=rock:in wav=(unit wave:in)]
   ?>  ?=([%leader %board ~] -.rok)
-  ~&  >  [%ship src.bol %agent dud %path `path`-.rok]
-  ~?  >  ?=(^ wav)  [%rcvd wav]
-  ~&  >  [%rok +.rok]
-  ~&  >  [%sub-map sub]
-  dat(leader +.rok)
+  dat
 ::  +dude: handle on-agent
 ::
 ++  dude
@@ -335,7 +330,8 @@
     =~  (show urdl-leader+!>(`board`+>.lb))
         (show urdl-user-host+!>(`(unit @p)`host))
         (show urdl-user-day+!>(`@ud`day))
-        (show urdl-user-ledger+!>(ledger))
+        (show urdl-user-ledger+!>(`ledger:user`ledger))
+        (show urdl-user-accepting+!>(`?`accepting))
       ::
         %-  show
         :-  %urdl-user-the-word
@@ -345,6 +341,16 @@
           (show urdl-user-signals+!>(*(list signal)))
         =-  (show urdl-user-signals+!>(`(list signal)`-))
         (flop (turn attempts.u.hav (curr check:poke secret)))
+      ::
+        =/  when=@da
+          (add ~h7.m30 (sub now.bol (mod now.bol ~d1)))
+        =/  stop=@da
+          ?:((gth when now.bol) when (add ~d1 when))
+        =/  open=@da
+          ?.  (gth (add ~h2.m30 when) now.bol)
+            (add ~h2.m30 when)
+          (add ~d1.h2.m30 when)
+        (show urdl-user-open+!>([stop open]))
     ==
   ==
 ::  +peek: handle on-peek
@@ -354,8 +360,10 @@
   ^-  (unit (unit cage))
   ?+    pol  !!
       [%x %dbug %state ~]
+    =+  lb=(~(got by sob) [~zod %urdl-host /leader/board])
     =-  ``[%state !>([%0 -])]
-    [day=day ledger=ledger history=history leader=leader accepting=accepting]
+    :+  day=day  ledger=ledger
+    [history=history leader=+>.lb accepting=accepting]
       [%x %host ~]
     ``urdl-user-host+!>(`(unit @p)`host)
       [%x %day ~]
@@ -373,7 +381,17 @@
     =+  lb=(~(got by sob) [~zod %urdl-host /leader/board])
     ``urdl-leader+!>(`board`+>.lb)
       [%x %leader %formatted ~]
-    !!  ::  coming 
+    !!  ::  coming
+      [%x %season ~]
+    =/  when=@da
+      (add ~h7.m30 (sub now.bol (mod now.bol ~d1)))
+    =/  stap=@da
+      ?:((gth when now.bol) when (add ~d1 when))
+    =/  opan=@da
+      ?.  (gth (add ~h2.m30 when) now.bol)
+        (add ~h2.m30 when)
+      (add ~d1.h2.m30 when)
+    ``urdl-user-open+!>(`[@da @da]`[stap opan])
   ==
 ::  +poke: handle on-poke
 ::
@@ -389,10 +407,7 @@
       ?-  -.act
         %guess  (guess +.act)
         %unite  (unite +.act)
-          %avoid
-        ~&  >>>  [%pub pob]
-        ~&  >>>  [%sub sob]
-        avoid
+        %avoid  avoid
       ==
     ==
   ::
@@ -404,7 +419,6 @@
       =~  %-  emit(host `h)
           [%pass /start/surf %agent [h %urdl-host] %surf /leader/board]
         ::
-          ~&  >  %watching-zod
           %-  emit
           :+  %pass
             /urdl-host/(scot %p (need host))
@@ -447,7 +461,7 @@
   ::
   ++  guess
     |=  g=^guess
-    ?>  &(=(5 (met 3 g)) accepting)
+    ?>  &(=(5 (met 3 g)) accepting !(~(has by ledger) day))
     =/  error=_dat
       (show urdl-user-signal+!>((check 'zzzzz' 'aaaaa')))
     ?:  (~(has by ledger) day)      error

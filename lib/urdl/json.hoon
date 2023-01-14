@@ -110,6 +110,11 @@
       ^-  $-(@ud json)
       |=  u=@ud
       ~(scry pack ['CURRENT-DAY' s/(scot %ud u)])
+    ++  open
+      ^-  $-([@da @da] json)
+      |=  [c=@da o=@da]
+      %~  scry  pack
+      ['CURRENT-TIME-LIMITS' (pairs close+(sect c) open+(sect o))]
     ++  host
       ^-  $-((unit @p) json)
       |=  hu=(unit @p)

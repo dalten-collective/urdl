@@ -28,11 +28,9 @@
       ++  wash
         |=  [rok=rock wav=wave]
         ^+  rok
-        ~&  >>  "im washing out {<rok>}"
         =;  peb=_rok
           %-  ~(rep by wav)
           |=  [[p=@p o=outcome] r=_peb]
-          ~&  >>>  r
           ?:  (~(has by peb) p)  r
           ?-  o
             %dnf  (~(put by r) p [1 [0 0] [0 0 0 0 0 0 0]])
@@ -87,13 +85,11 @@
       ++  wash
         |=  [rok=rock wav=wave]
         ^+  rok
-        ~&  >>  "im washing in"
         ?>  =(-.rok -.wav)
         :-  -.rok
         =;  peb=_+.rok
           %-  ~(rep by +.wav)
           |=  [[p=@p o=outcome] r=_peb]
-          ~&  >>  r
           ?:  (~(has by peb) p)  r
           ?-  o
             %dnf  (~(put by r) p [1 [0 0] [0 0 0 0 0 0 0]])
@@ -417,8 +413,6 @@
     :: =+  then=`@dr`(sub (add ~h10 (sub now.bol (mod now.bol ~d1))) now.bol)
     =;  sta=_state
       ~&  >  "day {<day>} has ended"
-      ~&  >  [%pub pob]
-      ~&  >  [%sub sob]
       =~  %+  behn(state sta)  then
           (welp /next/(scot %ud day) pat.pol)
           (tell urdl-data+!>(`[@ud @t ?]`[day word accepting]))
@@ -442,7 +436,6 @@
     =+  then=~s45
     ::  production
     :: =+  then=`@dr`(sub (add ~d1 (sub last now.bol)) now.bol)
-    ~&  >>>  (~(got by ledger) day)
     =~  %+  behn(day +(day), accepting %&)  then
         (welp /paws/(scot %ud +(day)) words)
       ::

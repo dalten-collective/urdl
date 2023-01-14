@@ -262,7 +262,7 @@
         ++  pine
           ^+  flow-core
           =.  aeon.flow  (max aeon.flow aeon.res)
-          ~&  >>  [%res aeon.res %flo aeon.rok.flow]
+          :: ~&  >>  [%res aeon.res %flo aeon.rok.flow]
           ?-    what.res
               %rock
             =?  sss  |((lth aeon.rok.flow aeon.res) =(aeon.res 0))
@@ -315,7 +315,6 @@
           ==
           ++  swim
             |=  wave=(unit wave:sub)
-            ~&  >  "in-swim"
             ^+  flow-core
             =*  ag
               %~  .  agent
