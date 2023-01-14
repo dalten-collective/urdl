@@ -121,6 +121,7 @@
       =history:user
       leader=board
       secret=cord
+      accepting=?
   ==
 ::
 ::
@@ -154,59 +155,61 @@
     [cards this]
   ++  on-init
     ^-  (quip card _this)
-    ~>  %bout.[0 '%urdl-user+on-init']
+    ~>  %bout.[0 '%urdl-user +on-init']
     =^  cards  state  abet:init:eng
     [cards this]
   ::
   ++  on-save
     ^-  vase
-    ~>  %bout.[0 '%urdl-user+on-save']
+    ~>  %bout.[0 '%urdl-user +on-save']
     !>(state)
   ::
   ++  on-load
     |=  ole=vase
-    ~>  %bout.[0 '%urdl-user+on-load']
+    ~>  %bout.[0 '%urdl-user +on-load']
     ^-  (quip card _this)
     =^  cards  state  abet:(load:eng ole)
     [cards this]
   ::
   ++  on-poke
     |=  [mar=mark vaz=vase]
-    ~>  %bout.[0 '%urdl-user+on-poke']
+    ~>  %bout.[0 '%urdl-user +on-poke']
     ^-  (quip card _this)
     =^  cards  state  abet:(poke:eng mar vaz)
     [cards this]
   ::
   ++  on-peek
-    |=  =path
-    ~>  %bout.[0 '%urdl-user+on-peek']
+    |=  pat=path
+    ~>  %bout.[0 '%urdl-user +on-peek']
     ^-  (unit (unit cage))
-    [~ ~]
+    (peek:eng pat)
   ::
   ++  on-agent
     |=  [wir=wire sig=sign:agent:gall]
-    ~>  %bout.[0 '%urdl-user+on-agent']
+    ~>  %bout.[0 '%urdl-user +on-agent']
     ^-  (quip card _this)
-    `this
+    =^  cards  state  abet:(dude:eng wir sig)
+    [cards this]
   ::
   ++  on-arvo
     |=  [wir=wire sig=sign-arvo]
-    ~>  %bout.[0 '%urdl-user+on-arvo']
+    ~>  %bout.[0 '%urdl-user +on-arvo']
     ^-  (quip card _this)
-    `this
+    =^  cards  state  abet:(arvo:eng wir sig)
+    [cards this]
   ::
   ++  on-watch
     |=  =path
-    ~>  %bout.[0 '%urdl-user+on-watch']
+    ~>  %bout.[0 '%urdl-user +on-watch']
     ^-  (quip card _this)
     `this
   ::
   ++  on-fail
-    ~>  %bout.[0 '%urdl-user+on-fail']
+    ~>  %bout.[0 '%urdl-user +on-fail']
     on-fail:def
   ::
   ++  on-leave
-    ~>  %bout.[0 '%urdl-user+on-leave']
+    ~>  %bout.[0 '%urdl-user +on-leave']
     on-leave:def
   --
 |_  $:  bol=bowl:gall
@@ -228,7 +231,8 @@
 ::
 ++  init
   ^+  dat
-  dat
+  %-  poke(accepting %|)
+  urdl-user-action+!>(`action:user`[%unite ~zod])
 ::  +load: handle on-load
 ::
 ++  load
@@ -246,15 +250,81 @@
   ~&  >  [%rok +.rok]
   ~&  >  [%sub-map sub]
   dat(leader +.rok)
+::  +dude: handle on-agent
+::
+++  dude
+  |=  [pol=(pole knot) sig=sign:agent:gall]
+  ?+    pol  ~|(urdl-panic-bad-dude/[pol sig] !!)
+    ~  dat
+      [%urdl-host who=@ ~]
+    =+  hos=(slav %p who.pol)
+    ?~  host
+      (emit %pass pol %agent [hos %urdl-host] %leave ~)
+    ?.  =((need host) hos)
+      (emit %pass pol %agent [hos %urdl-host] %leave ~)
+    ?+    -.sig  ~|(urdl-panic-bad-dude/[pol sig] !!)
+        %fact
+      ?>  =(%urdl-data -.cage.sig)
+      =+  data=!<([@ud @t ?] q.cage.sig)
+      %=  dat
+        day        -.data
+        secret     +<.data
+        history    (~(put by history) -.data [~ ~])
+        accepting  +>.data
+      ==
+    ::
+        %watch-ack
+      %.  dat
+      ?~(p.sig same (slog 'urdl-panic-host-failed' ~))
+    ::
+        %kick
+      %-  emit
+      :+  %pass
+        /urdl-host/(scot %p (need host))
+      [%agent [(need host) %urdl-host] %watch /urdl-host]
+    ==
+  ::
+      [%outcome day=@ ~]
+    =+  date=(slav %ud day.pol)
+    =+  have=(~(got by ledger) date)  
+    ?>  ?=(%poke-ack -.sig)
+    ?~  p.sig
+      dat(ledger (~(put by ledger) date -.have %&))
+    %-  (slog 'urdl-panic-bad-response-from-host' ~)
+    dat(ledger (~(put by ledger) date -.have %|))
+  ==
+::  +arvo: handle on-arvo
+::
+++  arvo
+  |=  [pol=(pole knot) sig=sign-arvo]
+  dat
 ::  +peek: handle on-peek
 ::
 ++  peek
-  |=  pat=path
+  |=  pol=(pole knot)
   ^-  (unit (unit cage))
-  ?+    pat  !!
+  ?+    pol  !!
       [%x %dbug %state ~]
     =-  ``[%state !>([%0 -])]
-    [day=day ledger=ledger history=history leader=leader]
+    [day=day ledger=ledger history=history leader=leader accepting=accepting]
+      [%x %host ~]
+    ``urdl-user-host+!>(`(unit @p)`host)
+      [%x %day ~]
+    ``urdl-user-day+!>(`@ud`day)
+      [%x %ledger ~]
+    ``urdl-user-ledger+!>(`_ledger`ledger)
+      [%x %history ~]
+    ``urdl-user-history+!>(`_history`history)
+      [%x %current ~]
+    ?~  hav=(~(get by history) day)
+      ``urdl-user-signals+!>(~)
+    =-  ``urdl-user-signals+!>(`(list signal)`-)
+    (flop (turn attempts.u.hav (curr check:poke secret)))
+      [%x %leader ~]
+    =+  lb=(~(got by sob) [~zod %urdl-host /leader/board])
+    ``urdl-leader+!>(`board`+>.lb)
+      [%x %leader %formatted ~]
+    !!  ::  coming 
   ==
 ::  +poke: handle on-poke
 ::
@@ -276,57 +346,23 @@
         avoid
       ==
     ==
-  ++  guess
-    |=  g=^guess
-    ?>  =(5 (met 3 g))
-    =/  error=_dat
-      (show urdl-user-signal+!>((check 'zzzzz' 'aaaaa')))
-    =+  (~(got by history) day)
-    ?^  the-word                    error
-    ?:  (gth +((lent attempts)) 6)  error
-    =.  dat
-      (show urdl-user-signal+!>(`signal`(check g secret)))
-    =;  send=$-(outcome _dat)
-      ?.  =(g secret)
-        ?:  =(6 +((lent attempts)))
-          =.  history
-            (~(put by history) day [[g attempts] `secret])
-          (send %dnf)
-        %=  dat
-            history
-          (~(put by history) day [[g attempts] the-word])
-        ==
-      =.  history
-        (~(put by history) day [[g attempts] `secret])
-      =+  guesses=+((lent attempts))
-      ?+  guesses  (send %dnf)
-        %1  (send %one)
-        %2  (send %two)
-        %3  (send %tre)
-        %4  (send %for)
-        %5  (send %fiv)
-        %6  (send %six)
-      ==
-    |=  o=outcome
-    %-  emit
-    =-  [%pass /outcome/(scot %ud day) %agent -]
-    [dok %poke urdl-submit+!>(`submit`[day secret o])]
-
+  ::
+  ++  avoid  ~|('urdl-client-poke-not-implemented' !!)
+  ::
   ++  unite
     |=  h=@p
     ?~  host
       =~  %-  emit(host `h)
           [%pass /start/surf %agent [h %urdl-host] %surf /leader/board]
         ::
+          ~&  >  %watching-zod
           %-  emit
           :+  %pass
             /urdl-host/(scot %p (need host))
           [%agent [(need host) %urdl-host] %watch /urdl-host]
       ==
-    !!
-  ++  avoid
-    ~_  %urdl-client-poke-not-implemented
-    !!
+    ~|(urdl-client-poke-not-implemented/'bonk' !!)
+  ::
   ++  check
     |=  [ges=@t sec=@t]
     =|  pos=_1
@@ -359,5 +395,42 @@
       ?~  h=(~(get by tiles) letter)  tiles
       (~(put by tiles) letter ?:(=(0 u.h) 0 (dec u.h)))
     ==
+  ::
+  ++  guess
+    |=  g=^guess
+    ?>  =(5 (met 3 g))
+    =/  error=_dat
+      (show urdl-user-signal+!>((check 'zzzzz' 'aaaaa')))
+    ?:  (~(has by ledger) day)      error
+    =+  (~(got by history) day)
+    ?^  the-word                    error
+    ?:  (gth +((lent attempts)) 6)  error
+    =.  dat
+      (show urdl-user-signal+!>(`signal`(check g secret)))
+    =;  send=$-(outcome _dat)
+      ?.  =(g secret)
+        ?:  =(6 +((lent attempts)))
+          =.  history
+            (~(put by history) day [[g attempts] `secret])
+          (send %dnf)
+        %=  dat
+            history
+          (~(put by history) day [[g attempts] the-word])
+        ==
+      =.  history
+        (~(put by history) day [[g attempts] `secret])
+      =+  guesses=+((lent attempts))
+      ?+  guesses  (send %dnf)
+        %1  (send %one)
+        %2  (send %two)
+        %3  (send %tre)
+        %4  (send %for)
+        %5  (send %fiv)
+        %6  (send %six)
+      ==
+    |=  o=outcome
+    %-  emit(ledger (~(put by ledger) day [o %.n]))
+    =-  [%pass /outcome/(scot %ud day) %agent -]
+    [dok %poke urdl-submit+!>(`submit`[day secret o])]
   --
 --

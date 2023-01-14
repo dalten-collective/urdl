@@ -1,14 +1,14 @@
 /-  u=urdl
 /+  u-j=urdl-json
-|_  ledge=ledger:host:u
+|_  ledge=ledger:user:u
 ++  grad  %noun
 ++  grow
   |%
   ++  noun  ledge
-  ++  json  (ledger:host:enjs:u-j ledge)
+  ++  json  (ledger:user:enjs:u-j ledge)
   --
 ++  grab
   |%
-  ++  noun  ledger:host:u
+  ++  noun  ledger:user:u
   --
 --

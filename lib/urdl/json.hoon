@@ -8,9 +8,9 @@
   ++  play  |=(p=@ud `json`((lead %s) (scot %ud p)))
   ++  wist  |=(p=^path `json`~(scry pack 'WORD-LIST'^(path p)))
   ++  days
-    |=  [d=@ud w=@t]
+    |=  [d=@ud w=@t a=?]
     %~  scry  pack
-    ['CURRENT-DAY' (pairs ~[day+(play d) word+s/w])]
+    ['CURRENT-DAY' (pairs ~[day+(play d) word+s/w] accepting+b/a)]
   ++  pack
     |_  [f=cord j=json]
     ++  fact
@@ -103,6 +103,20 @@
   ::
   ++  user
     |%
+    ++  day
+      ^-  $-(@ud json)
+      |=  u=@ud
+      ~(scry pack ['CURRENT-DAY' s/(scot %ud u)])
+    ++  host
+      ^-  $-((unit @p) json)
+      |=  hu=(unit @p)
+      ?~  hu  ~(scry pack ['NO-HOST-SET' ~])
+      ~(scry pack ['CURRENT-HOST' (frond 'HOST' (ship (need hu)))])
+    ++  host
+      ^-  $-((unit @t) json)
+      |=  tw=(unit @t)
+      ?~  tw  ~(scry pack ['SECRET-WORD-UNKNOWN' ~])
+      ~(scry pack ['SECRET-WORD-FOUND' s/(need tw)])
     ++  ledger
       ^-  $-(ledger:user:u json)
       |=  led=ledger:user:u
