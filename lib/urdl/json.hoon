@@ -70,6 +70,9 @@
     ==
   ++  host
     |%
+    ++  daily
+      |=  d=daily:u
+      ~(scry pack ['DAILY-DATA' (^daily d)])
     ++  loaded
       |=  b=?
       ~(fact pack ['LOADING-RESULTS' b/b])
@@ -114,17 +117,21 @@
       ^-  $-([@da @da] json)
       |=  [c=@da o=@da]
       %~  scry  pack
-      ['CURRENT-TIME-LIMITS' (pairs close+(sect c) open+(sect o))]
+      ['CURRENT-TIME-LIMITS' (pairs ~[close+(sect c) open+(sect o)])]
     ++  host
       ^-  $-((unit @p) json)
       |=  hu=(unit @p)
       ?~  hu  ~(scry pack ['NO-HOST-SET' ~])
-      ~(scry pack ['CURRENT-HOST' (frond 'HOST' (ship (need hu)))])
+      ~(scry pack ['CURRENT-HOST' (frond host+(ship (need hu)))])
     ++  word
       ^-  $-((unit @t) json)
       |=  tw=(unit @t)
       ?~  tw  ~(scry pack ['SECRET-WORD-UNKNOWN' ~])
       ~(scry pack ['SECRET-WORD-FOUND' s/(need tw)])
+    ++  allowed
+      ^-  $-((list @t) json)
+      |=  l=(list @t)
+      ~(scry pack ['ALLOWED-WORDS' a/(turn l (lead %s))])
     ++  ledger
       ^-  $-(ledger:user:u json)
       |=  led=ledger:user:u
@@ -179,7 +186,27 @@
     --
   --
 ++  dejs
+  =,  dejs:format
   |%
-  ++  test  'test'
+  ++  ship  ;~(pfix sig fed:ag)
+  ++  host
+    |%
+    ++  action
+      ^-  $-(json action:host:u)
+      %-  of
+      :~  load+pa
+          validate+(cu _~ same)
+      ==
+    --
+  ++  user
+    |%
+    ++  action
+      ^-  $-(json action:user:u)
+      %-  of
+      :~  guess+so
+          unite+(su ship)
+          avoid+(cu _~ same)
+      ==
+    --
   --
 --

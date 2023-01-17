@@ -1,6 +1,6 @@
 /-  u=urdl
 /+  u-j=urdl-json
-|_  open=[@dr @dr]
+|_  open=[@da @da]
 ++  grad  %noun
 ++  grow
   |%
@@ -9,6 +9,6 @@
   --
 ++  grab
   |%
-  ++  noun  [@dr @dr]
+  ++  noun  [@da @da]
   --
 --

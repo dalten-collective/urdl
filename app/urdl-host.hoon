@@ -297,7 +297,7 @@
     =~  (show urdl-leader+!>(`board`+>.lb))
         (show urdl-host-wist+!>(`path`words))
         (show urdl-data+!>(`[@ud @t ?]`[day word accepting]))
-        (show urdl-host-ledger+!>(`daily`(~(got by ledger) day)))
+        (show urdl-host-daily+!>(`daily`(~(got by ledger) day)))
     ==
   ==
 ::  +peek: handle on-peek
@@ -330,7 +330,7 @@
       %urdl-submit
     =+  mit=!<(submit vaz)
     ?>  ?&  =(day day.mit)
-            accepting
+            ::  accepting - we are commenting this out for late responses.
             !(~(has bi ledger) day src.bol)
             ?|  =(%dnf out.mit)
                 =-  =(- wor.mit)

@@ -332,6 +332,7 @@
         (show urdl-user-day+!>(`@ud`day))
         (show urdl-user-ledger+!>(`_ledger`ledger))
         (show urdl-user-accepting+!>(`?`accepting))
+        :: (show urdl-user-words+!>(`(list @t)`allow:all))
       ::
         %-  show
         :-  %urdl-user-the-word
@@ -465,6 +466,7 @@
     =/  error=_dat
       (show urdl-user-signal+!>((check 'zzzzz' 'aaaaa')))
     ?:  (~(has by ledger) day)      error
+    ?~  (find [g]~ allow:all)       error
     =+  (~(got by history) day)
     ?^  the-word                    error
     ?:  (gth +((lent attempts)) 6)  error
