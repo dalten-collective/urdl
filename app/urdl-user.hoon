@@ -311,7 +311,6 @@
   ^+  dat
   ?+    pol  ~|(urdl-host-panic-arvo/[pol sig] !!)
       [%auto %send ~]
-    ~&  >  "i'm beeeehningggg"
     ?^  hav=(~(get by ledger) day)
       (send:behn -.u.hav)
     (send:behn(ledger (~(put by ledger) day %dnf %|)) %dnf)

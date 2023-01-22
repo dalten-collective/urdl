@@ -338,7 +338,6 @@
                 .^((list cord) %cx (welp dir words))
             ==
         ==
-    ~&  >  "{<src.bol>} got {<out.mit>}"
     dat(ledger (~(put bi ledger) day src.bol out.mit))
   ::
       %urdl-host-action
