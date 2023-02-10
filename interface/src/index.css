@@ -1,7 +1,200 @@
 @tailwind base;
+
 @tailwind components;
+
 @tailwind utilities;
 
-.your-class-here {
-  @apply text-red-400;
+:root {
+  --green: #6aaa64;
+  --darkendGreen: #538d4e;
+  --yellow: #c9b458;
+  --darkendYellow: #b59f3b;
+  --lightGray: #d8d8d8;
+  --midGray: #818384;
+  --gray: #86888a;
+  --darkGray: #939598;
+  --keyColor: #d7dadc;
+  --absent: #3a3a3c;
+  --white: #fff;
+  --black: #212121;
+  --orange: #f5793a;
+  --blue: #85c0f9;
+  --color-tone-1: #d7dadc;
+  --color-tone-2: #818384;
+  --color-tone-3: #565758;
+  --color-tone-4: #3a3a3c;
+  --color-tone-5: #272729;
+  --color-tone-6: #1a1a1b;
+  --color-tone-7: #121213;
 }
+
+html, body {
+  height: 100%;
+  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  touch-action: pan-x pan-y;
+  margin: 0;
+  background-color: var(--color-tone-7);
+  color: rgb(215, 218, 220);
+}
+
+#app-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+#app {
+  /* height: 100%; */
+  margin: 0 auto;
+  padding-bottom: 1rem;
+}
+
+/*@media screen(sm) {*/
+  /*.modal-wrap {*/
+    /*@apply fixed;*/
+    /*@apply h-screen;*/
+    /*@apply w-screen;*/
+  /*}*/
+/*}*/
+
+/*@media screen(md) {*/
+  /*.modal-wrap {*/
+    /*@apply fixed;*/
+    /*@apply h-screen;*/
+    /*@apply w-screen;*/
+
+    /*@apply p-8;*/
+  /*}*/
+/*}*/
+
+.btn {
+  @apply px-4;
+  @apply py-2;
+  @apply font-bold;
+  @apply cursor-pointer;
+  @apply rounded-md;
+  @apply shadow-md;
+}
+
+.modal-wrap {
+  @apply fixed;
+  @apply w-screen;
+  @apply h-screen;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.alert-wrap {
+  @apply fixed;
+  @apply w-full;
+  @apply px-4;
+  @apply top-4;
+}
+
+.modal-wrap>div {
+  background-color: var(--color-tone-5);
+  @apply p-2;
+  @apply h-full;
+}
+
+.rong  {
+  background-color: var(--absent);
+  border-color: var(--absent);
+}
+.clos {
+  background-color: var(--yellow);
+  border-color: var(--yellow);
+}
+.rite {
+  background: var(--green);
+  border-color: var(--green);
+}
+.norm {
+  background: var(--midGray);
+  border-color: var(--color-tone-3);
+}
+.keyText {
+  color: var(--keyColor);
+}
+
+.empt {
+  background: var(--color-tone-7);
+  border-color: var(--color-tone-3);
+}
+
+.tryy {
+  background: var(--color-tone-7);
+  border-color: var(--color-tone-2);
+}
+
+.del-key > path {
+  fill: var(--keyColor);
+}
+
+.rite-tile {
+  border-width: 2px;
+}
+
+.hed-border {
+  border-color: var(--color-tone-3);
+}
+
+.color {
+  color: var(--color-tone-2);
+}
+
+.text-darker {
+  color: var(--color-tone-3);
+}
+.color-dark {
+  color: var(--color-tone-7);
+}
+
+.green-text {
+  color: var(--green);
+}
+.yellow-text {
+  color: var(--yellow);
+}
+
+.alert {
+  color: #212121;
+  background-color: #85c0f9;
+  background-color: var(--yellow);
+}
+
+.bg-less-dark {
+  background-color: var(--color-tone-6);
+}
+
+.bg-dark {
+  background-color: var(--color-tone-7);
+}
+
+.bg-light {
+  background-color: var(--color-tone-1);
+}
+
+/* border: 1px solid  #3a3a3c */
+/*
+ * green: #6aaa64
+ * dark green: #538d4e
+ * yellow: #b59f3b
+ * dark yellow: #b59f3b
+ * lightGray: #d8d8d8
+ * gray: #86888a
+ * darkgray: #939598
+ * graynorm: #818384
+ * black: #212121
+ * blue: #85c0f9
+ *
+ * --color-tone-1: #d7dadc;
+ * --color-tone-2: #818384;
+ * --color-tone-3: #565758;
+ * --color-tone-4: #3a3a3c;
+ * --color-tone-5: #272729;
+ * --color-tone-6: #1a1a1b;
+ * --color-tone-7: #121213;
+ */
+

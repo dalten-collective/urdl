@@ -1,7 +1,12 @@
 <template>
-  <h1>Hello world</h1>
-  This is Start.vue. Be sure to open this file and change <pre>const deskname</pre> to the name of your desk.
-  You'll find tailwind css at <span class="your-class-here">src/index.css</span>.
+  <div>
+    <div class="m-auto" style="max-width: 17rem;" >
+      <div style="display: grid; grid-gap: 5px; padding: 10px;" :style="`grid-template-rows: repeat(${ alow }, 1fr);`">
+        <How />
+      </div>
+    </div>
+    <GuessBoard />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -9,6 +14,9 @@ import { onMounted, onUnmounted, computed } from 'vue';
 import { useStore } from '@/store/store'
 import { ActionTypes } from '@/store/action-types';
 import { GetterTypes } from '@/store/getter-types';
+
+import How from '@/components/How.vue'
+import GuessBoard from '@/components/GuessBoard.vue'
 
 const store = useStore()
 
