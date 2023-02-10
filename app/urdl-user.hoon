@@ -333,9 +333,10 @@
         (show urdl-user-accepting+!>(`?`accepting))
         :: (show urdl-user-words+!>(`(list @t)`allow:all))
       ::
+        ?~  hav=(~(get by history) day)
+          (show urdl-user-the-word+!>(*(unit @t)))
         %-  show
-        :-  %urdl-user-the-word
-        !>(`(unit @t)`the-word:(~(got by history) day))
+        urdl-user-the-word+!>(`(unit @t)`the-word.u.hav)
       ::
         ?~  hav=(~(get by history) day)
           (show urdl-user-signals+!>(*(list signal)))
