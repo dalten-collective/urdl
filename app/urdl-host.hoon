@@ -145,6 +145,7 @@
       =ledger:host
       words=path
       accepting=_|
+      =donors
   ==
 ::  boilerplate
 ::
@@ -344,9 +345,37 @@
     =+  act=!<(action:host vaz)
     ?^  act
       ?-    -.act
-          %load
-        %.  urdl-host-action+!>(`action:host`act)
-        show:(behn ~s1 (welp /load +.act))
+        %load  (show:(behn ~s1 (welp /load +.act)) mar vaz)
+      ::
+          %donor
+        ?-  p.act
+            %gold
+          =;  new=_donors
+            =+  after=(~(uni by donors) new)
+            %-  tell:(show(donors after) mar vaz)
+            urdl-user-donors+!>(`_donors`donors)
+          %-  ~(rep ^in q.act)
+          |=  [guy=@p bux=(map @p ?(%gold %jule))]
+          (~(put by bux) guy %gold)
+        ::
+            %jule
+          =;  new=_donors
+            =+  after=(~(uni by donors) new)
+            %-  tell:(show(donors after) mar vaz)
+            urdl-user-donors+!>(`_donors`donors)
+          %-  ~(rep ^in q.act)
+          |=  [p=@p q=(map @p ?(%gold %jule))]
+          (~(put by q) p %jule)
+        ::
+            %none
+          =+  dem=~(tap ^in q.act)  
+          |-
+          ?~  dem
+            %-  tell:(show mar vaz)
+            urdl-user-donors+!>(`_donors`donors)
+          $(dem t.dem, donors (~(del by donors) i.dem))
+        ==
+      ::
           %validate
         dat
       ==
