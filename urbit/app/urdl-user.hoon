@@ -295,7 +295,7 @@
     ::
         %watch-ack
       %.  dat
-      ?~(p.sig same (slog 'urdl-panic-host-failed' ~))
+      ?~(p.sig same (slog 'urdl-panic-host-failed' u.p.sig))
     ::
         %kick
       %-  emit
@@ -369,6 +369,7 @@
   |=  pol=(pole knot)
   ^-  (unit (unit cage))
   ?+    pol  !!
+    ::  XX: re-instate this
     ::   [%x %dbug %state ~]
     :: =+  lb=(~(got by sob) [~zod %urdl-host /leader/board])
     :: =-  ``[%state !>([%0 -])]
