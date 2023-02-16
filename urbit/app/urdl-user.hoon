@@ -360,7 +360,7 @@
           ?.  (gth (add ~h2.m30 when) now.bol)
             (add ~h2.m30 when)
           (add ~d1.h2.m30 when)
-        (show urdl-user-open+!>([stop open]))
+        (show urdl-user-open+!>(`[@da @da]`[stop open]))
     ==
   ==
 ::  +peek: handle on-peek
