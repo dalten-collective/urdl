@@ -347,13 +347,9 @@
     =+  act=!<(action:host vaz)
     ?^  act
       ?-    -.act
-<<<<<<< HEAD:urbit/app/urdl-host.hoon
-        %load  (show:(behn ~s1 (welp /load +.act)) mar vaz)
-=======
           %load
         %.  [mar vaz]
         show:(behn ~s1 (welp /load +.act))
->>>>>>> master:app/urdl-host.hoon
       ::
           %donor
         ?-  p.act
@@ -428,10 +424,7 @@
           (show urdl-host-loading-done+!>(%&))
         ::
           ~&  >>  "today's secret word is {<word>}"
-<<<<<<< HEAD:urbit/app/urdl-host.hoon
-=======
           ~&  >>>  [day word accepting]
->>>>>>> master:app/urdl-host.hoon
           (tell urdl-data+!>(`data`[day word accepting]))
       ==
     %=  state
