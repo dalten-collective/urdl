@@ -5,8 +5,9 @@ import { Mutations } from "./mutations";
 import { ActionTypes } from "./action-types";
 import { MutationTypes } from "./mutation-types";
 
-import * as T from '@/types'
-import * as L from '@/types/loading-types'
+import * as T from "@/types";
+import * as L from "@/types/loading-types";
+import * as Api from "@/api/types/common";
 
 import airlock from "@/api";
 
@@ -57,18 +58,34 @@ export interface Actions {
 
 export const actions: ActionTree<State, State> & Actions = {
   [ActionTypes.AIRLOCK_OPEN]({ commit, dispatch }, deskName: string) {
-
     airlock.openAirlockTo(
       deskName,
 
       // Main all-responses-handler
-      (data: T.GallResponse) => {
-        if (T.IsResponseOne(data)) {
-          dispatch(ActionTypes.EXAMPLE, data.test.thing as string);
+      (data: Api.GallResponse) => {
+        if (Api.IsCurrentHost(data)) {
+          commit(MutationTypes.CurrentHostSet, data.fact);
         }
-        // if (T.IsResponseTwo(data)) {
-        //   dispatch(ActionTypes.EXAMPLE, data.testTwo.thing as string);
-        // }
+
+        if (Api.IsCurrentDay(data)) {
+          commit(MutationTypes.CurrentDaySet, data.fact);
+        }
+
+        if (Api.IsCurrentDayGameStatus(data)) {
+          commit(MutationTypes.CurrentDayGameStatusSet, data.fact);
+        }
+
+        if (Api.IsUserLedger(data)) {
+          commit(MutationTypes.LedgerSet, data.fact);
+        }
+
+        if (Api.IsSecretWordFound(data) || Api.IsSecretWordUnknown(data)) {
+          commit(MutationTypes.SecretWordSet, data.fact);
+        }
+
+        if (Api.IsOpen(data)) {
+          commit(MutationTypes.TodayOpenSet, data.fact);
+        }
       },
 
       (subscriptionNumber: number) => {
@@ -77,57 +94,53 @@ export const actions: ActionTree<State, State> & Actions = {
     );
   },
 
-  [ActionTypes.EXAMPLE](
-    { commit, getters },
-    payload: string
-  ) {
-    console.log('dispatching EXAMPLE action...')
-    console.log('getters ', getters) // Access to getters
-    commit(MutationTypes.EXAMPLE, 'test')
+  [ActionTypes.EXAMPLE]({ commit, getters }, payload: string) {
+    console.log("dispatching EXAMPLE action...");
+    console.log("getters ", getters); // Access to getters
+    commit(MutationTypes.EXAMPLE, "test");
   },
 
-  [ActionTypes.INITIAL_SET](
-    { commit },
-    payload: L.UIElement
-  ) {
-    const currentState: L.LoaderState = L.loaderStates.initial
-    commit(MutationTypes.LOADING_STATE_SET, { uiElement: payload, currentState })
+  [ActionTypes.INITIAL_SET]({ commit }, payload: L.UIElement) {
+    const currentState: L.LoaderState = L.loaderStates.initial;
+    commit(MutationTypes.LOADING_STATE_SET, {
+      uiElement: payload,
+      currentState,
+    });
   },
 
-  [ActionTypes.LOADING_SET](
-    { commit },
-    payload: L.UIElement
-  ) {
-    const currentState: L.LoaderState = L.loaderStates.loading
-    commit(MutationTypes.LOADING_STATE_SET, { uiElement: payload, currentState })
+  [ActionTypes.LOADING_SET]({ commit }, payload: L.UIElement) {
+    const currentState: L.LoaderState = L.loaderStates.loading;
+    commit(MutationTypes.LOADING_STATE_SET, {
+      uiElement: payload,
+      currentState,
+    });
   },
 
   [ActionTypes.SUCCESS_SET](
     { commit, dispatch },
     payload: L.UIElement
   ) {
-    const currentState: L.LoaderState = L.loaderStates.success
-    commit(MutationTypes.LOADING_STATE_SET, { uiElement: payload, currentState })
-    dispatch(ActionTypes.LOADING_STATE_RESET, payload)
+    const currentState: L.LoaderState = L.loaderStates.success;
+    commit(MutationTypes.LOADING_STATE_SET, {
+      uiElement: payload,
+      currentState,
+    });
+    dispatch(ActionTypes.LOADING_STATE_RESET, payload);
   },
 
-  [ActionTypes.ERROR_SET](
-    { commit },
-    payload: L.UIElement
-  ) {
-    const currentState: L.LoaderState = L.loaderStates.error
-    commit(MutationTypes.LOADING_STATE_SET, { uiElement: payload, currentState })
+  [ActionTypes.ERROR_SET]({ commit }, payload: L.UIElement) {
+    const currentState: L.LoaderState = L.loaderStates.error;
+    commit(MutationTypes.LOADING_STATE_SET, {
+      uiElement: payload,
+      currentState,
+    });
   },
 
-  [ActionTypes.LOADING_STATE_RESET](
-    ctx,
-    payload: L.UIElement
-  ) {
+  [ActionTypes.LOADING_STATE_RESET](ctx, payload: L.UIElement) {
     setTimeout(() => {
-      ctx.dispatch(ActionTypes.INITIAL_SET, payload)
-    }, 3000)
+      ctx.dispatch(ActionTypes.INITIAL_SET, payload);
+    }, 3000);
   },
 
   // Add more here
-
 };

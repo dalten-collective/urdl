@@ -1,5 +1,8 @@
 <template>
   <div>
+    <pre>
+      state: {{ testStore }}
+    </pre>
     <div class="m-auto" style="max-width: 17rem;" >
       <div style="display: grid; grid-gap: 5px; padding: 10px;" :style="`grid-template-rows: repeat(${ alow }, 1fr);`">
         <How />
@@ -33,6 +36,10 @@ onUnmounted(() => {
 const computedThings = computed(() => store.state.exampleThings)
 const fromGetters = computed(() => {
   return store.getters[GetterTypes.EXAMPLE_WITH_ARG]('arg here');
+})
+
+const testStore = computed(() => {
+  return store.state
 })
 
 const startAirlock = (deskname: string) => {

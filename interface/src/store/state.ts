@@ -1,4 +1,5 @@
 import * as T from "@/types";
+import * as U from "@/types/urdl";
 import * as L from "@/types/loading-types";
 
 import { loaderStates } from "@/types/loading-types";
@@ -9,7 +10,13 @@ const uiElementLoadingState: L.UILoaderState = {
 }
 
 export const state = {
-  exampleThings: [] as Array<T.Thing>,
+  currentHost: '' as T.Ship,
+  currentDay: 0 as U.CurrentDay,
+  currentDayGameStatus: {} as U.GuessOutcome,
+  ledger: [] as Array<U.Ledger>,
+  todaysSecretWord: null as string | null,
+  todayOpen: false as boolean,
+
   loadingStates: uiElementLoadingState as L.UILoaderState,
 }
 
