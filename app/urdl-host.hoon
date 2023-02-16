@@ -292,12 +292,12 @@
   |=  pol=(pole knot)
   ?+    pol  ~|(urdl-panic-bad-watch/pol !!)
       [%urdl-host ~]
-    (emit %give %fact ~ urdl-data+!>(`[@ud @t ?]`[day word accepting]))
+    (emit %give %fact ~ urdl-data+!>(`data`[day word accepting]))
       [%web-ui ~]
     =+  lb=(~(got by sob) [~zod %urdl-host /leader/board])
     =~  (show urdl-leader+!>(`board`+>.lb))
         (show urdl-host-wist+!>(`path`words))
-        (show urdl-data+!>(`[@ud @t ?]`[day word accepting]))
+        (show urdl-data+!>(`data`[day word accepting]))
         (show urdl-host-daily+!>(`daily`(~(got by ledger) day)))
     ==
   ==
@@ -308,7 +308,7 @@
   ^-  (unit (unit cage))
   ?+    pol  !!
       [%x %today ~]
-    ``urdl-data+!>(`[@ud @t ?]`[day word accepting])
+    ``urdl-data+!>(`data`[day word accepting])
       [%x %ledger ~]
     ``urdl-host-ledger+!>(`_ledger`ledger)
       [%x %ledger day=@ ~]
@@ -418,7 +418,7 @@
           (show urdl-host-loading-done+!>(%&))
         ::
           ~&  >>  "today's secret word is {<word>}"
-          (tell urdl-data+!>(`[@ud @t ?]`[day word accepting]))
+          (tell urdl-data+!>(`data`[day word accepting]))
       ==
     %=  state
       day        1
@@ -443,7 +443,7 @@
       ~&  >  "day {<day>} has ended"
       =~  %+  behn(state sta)  then
           (welp /next/(scot %ud day) pat.pol)
-          (tell urdl-data+!>(`[@ud @t ?]`[day word accepting]))
+          (tell urdl-data+!>(`data`[day word accepting]))
       ==
     %=  state
       accepting  %|
@@ -468,7 +468,7 @@
         (welp /paws/(scot %ud +(day)) words)
       ::
         ~&  >>  "today's secret word is {<word>}"
-        (tell urdl-data+!>(`[@ud @t ?]`[day word accepting]))
+        (tell urdl-data+!>(`data`[day word accepting]))
       ::
         %-  emit
         [%give %wave /leader/board `daily`(~(got by ledger) (dec day))]

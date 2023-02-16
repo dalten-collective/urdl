@@ -1,6 +1,7 @@
 /+  *mip
 |%
 +$  day     @ud
++$  data    [@ud @t ?]
 +$  guess   cord
 +$  color   ?(%green %yellow %grey)
 +$  daily   (map @p outcome)

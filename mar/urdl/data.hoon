@@ -1,14 +1,14 @@
 /-  u=urdl
 /+  u-j=urdl-json
-|_  data=[@ud @t ?]
+|_  dat=data:u
 ++  grad  %noun
 ++  grow
   |%
-  ++  noun  data
-  ++  json  (days:enjs:u-j data)
+  ++  noun  dat
+  ++  json  (days:enjs:u-j dat)
   --
 ++  grab
   |%
-  ++  noun  [@ud @t ?]
+  ++  noun  data:u
   --
 --

@@ -280,7 +280,7 @@
         ~|(urdl-panic-strange-fact/-.cage.sig !!)
       ::
           %urdl-data
-        =+  data=!<([@ud @t ?] q.cage.sig)
+        =+  data=!<(data q.cage.sig)
         %=  dat
           day        -.data
           secret     +<.data
@@ -369,11 +369,11 @@
   |=  pol=(pole knot)
   ^-  (unit (unit cage))
   ?+    pol  !!
-      [%x %dbug %state ~]
-    =+  lb=(~(got by sob) [~zod %urdl-host /leader/board])
-    =-  ``[%state !>([%0 -])]
-    :+  day=day  ledger=ledger
-    [history=history leader=+>.lb accepting=accepting]
+    ::   [%x %dbug %state ~]
+    :: =+  lb=(~(got by sob) [~zod %urdl-host /leader/board])
+    :: =-  ``[%state !>([%0 -])]
+    :: :+  day=day  ledger=ledger
+    :: [history=history leader=+>.lb accepting=accepting]
       [%x %host ~]
     ``urdl-user-host+!>(`(unit @p)`host)
       [%x %day ~]
