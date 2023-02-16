@@ -98,6 +98,21 @@
         %~  fact  pack
         ['WORD-LIST-LOADING' (path word-list.a)]
       ::
+          %donor
+        ?-    p.a
+            %gold
+          %~  fact  pack
+          ['DONORS-ADD-GOLD' a/(turn ~(tap in q.a) ship)]
+        ::
+            %jule
+          %~  fact  pack
+          ['DONORS-ADD-DIAMOND' a/(turn ~(tap in q.a) ship)]
+        ::
+            %none
+          %~  fact  pack
+          ['DONORS-REMOVE' a/(turn ~(tap in q.a) ship)]
+        ==
+      ::
           %validate
         %~  fact  pack
         ['VALIDATING-RESULTS' ~]
@@ -171,6 +186,14 @@
           guess
         [[(scot %ud count) (^signal i.sigs)] guess]
       ==
+    ++  donors
+      |=  d=(map @p ?(%gold %jule))
+      %~  fact  pack
+      :+  'DONOR-LIST-CHANGED'
+        %a
+      %-  ~(rep by d)
+      |=  [[p=@p q=?(%gold %jule)] r=(list json)]
+      [(pairs donor+(ship p) level+s/q ~) r]
     ++  action
       ^-  $-(action:user:u json)
       |=  act=action:user:u

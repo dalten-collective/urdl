@@ -5,7 +5,7 @@
 ++  grow
   |%
   ++  noun  load
-  ++  json  (loaded:host:enjs:u-j face)
+  ++  json  (loaded:host:enjs:u-j load)
   --
 ++  grab
   |%

@@ -121,6 +121,7 @@
       =history:user
       secret=cord
       accepting=?
+      =donors
   ==
 ::
 ::
@@ -275,13 +276,21 @@
       (emit %pass pol %agent [hos %urdl-host] %leave ~)
     ?+    -.sig  ~|(urdl-panic-bad-dude/[pol sig] !!)
         %fact
-      ?>  =(%urdl-data -.cage.sig)
-      =+  data=!<([@ud @t ?] q.cage.sig)
-      %=  dat
-        day        -.data
-        secret     +<.data
-        history    (~(put by history) -.data [~ ~])
-        accepting  +>.data
+      ?+    -.cage.sig
+        ~|(urdl-panic-strange-fact/-.cage.sig !!)
+      ::
+          %urdl-data
+        =+  data=!<(data q.cage.sig)
+        %=  dat
+          day        -.data
+          secret     +<.data
+          history    (~(put by history) -.data [~ ~])
+          accepting  +>.data
+        ==
+      ::
+          %urdl-user-donors
+        =+  dons=!<((map @p ?(%gold %jule)) q.cage.sig)
+        (show(donors dons) cage.sig)
       ==
     ::
         %watch-ack
@@ -360,11 +369,11 @@
   |=  pol=(pole knot)
   ^-  (unit (unit cage))
   ?+    pol  !!
-      [%x %dbug %state ~]
-    =+  lb=(~(got by sob) [~zod %urdl-host /leader/board])
-    =-  ``[%state !>([%0 -])]
-    :+  day=day  ledger=ledger
-    [history=history leader=+>.lb accepting=accepting]
+    ::   [%x %dbug %state ~]
+    :: =+  lb=(~(got by sob) [~zod %urdl-host /leader/board])
+    :: =-  ``[%state !>([%0 -])]
+    :: :+  day=day  ledger=ledger
+    :: [history=history leader=+>.lb accepting=accepting]
       [%x %host ~]
     ``urdl-user-host+!>(`(unit @p)`host)
       [%x %day ~]

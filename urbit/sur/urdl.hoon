@@ -1,6 +1,7 @@
 /+  *mip
 |%
 +$  day     @ud
++$  data    [@ud @t ?]
 +$  guess   cord
 +$  color   ?(%green %yellow %grey)
 +$  daily   (map @p outcome)
@@ -9,6 +10,7 @@
 +$  signal  (map @ud [let=@t col=color])
 +$  streak  [now=_0 top=_0]
 +$  totals  [won=_0 one=_0 two=_0 tre=_0 for=_0 fiv=_0 six=_0]
++$  donors  (map @p ?(%gold %jule))
 ::
 +$  outcome  ?(%dnf %one %two %tre %for %fiv %six)
 ::
@@ -19,6 +21,7 @@
   +$  action
     $@  %drop                                           ::  unload a list
     $%  [%load word-list=path]                          ::  inputs a list
+        [%donor (pair ?(%gold %jule %none) (set @p))]   ::  set donor lvl
         [%validate ~]                                   ::  leader/ledger
     ==
   --
