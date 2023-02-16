@@ -293,7 +293,6 @@
   |=  pol=(pole knot)
   ?+    pol  ~|(urdl-panic-bad-watch/pol !!)
       [%urdl-host ~]
-    ~&  >  "being watched"
     (emit %give %fact ~ urdl-data+!>(`data`[day word accepting]))
       [%web-ui ~]
     =+  lb=(~(got by sob) [~zod %urdl-host /leader/board])
@@ -398,7 +397,6 @@
   ?+    pol  ~|(urdl-host-panic-arvo/[pol sig] !!)
       [%load pat=*]
     ~_  %urdl-panic-already-loaded
-    ~&  >>  pol
     ?>  ?=([%behn %wake *] sig)
     ?^  error.sig
       ((slog 'urdl-host-panic-arvo' u.error.sig) dat)
@@ -417,14 +415,12 @@
         ==
       (show urdl-host-loading-done+!>(%|))
     =;  sta=_state
-      ~&  >>  [%setting-words-to words.sta]
       =~  %+  behn(state sta)  then
           (weld /paws/(scot %ud 1) pat.pol)
         ::
           (show urdl-host-loading-done+!>(%&))
         ::
           ~&  >>  "today's secret word is {<word>}"
-          ~&  >>>  [day word accepting]
           (tell urdl-data+!>(`data`[day word accepting]))
       ==
     %=  state
