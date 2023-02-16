@@ -9,6 +9,6 @@
   --
 ++  grab
   |%
-  ++  noun  [@da @da]
+  ++  noun  ,[@da @da]
   --
 --
