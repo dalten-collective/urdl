@@ -3,6 +3,7 @@
     <pre>
       state: {{ testStore }}
     </pre>
+    <button @click="guess('hello')">guess</button>
     <div class="m-auto" style="max-width: 17rem;" >
       <div style="display: grid; grid-gap: 5px; padding: 10px;" :style="`grid-template-rows: repeat(${ alow }, 1fr);`">
         <How />
@@ -41,6 +42,10 @@ const fromGetters = computed(() => {
 const testStore = computed(() => {
   return store.state
 })
+
+const guess = (guess) => {
+  store.dispatch(ActionTypes.PokeGuess, guess)
+}
 
 const startAirlock = (deskname: string) => {
   store.dispatch(ActionTypes.AIRLOCK_OPEN, deskname)

@@ -13,6 +13,8 @@ export const state = {
   currentHost: '' as T.Ship,
   currentDay: 0 as U.CurrentDay,
   currentDayGameStatus: {} as U.GuessOutcome,
+  currentTimeOpen: 0 as number,
+  currentTimeClose: 0 as number,
   ledger: [] as Array<U.Ledger>,
   todaysSecretWord: null as string | null,
   todayOpen: false as boolean,

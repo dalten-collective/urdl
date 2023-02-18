@@ -10,6 +10,7 @@ import * as L from "@/types/loading-types";
 import * as Api from "@/api/types/common";
 
 import airlock from "@/api";
+import { Pokes } from "@/api/urdlAPI";
 
 type AugmentedActionContext = {
   commit<K extends keyof Mutations>(
@@ -28,6 +29,11 @@ type AugmentedActionContext = {
 
 export interface Actions {
   [ActionTypes.EXAMPLE](
+    { commit }: AugmentedActionContext,
+    payload: string
+  ): void;
+
+  [ActionTypes.PokeGuess](
     { commit }: AugmentedActionContext,
     payload: string
   ): void;
@@ -86,6 +92,12 @@ export const actions: ActionTree<State, State> & Actions = {
         if (Api.IsOpen(data)) {
           commit(MutationTypes.TodayOpenSet, data.fact);
         }
+
+        if (Api.IsCurrentTimeLimits(data)) {
+          console.log('times ' , data)
+          commit(MutationTypes.CurrentTimeOpenSet, data.fact.open);
+          commit(MutationTypes.CurrentTimeCloseSet, data.fact.close);
+        }
       },
 
       (subscriptionNumber: number) => {
@@ -98,6 +110,11 @@ export const actions: ActionTree<State, State> & Actions = {
     console.log("dispatching EXAMPLE action...");
     console.log("getters ", getters); // Access to getters
     commit(MutationTypes.EXAMPLE, "test");
+  },
+
+  [ActionTypes.PokeGuess]({ commit, getters }, guess: string) {
+    console.log("dispatching PokeGuess action...");
+    Pokes.GuessPoke(guess)
   },
 
   [ActionTypes.INITIAL_SET]({ commit }, payload: L.UIElement) {

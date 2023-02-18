@@ -1,18 +1,18 @@
-import * as PokeTypes from "@/api/types/my-poke"
-import * as UA from "@/api/urdlAction"
+import * as UP from "@/api/types/urdl-user-poke"
+import * as UA from "@/api/urdleActionPoker"
 import * as SS from "@/api/scrier"
-import * as R from "@/api/types/my-response"
+import * as UR from "@/api/types/urdl-user-response"
 
 export const Pokes = {
-  SomePoke(thing) { return pokeSomePoke(thing) }
+  GuessPoke(guess) { return pokeGuessPoke(guess) }
 }
 
 export const Scries = {
   Thing() { return scryThing() }
 }
 
-function pokeGuess(thing: PokeTypes.MyPokePayload['some']['thing']): Promise<any> {
-  const poker = new PP.MyPoke(thing)
+function pokeGuessPoke(guess: UP.GuessPokePayload['guess']): Promise<UR.UrdlUserResponse> {
+  const poker = new UA.Guess(guess)
   return poker.poke()
 }
 

@@ -14,7 +14,7 @@ class MyScry {
     const path = this.path
     console.log('scry path ', path)
     return urbitAPI.scry({
-      app: 'my-app', // TODO
+      app: 'urdl',
       path
     })
   }

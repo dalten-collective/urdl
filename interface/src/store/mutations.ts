@@ -42,6 +42,15 @@ export type Mutations<S = State> = {
     payload: boolean
   ): void;
 
+  [MutationTypes.CurrentTimeOpenSet](
+    state: S,
+    payload: number
+  ): void;
+  [MutationTypes.CurrentTimeCloseSet](
+    state: S,
+    payload: number
+  ): void;
+
   [MutationTypes.LOADING_STATE_SET](
     state: S,
     payload: { uiElement: L.UIElement, currentState: L.LoaderState }
@@ -99,6 +108,19 @@ export const mutations: MutationTree<State> & Mutations = {
     payload: Parameters<Mutations[MutationTypes.TodayOpenSet]>[1]
   ) {
     state.todayOpen = payload
+  },
+
+  [MutationTypes.CurrentTimeOpenSet](
+    state,
+    payload: Parameters<Mutations[MutationTypes.CurrentTimeOpenSet]>[1]
+  ) {
+    state.currentTimeOpen = payload
+  },
+  [MutationTypes.CurrentTimeCloseSet](
+    state,
+    payload: Parameters<Mutations[MutationTypes.CurrentTimeCloseSet]>[1]
+  ) {
+    state.currentTimeClose = payload
   },
 
   [MutationTypes.LOADING_STATE_SET](

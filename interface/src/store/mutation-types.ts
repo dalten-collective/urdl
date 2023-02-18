@@ -14,5 +14,8 @@ export enum MutationTypes {
   SecretWordSet  = "SECRET_WORD_SET",
 
   TodayOpenSet  = "TODAY_OPEN_SET",
+
+  CurrentTimeOpenSet  = "CURRENT_TIME_OPEN_SET",
+  CurrentTimeCloseSet  = "CURRENT_TIME_CLOSE_SET",
 }
 

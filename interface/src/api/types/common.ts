@@ -58,3 +58,8 @@ export const IsCurrentDayGameStatus = (r: UUR.UrdlUserResponse):
   r is UUR.ScryCurrentDayGameStatus => {
   return (r.face === UUR.UrdlUserResponseFaces.CurrentDayGameStatus)
 }
+
+export const IsCurrentTimeLimits = (r: UUR.UrdlUserResponse):
+  r is UUR.ScryCurrentTimeLimits => {
+  return (r.face === UUR.UrdlUserResponseFaces.CurrentTimeLimits)
+}

@@ -10,5 +10,6 @@
 ++  grab
   |%
   ++  noun  action:user:u
+  ++  json  action:user:dejs:u-j
   --
 --
