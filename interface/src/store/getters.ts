@@ -4,11 +4,16 @@ import { State } from './state'
 
 import * as T from '@/types'
 import * as L from '@/types/loading-types'
+import { GuessOutcome } from '@/types/urdl'
 
 export type Getters = {
   [GetterTypes.EXAMPLE_WITH_ARG](state: State): (arg: string) => string | null
 
   [GetterTypes.CurrentGuessCount](state: State): number
+  [GetterTypes.LetterInGuesses](state: State): (arg: string) => Array<GuessOutcome>
+  [GetterTypes.BestColorForLetterInGuesses](state: State): (arg: string) => string
+
+  [GetterTypes.LetterMap](state: State): { [key: string]: string }
 
   [GetterTypes.ELEMENT_INITIAL](state: State): (uie: L.UIElement) => boolean
   [GetterTypes.ELEMENT_LOADING](state: State): (uie: L.UIElement) => boolean
@@ -32,6 +37,53 @@ export const getters: GetterTree<State, State> & Getters = {
     const keys = Object.keys(state.currentDayGameStatus)
       .map(k => parseInt(k))
     return Math.max(...keys)
+  },
+
+  [GetterTypes.LetterInGuesses]: (state) => (letter: string): Array<GuessOutcome> => {
+    if (Object.keys(state.currentDayGameStatus).length === 0) {
+      return []
+    }
+
+    const keys = Object.keys(state.currentDayGameStatus)
+    return keys.map((guessCount) => {
+      const innerKeys = Object.keys(state.currentDayGameStatus[guessCount])
+      return innerKeys.map((ik) => {
+        const go = state.currentDayGameStatus[guessCount][ik]
+        if (go.letter === letter) {
+          return go.color
+        }
+      }).filter(color => color !== undefined)
+    }).flat()
+  },
+
+  [GetterTypes.BestColorForLetterInGuesses]: (state, getters) => (letter: string): string => {
+    const colors = getters.LETTER_IN_GUESSES(letter)
+    if (colors.length === 0) {
+      return ''
+    }
+    if (colors.includes('green')) {
+      return 'green'
+    }
+    if (colors.includes('yellow')) {
+      return 'yellow'
+    }
+    if (colors.includes('grey')) {
+      return 'grey'
+    }
+    return ''
+  },
+
+  [GetterTypes.LetterMap]: (state): { [key: string]: string } => {
+    const letters = 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z'
+    const letterArray = letters.split(',')
+    const letterMap = {}
+
+    letterArray.forEach((letter) => {
+      const occurances = 
+      letterMap[letter] = "green"
+    })
+
+    return letterMap
   },
 
   [GetterTypes.ELEMENT_INITIAL]: (state) => (uie: L.UIElement): boolean => {

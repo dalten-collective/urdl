@@ -32,6 +32,7 @@
 
 <script setup lang="ts">
 import {ActionTypes} from '@/store/action-types';
+import {GetterTypes} from '@/store/getter-types';
 import {MutationTypes} from '@/store/mutation-types';
 import { useStore } from '@/store/store'
 import { ref, computed } from 'vue'
@@ -96,26 +97,37 @@ const rows = ref([
         ]
 ])
 
+const letterMap = computed(() => {
+  return store.getters[GetterTypes.LetterMap]
+})
+
+const aGuesses = computed(() => {
+  return store.getters[GetterTypes.BestColorForLetterInGuesses]('a')
+})
+const cGuesses = computed(() => {
+  return store.getters[GetterTypes.BestColorForLetterInGuesses]('c')
+})
+const zGuesses = computed(() => {
+  return store.getters[GetterTypes.BestColorForLetterInGuesses]('z')
+})
+const dGuesses = computed(() => {
+  return store.getters[GetterTypes.BestColorForLetterInGuesses]('d')
+})
+
 const letterStyle = (letter) => {
-      const rating = ''
-      // TODO: get best occurance of this letter.
-  // need a getter to:
-  // - get all instances of this letter in guesses into an Array
-  // - if green present, use green
-  // - if yellow present, use yellow
-  // - if grey present, use grey (miss/rong)
-  // - otherwise, norm
-      switch (rating) {
-        case 'o':  // miss
-          return 'rong'
-        case 'n':  // close
-          return 'clos'
-        case 'x':  // exact
-          return 'rite'
-        default:
-          return 'norm'
-      }
-    }
+
+const rating = store.getters[GetterTypes.BestColorForLetterInGuesses](letter)
+  switch (rating) {
+    case 'grey':  // miss
+      return 'rong'
+    case 'yellow':  // close
+      return 'clos'
+    case 'green':  // exact
+      return 'rite'
+    default:
+      return 'norm'
+  }
+}
 
 </script>
 

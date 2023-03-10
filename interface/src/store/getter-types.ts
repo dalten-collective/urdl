@@ -2,6 +2,10 @@ export enum GetterTypes {
   EXAMPLE_WITH_ARG = 'EXAMPLE_WITH_ARG',
 
   CurrentGuessCount = 'CURRENT_GUESS_COUNT',
+  LetterInGuesses = 'LETTER_IN_GUESSES',
+  BestColorForLetterInGuesses = 'BEST_COLOR_FOR_LETTER_IN_GUESSES',
+
+  LetterMap = 'LETTER_MAP',
 
   ELEMENT_INITIAL = 'ELEMENT_INITIAL',
   ELEMENT_LOADING = 'ELEMENT_LOADING',
