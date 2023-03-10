@@ -35,12 +35,12 @@ export const getters: GetterTree<State, State> & Getters = {
   [GetterTypes.ELEMENT_ERROR]: (state) => (uie: L.UIElement): boolean => {
     return state.loadingStates[uie] === L.loaderStates.error
   },
-  [GetterTypes.ELEMENT_STATUS_MAP]: (getters) => (uie: L.UIElement): L.StatusMap => {
+  [GetterTypes.ELEMENT_STATUS_MAP]: (state, getters) => (uie: L.UIElement): L.StatusMap => {
     return {
-      initial: getters.ELEMENT_INITIAL(uie),
-      loading: getters.ELEMENT_LOADING(uie),
-      success: getters.ELEMENT_SUCCESS(uie),
-      error: getters.ELEMENT_ERROR(uie),
+      initial: getters.ELEMENT_INITIAL(state)(uie),
+      loading: getters.ELEMENT_LOADING(state)(uie),
+      success: getters.ELEMENT_SUCCESS(state)(uie),
+      error: getters.ELEMENT_ERROR(state)(uie),
     }
   },
 

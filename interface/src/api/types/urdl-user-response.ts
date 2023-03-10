@@ -88,11 +88,11 @@ export interface FactGuessResult {
   type: Api.ResponseTypes.Fact;
   face: UrdlUserResponseFaces.GuessResult;
   fact: {
-    0: U.GuessOutcome;
     1: U.GuessOutcome;
     2: U.GuessOutcome;
     3: U.GuessOutcome;
     4: U.GuessOutcome;
+    5: U.GuessOutcome;
   };
 }
 

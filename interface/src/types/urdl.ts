@@ -15,6 +15,10 @@ export interface GuessOutcome {
   color: GuessColor;
 }
 
+export interface GuessEntries {
+  [key: string]: GuessOutcome;
+}
+
 export interface GameStatus {
-  [key: number]: GuessOutcome;
+  [key: string]: GuessEntries;
 }

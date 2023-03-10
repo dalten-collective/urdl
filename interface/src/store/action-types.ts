@@ -4,6 +4,8 @@ export enum ActionTypes {
 
   PokeGuess = 'POKE_GUESS',
 
+  ScryCurrentDatGameStatus = 'SCRY_CURRENT_DAY_GAME_STATUS',
+
   LOADING_STATE_RESET   = 'LOADING_STATE_RESET',
   INITIAL_SET = 'INITIAL_SET',
   LOADING_SET = 'LOADING_SET',

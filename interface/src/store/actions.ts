@@ -10,7 +10,7 @@ import * as L from "@/types/loading-types";
 import * as Api from "@/api/types/common";
 
 import airlock from "@/api";
-import { Pokes } from "@/api/urdlAPI";
+import { Pokes, Scries } from "@/api/urdlAPI";
 
 type AugmentedActionContext = {
   commit<K extends keyof Mutations>(
@@ -93,6 +93,17 @@ export const actions: ActionTree<State, State> & Actions = {
           commit(MutationTypes.TodayOpenSet, data.fact);
         }
 
+        if (Api.IsUrdlUserGuessResponse(data)) {
+          console.log('got guess response ', data.fact)
+          // add to currentDayGameStatus
+          // must key it with the next number...
+          // OR: just scry
+          dispatch(ActionTypes.ScryCurrentDatGameStatus)
+            .then((data) => {
+              commit(MutationTypes.CurrentDayGameStatusSet, data.fact);
+            })
+        }
+
         if (Api.IsCurrentTimeLimits(data)) {
           console.log('times ' , data)
           commit(MutationTypes.CurrentTimeOpenSet, data.fact.open);
@@ -115,6 +126,11 @@ export const actions: ActionTree<State, State> & Actions = {
   [ActionTypes.PokeGuess]({ commit, getters }, guess: string) {
     console.log("dispatching PokeGuess action...");
     Pokes.GuessPoke(guess)
+  },
+
+  [ActionTypes.ScryCurrentDatGameStatus]({ commit, getters }) {
+    console.log("dispatching ScryCurrentDayGameStatus action...");
+    return Scries.CurrentDatGameStatus()
   },
 
   [ActionTypes.INITIAL_SET]({ commit }, payload: L.UIElement) {

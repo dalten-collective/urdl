@@ -3,51 +3,52 @@
     :style="`grid-template-columns: repeat(${spaces}, 1fr);`"
     style="display: grid; grid-gap: 5px"
   >
-    <template v-if="!test">
-      <div
-        v-for="i in spaces"
-        :key="i"
-        class="inline-flex items-center justify-center font-bold capitalize align-middle rite-tile empt"
-        style="font-size: 2rem"
-      >
-        &nbsp;
-      </div>
-    </template>
+
+    <!--
+    <div
+      v-for="i in spaces"
+      :key="i"
+      class="inline-flex items-center justify-center font-bold capitalize align-middle rite-tile empt"
+      style="font-size: 2rem"
+    >
+      &nbsp;
+    </div>
+    -->
 
     <div
-      v-for="(c, i) in test.split('')"
+      v-for="(outcome, index) in guess"
       :key="i"
-      :class="letterStyle(i)"
+      :class="letterStyle(outcome)"
       class="inline-flex items-center justify-center font-bold capitalize align-middle rite-tile"
       style="font-size: 2rem"
     >
-      {{ c }}
+      {{ outcome.letter }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import {GuessEntries, GuessOutcome} from "@/types/urdl";
 
 interface Props {
-  rite: any;
-  test: any;
+  guess: GuessEntries;
 }
 const props = defineProps<Props>();
 
 const spaces = ref(5);
 
-const letterStyle = (index) => {
+const letterStyle = (outcome: GuessOutcome) => {
   var style = ["border", "border-4"];
-  const rating = props.rite.split("")[index];
+  const rating = outcome.color
   switch (rating) {
-    case "o": // miss
+    case "grey": // miss
       style.push("rong");
       break;
-    case "n": // close
+    case "yellow": // close
       style.push("clos");
       break;
-    case "x": // exact
+    case "green": // exact
       style.push("rite");
       break;
     default:

@@ -1,5 +1,6 @@
 import urbitAPI from "./urbitAPI";
-import * as R from '@/api/types/my-response'
+import * as UR from "@/api/types/urdl-user-response"
+import * as Routes from "@/api/types/urdl-user-scry"
 
 class MyScry {
   path: string;
@@ -14,18 +15,18 @@ class MyScry {
     const path = this.path
     console.log('scry path ', path)
     return urbitAPI.scry({
-      app: 'urdl',
+      app: 'urdl-user',
       path
     })
   }
 }
 
-export class ScryThing extends MyScry {
+export class ScryCurrentDatGameStatus extends MyScry {
   constructor() {
-    super('/thing')
+    super(Routes.ScryEndpoints.current)
   }
 
-  scry(): Promise<R.MyAppThingResponse> {
+  scry(): Promise<UR.ScryCurrentDayGameStatus> {
     return super.scry()
   }
 }

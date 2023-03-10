@@ -12,7 +12,7 @@ const uiElementLoadingState: L.UILoaderState = {
 export const state = {
   currentHost: '' as T.Ship,
   currentDay: 0 as U.CurrentDay,
-  currentDayGameStatus: {} as U.GuessOutcome,
+  currentDayGameStatus: {} as U.GameStatus,
   currentTimeOpen: 0 as number,
   currentTimeClose: 0 as number,
   ledger: [] as Array<U.Ledger>,

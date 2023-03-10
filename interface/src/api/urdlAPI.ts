@@ -1,6 +1,6 @@
 import * as UP from "@/api/types/urdl-user-poke"
 import * as UA from "@/api/urdleActionPoker"
-import * as SS from "@/api/scrier"
+import * as SU from "@/api/scrier-user"
 import * as UR from "@/api/types/urdl-user-response"
 
 export const Pokes = {
@@ -8,15 +8,19 @@ export const Pokes = {
 }
 
 export const Scries = {
-  Thing() { return scryThing() }
+  CurrentDatGameStatus() { return scryCurrentDatGameStatus() }
 }
+
+//// Pokes
 
 function pokeGuessPoke(guess: UP.GuessPokePayload['guess']): Promise<UR.UrdlUserResponse> {
   const poker = new UA.Guess(guess)
   return poker.poke()
 }
 
-function scryThing(): Promise<R.MyAppThingResponse> {
-  const scrier = new SS.ScryThing()
+//// Scries
+
+function scryCurrentDatGameStatus(): Promise<UR.ScryCurrentDayGameStatus> {
+  const scrier = new SU.ScryCurrentDatGameStatus()
   return scrier.scry()
 }
