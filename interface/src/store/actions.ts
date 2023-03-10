@@ -125,7 +125,9 @@ export const actions: ActionTree<State, State> & Actions = {
 
   [ActionTypes.PokeGuess]({ commit, getters }, guess: string) {
     console.log("dispatching PokeGuess action...");
-    Pokes.GuessPoke(guess)
+    Pokes.GuessPoke(guess).then(() => {
+      commit(MutationTypes.DraftWipe, null)
+    })
   },
 
   [ActionTypes.ScryCurrentDatGameStatus]({ commit, getters }) {

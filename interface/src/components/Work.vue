@@ -16,10 +16,14 @@
 </template>
 
 <script setup lang="ts">
+import { useStore } from '@/store/store'
+import { ref, computed } from 'vue'
 
-import { ref } from 'vue'
+const store = useStore()
 
-const gues = ref('hel')
+const gues = computed(() => {
+  return store.state.draftGuess
+})
 const spaces = ref(5)
 
 const letterAtGuessIndex = (i) => {

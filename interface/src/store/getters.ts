@@ -8,6 +8,8 @@ import * as L from '@/types/loading-types'
 export type Getters = {
   [GetterTypes.EXAMPLE_WITH_ARG](state: State): (arg: string) => string | null
 
+  [GetterTypes.CurrentGuessCount](state: State): number
+
   [GetterTypes.ELEMENT_INITIAL](state: State): (uie: L.UIElement) => boolean
   [GetterTypes.ELEMENT_LOADING](state: State): (uie: L.UIElement) => boolean
   [GetterTypes.ELEMENT_SUCCESS](state: State): (uie: L.UIElement) => boolean
@@ -21,6 +23,15 @@ export const getters: GetterTree<State, State> & Getters = {
   [GetterTypes.EXAMPLE_WITH_ARG]: (state) => (arg: string) => {
     // look something up in state
     return 'found it'
+  },
+
+  [GetterTypes.CurrentGuessCount]: (state): number => {
+    if (Object.keys(state.currentDayGameStatus).length === 0) {
+      return 0
+    }
+    const keys = Object.keys(state.currentDayGameStatus)
+      .map(k => parseInt(k))
+    return Math.max(...keys)
   },
 
   [GetterTypes.ELEMENT_INITIAL]: (state) => (uie: L.UIElement): boolean => {

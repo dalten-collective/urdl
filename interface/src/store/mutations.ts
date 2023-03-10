@@ -56,6 +56,19 @@ export type Mutations<S = State> = {
     payload: { uiElement: L.UIElement, currentState: L.LoaderState }
   ): void;
 
+  [MutationTypes.DraftLetterAdd](
+    state: S,
+    payload: string, // single letter
+  ): void;
+  [MutationTypes.DraftLetterRemove](
+    state: S,
+    payload: null
+  ): void;
+  [MutationTypes.DraftWipe](
+    state: S,
+    payload: null
+  ): void;
+
   // Add more here
 };
 
@@ -128,6 +141,25 @@ export const mutations: MutationTree<State> & Mutations = {
     payload: { uiElement: L.UIElement, currentState: L.LoaderState }
   ) {
     state.loadingStates[payload.uiElement] = payload.currentState
+  },
+
+  [MutationTypes.DraftLetterAdd](
+    state,
+    payload: Parameters<Mutations[MutationTypes.DraftLetterAdd]>[1]
+  ) {
+    state.draftGuess.push(payload)
+  },
+  [MutationTypes.DraftLetterRemove](
+    state,
+    payload: null
+  ) {
+    state.draftGuess.pop()
+  },
+  [MutationTypes.DraftWipe](
+    state,
+    payload: null
+  ) {
+    state.draftGuess = []
   },
 
   // Add more here

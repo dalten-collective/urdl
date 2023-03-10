@@ -1,19 +1,14 @@
 <template>
-  <div v-for="h in how">
-    <Rite :guess="h" />
-  </div>
-
   <div v-for="(a, i) in alow" :key="i">
     <Work v-if="i == guesCount" />
-    <!--
-    <Rite v-else-if="riteAtIndex(a)" :rite="riteAtIndex(a).rite" :test="riteAtIndex(a).test" />
-    -->
+    <Rite v-else-if="guessAtIndex(a)" :guess="guessAtIndex(a)" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useStore } from '@/store/store'
+import { GetterTypes } from '@/store/getter-types'
 
 import Work from '@/components/Work.vue'
 import Rite from '@/components/Rite.vue'
@@ -23,7 +18,9 @@ import {GameStatus} from "@/types/urdl";
 const store = useStore()
 
 
-const guesCount = ref(4)
+const guesCount = computed(() => {
+  return store.getters[GetterTypes.CurrentGuessCount]
+})
 const alow = ref(6)
 
 const gameStatus = computed(() => {
@@ -49,11 +46,12 @@ const how = computed(() => {
 //   }
 // })
 
-const riteAtIndex = (i) => {
-  if (how.value.hasOwnProperty(i)) {
-    return how.value[i]
+const guessAtIndex = (i) => {
+  const keys = Object.keys(gameStatus.value).map(k => parseInt(k))
+  if (keys.includes(i)) {
+    return gameStatus.value[i]
   }
-  return { rite: '', test: '' }
+  return {}
 }
 
 </script>

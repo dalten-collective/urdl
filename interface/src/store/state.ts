@@ -15,6 +15,7 @@ export const state = {
   currentDayGameStatus: {} as U.GameStatus,
   currentTimeOpen: 0 as number,
   currentTimeClose: 0 as number,
+  draftGuess: [] as Array<string>,
   ledger: [] as Array<U.Ledger>,
   todaysSecretWord: null as string | null,
   todayOpen: false as boolean,

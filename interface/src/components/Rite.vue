@@ -4,8 +4,8 @@
     style="display: grid; grid-gap: 5px"
   >
 
-    <!--
     <div
+      v-if="noGuess"
       v-for="i in spaces"
       :key="i"
       class="inline-flex items-center justify-center font-bold capitalize align-middle rite-tile empt"
@@ -13,7 +13,6 @@
     >
       &nbsp;
     </div>
-    -->
 
     <div
       v-for="(outcome, index) in guess"
@@ -28,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import {GuessEntries, GuessOutcome} from "@/types/urdl";
 
 interface Props {
@@ -37,6 +36,16 @@ interface Props {
 const props = defineProps<Props>();
 
 const spaces = ref(5);
+
+const noGuess = computed(() => {
+  if (!props.guess) {
+    return true
+  }
+  if (Object.keys(props.guess).length > 0) {
+    return false
+  }
+  return true
+})
 
 const letterStyle = (outcome: GuessOutcome) => {
   var style = ["border", "border-4"];

@@ -1,11 +1,13 @@
 <template>
   <div>
-    <pre v-if="false">
+    <div  v-if="false">
+    <pre>
       state: {{ testStore }}
     </pre>
-
     <input @keyup.enter="guess()" v-model="newGuess" />
     <button @click="guess()">guess</button>
+  </div>
+
 
     <div class="m-auto" style="max-width: 17rem;" >
       <div style="display: grid; grid-gap: 5px; padding: 10px;" :style="`grid-template-rows: repeat(${ alow }, 1fr);`">

@@ -31,16 +31,34 @@
 </template>
 
 <script setup lang="ts">
+import {ActionTypes} from '@/store/action-types';
+import {MutationTypes} from '@/store/mutation-types';
+import { useStore } from '@/store/store'
+import { ref, computed } from 'vue'
 
-import { ref } from 'vue'
+const store = useStore()
 
 // TODO: keyboard support
 
-//
-const popLetter = () => {}
-const sendGues = () => {}
-const appendLetter = () => {}
-//
+const gues = computed(() => {
+  return store.state.draftGuess
+})
+
+const popLetter = () => {
+  store.commit(MutationTypes.DraftLetterRemove, null)
+}
+
+const appendLetter = (l) => {
+  if (gues.value.length >= 5) {
+    return
+  }
+  store.commit(MutationTypes.DraftLetterAdd, l)
+}
+
+const sendGues = () => {
+  const guess = gues.value.join('')
+  store.dispatch(ActionTypes.PokeGuess, guess)
+}
 
 const nativeKeys = ref('')
 const rows = ref([
@@ -80,6 +98,13 @@ const rows = ref([
 
 const letterStyle = (letter) => {
       const rating = ''
+      // TODO: get best occurance of this letter.
+  // need a getter to:
+  // - get all instances of this letter in guesses into an Array
+  // - if green present, use green
+  // - if yellow present, use yellow
+  // - if grey present, use grey (miss/rong)
+  // - otherwise, norm
       switch (rating) {
         case 'o':  // miss
           return 'rong'

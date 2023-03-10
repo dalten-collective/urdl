@@ -17,5 +17,9 @@ export enum MutationTypes {
 
   CurrentTimeOpenSet  = "CURRENT_TIME_OPEN_SET",
   CurrentTimeCloseSet  = "CURRENT_TIME_CLOSE_SET",
+
+  DraftLetterAdd = 'DRAFT_LETTER_ADD',
+  DraftLetterRemove = 'DRAFT_LETTER_REMOVE',
+  DraftWipe = 'DRAFT_WIPE',
 }
 
