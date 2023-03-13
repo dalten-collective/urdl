@@ -1,6 +1,6 @@
 <template>
   <div class="flex-col justify-center">
-    <div class="my-2 text-center">
+    <div class="my-2 text-center" v-if="false">
       <input type="text" v-model="nativeKeys" id="nativeKeyInput" class="min-w-full px-2 text-center text-green-300 rounded-md bg-less-dark" placeholder="Tap here to use native keyboard" />
     </div>
 

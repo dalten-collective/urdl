@@ -4,7 +4,9 @@ import { State } from './state'
 
 import * as T from '@/types'
 import * as L from '@/types/loading-types'
-import { GuessOutcome } from '@/types/urdl'
+import { GuessOutcome, LeaderboardEntry } from '@/types/urdl'
+
+import { US } from '@/helpers'
 
 export type Getters = {
   [GetterTypes.EXAMPLE_WITH_ARG](state: State): (arg: string) => string | null
@@ -14,6 +16,8 @@ export type Getters = {
   [GetterTypes.BestColorForLetterInGuesses](state: State): (arg: string) => string
 
   [GetterTypes.LetterMap](state: State): { [key: string]: string }
+
+  [GetterTypes.MyScores](state: State): LeaderboardEntry
 
   [GetterTypes.ELEMENT_INITIAL](state: State): (uie: L.UIElement) => boolean
   [GetterTypes.ELEMENT_LOADING](state: State): (uie: L.UIElement) => boolean
@@ -37,6 +41,10 @@ export const getters: GetterTree<State, State> & Getters = {
     const keys = Object.keys(state.currentDayGameStatus)
       .map(k => parseInt(k))
     return Math.max(...keys)
+  },
+
+  [GetterTypes.MyScores]: (state): LeaderboardEntry => {
+    return state.leaderboard.find((le) => le.player === US())
   },
 
   [GetterTypes.LetterInGuesses]: (state) => (letter: string): Array<GuessOutcome> => {

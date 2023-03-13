@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-4">
     <div  v-if="false">
     <pre>
       state: {{ testStore }}
@@ -14,7 +14,9 @@
         <How />
       </div>
     </div>
-    <GuessBoard />
+    <div class="container mx-auto" >
+      <GuessBoard class="mt-4" />
+    </div>
   </div>
 </template>
 
@@ -33,8 +35,8 @@ const newGuess = ref('')
 const alow = ref(6)
 
 onMounted(() => {
-  const deskname = 'urdl-user'
-  startAirlock(deskname)
+  // const deskname = 'urdl-user'
+  // startAirlock(deskname)
 })
 
 onUnmounted(() => {
