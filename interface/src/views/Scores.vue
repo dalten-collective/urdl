@@ -142,7 +142,30 @@
     </section>
 
     <section class="mt-4 mb-8">
-      Next urdl {{ Date(nextGame).toLocaleString() }}
+      <div class="flex flex-row">
+
+        <div class="flex flex-col flex-1 text-center">
+          <div>
+            <h3 class="text-3xl">
+              Game Ends
+            </h3>
+          </div>
+          <div class="text-4xl">
+            {{ countdownEnd.hours }}:{{ countdownEnd.minutes }}:{{ countdownEnd.seconds }}
+          </div>
+        </div>
+
+        <div class="flex flex-col flex-1 text-center">
+          <div>
+            <h3 class="text-3xl">
+              Next Urdl
+            </h3>
+          </div>
+          <div class="text-4xl">
+            {{ countdownNext.hours }}:{{ countdownNext.minutes }}:{{ countdownNext.seconds }}
+          </div>
+        </div>
+      </div>
     </section>
 
   <pre>
@@ -157,7 +180,7 @@
 
 <script setup lang="ts">
 import { useStore } from '@/store/store'
-import {computed, TrackOpTypes} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import { GetterTypes } from '@/store/getter-types'
 
 import { udToInt, US } from '@/helpers'
@@ -166,14 +189,45 @@ import {current} from 'immer';
 
 const store = useStore()
 
-const nextGame = computed(() => {
-  const myDate = new Date()
-  const pstDate = myDate.toLocaleString("en-US", {
-    timeZone: "America/Los_Angeles"
-  })
-  /// const pstServerRollover = ""
-  return store.state.currentTimeClose
+const countdownEnd = ref({})
+const countdownNext = ref({})
+
+onMounted(() => {
+  setInterval(() => {
+    countdownEnd.value = countdown(gameEnd.value)
+    countdownNext.value = countdown(nextGame.value)
+  }, 1000)
 })
+
+const gameEnd = computed(() => {
+  const clos = new Date(store.state.currentTimeClose * 1000)
+  return new Date(clos)
+})
+
+const nextGame = computed(() => {
+  const clos = new Date(store.state.currentTimeClose * 1000)
+  const op = clos.setHours(clos.getHours() + 1, clos.getMinutes() + 30)
+  return new Date(op)
+})
+
+const countdown = (until) => {
+  const compare = until
+  var now = new Date()
+  var diff = compare.getTime() - now.getTime()
+  var sec = Math.floor(diff / 1000);
+  var min = Math.floor(sec / 60);
+  var hou = Math.floor(min / 60);
+  hou %= 24
+  min %= 60
+  sec %= 60
+  const hours = ('0'+hou).slice(-2);
+  const minutes = ('0'+min).slice(-2);
+  const seconds = ('0'+sec).slice(-2);
+  return {
+    hours, minutes, seconds
+  }
+}
+
 const gameStarted = computed(() => {
   return store.state.currentTimeOpen
 })
