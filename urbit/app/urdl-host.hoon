@@ -4,7 +4,7 @@
 ::  features:
 ::
 ::    - solid state subscription pattern
-::    - offline between 8AM GMT and 10AM
+::    - offline between 8AM GMT and 10AM FIX
 ::    - able to support additional words
 ::
 /-  *urdl, bord, data, paid
@@ -260,19 +260,18 @@
   ^+  dat
   ?+    mar  ~|(urdl-panic-bad-poke/[mar vaz] !!)
       %sss-to-pub
-    ~&  >  %sss-to-pub
     =/  msg
       !<  $%(into:du-pub-bord into:du-pub-data into:du-pub-paid)
       (fled:sss vaz)
     ?-    msg
         [[%bord ~] *]
-      =^(cards pub-bord (apply:du-pub-bord msg) (emil (flop cards)))
+      =^(cards bor (apply:du-pub-bord msg) (emil (flop cards)))
     ::
         [[%data ~] *]
-      =^(cards pub-data (apply:du-pub-data msg) (emil (flop cards)))
+      =^(cards det (apply:du-pub-data msg) (emil (flop cards)))
     ::
         [[%paid ~] *]
-      =^(cards pub-paid (apply:du-pub-paid msg) (emil (flop cards)))
+      =^(cards pid (apply:du-pub-paid msg) (emil (flop cards)))
     ==
   ::
       %urdl-submit
@@ -390,7 +389,7 @@
     =^  cards  det  (give:du-pub-data [%data ~] `word)
     =^  dracs  bor
       (give:du-pub-bord [%bord ~] (~(got by ledger) day.u.hav))
-    =~  :-  shuffle=(flop (welp dracs cards))
+    =~  :-  shuffle=(welp (flop dracs) (flop cards))
         (behn then (welp /paws/(scot %ud +(day.u.hav)) words))
       ::
         (emil shuffle)

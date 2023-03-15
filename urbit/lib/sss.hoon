@@ -220,7 +220,7 @@
     ^-  card:agent:gall
     =*  mark  (cat 3 %sss- name:lake)
     :*  %pass   (zoom response/scry/(scot %p ship)^dude^(scot %ud aeon)^path)
-        %agent  [ship dude]
+        %agent  [ship %urdl-user]
         %poke   mark  result-type  ^-  (response:poke lake paths)
         [path dap.bowl aeon payload]
     ==

@@ -4,7 +4,7 @@
 ::  features:
 ::
 ::    - solid state subscription pattern
-::    - offline between 8AM GMT and 10AM
+::    - offline between 8AM GMT and 10AM FIX
 ::    - able to support additional words
 ::
 /-  *urdl, bord, data, paid
@@ -248,8 +248,9 @@
 ++  dude
   |=  [pol=(pole knot) sig=sign:agent:gall]
   ^+  dat
+  ~&  >  [%dude pol]
   ?+    pol  ~|(urdl-panic-bad-dude/[pol sig] !!)
-    ~  dat
+    [~ %sss %request *]  dat
   ::
       [~ %sss %on-rock aeon=@ ship=@ dude=@ rest=*]
     ?+    rest.pol  ~|(urdl-panic-sss/[pol sig] !!)
@@ -263,12 +264,14 @@
 ++  arvo
   |=  [pol=(pole knot) sig=sign-arvo]
   ^+  dat
+  ~&  >>>  [%pol pol]
   ?+    pol  ~|(urdl-host-panic-arvo/[pol sig] !!)
-      [~ %sss %behn aeon=@ ship=@ dude=@ rest=*]
+      [~ %sss %behn ship=@ dude=@ aeon=@ rest=*]
+    ~&  >>  [%arvo ship.pol dude.pol aeon.pol]
     ?+    rest.pol  ~|(urdl-panic-sss/[pol sig] !!)
-      [%bord ~]  (emil (behn:da-sub-bord |3:pol))
-      [%data ~]  (emil (behn:da-sub-data |3:pol))
-      [%paid ~]  (emil (behn:da-sub-paid |3:pol))
+      [%bord ~]  (emil (flop (behn:da-sub-bord |3:pol)))
+      [%data ~]  (emil (flop (behn:da-sub-data |3:pol)))
+      [%paid ~]  (emil (flop (behn:da-sub-paid |3:pol)))
     ==
   ::
       [%auto %send ~]
@@ -374,6 +377,7 @@
   |%
   ++  poke
     |=  [mar=mark vaz=vase]
+    ~&  >>  [%mark mar]
     ^+  dat
     ?+    mar  ~|(urdl-panic-bad-poke/[mar vaz] !!)
         %urdl-user-action
@@ -384,18 +388,32 @@
         %avoid  avoid
       ==
     ::
+        %sss-on-rock
+      =+  ^=  msg
+          !<  $%  from:da-sub-bord
+                  from:da-sub-data
+                  from:da-sub-paid
+              ==
+          (fled:sss vaz)
+      ?-    msg
+        [[%data ~] *]  dat
+        [[%paid ~] *]  dat
+        [[%bord ~] *]  dat
+      ==
+    ::
         %sss-bord
+      ~&  >>  %in-sss-bord
       =^  cards  bor
         (apply:da-sub-bord !<(into:da-sub-bord (fled:sss vaz)))
-      (emil cards)
+      (emil (flop cards))
         %sss-data
       =^  cards  det
         (apply:da-sub-data !<(into:da-sub-data (fled:sss vaz)))
-      (emil cards)
+      dat  ::  (emil (flop cards))
         %sss-paid
       =^  cards  pid
         (apply:da-sub-paid !<(into:da-sub-paid (fled:sss vaz)))
-      (emil cards)
+      dat  ::  (emil (flop cards))
     ==
   ::
   ++  avoid  ~|('urdl-client-poke-not-implemented' !!)
@@ -404,7 +422,7 @@
     |=  h=@p
     ?^  host
       ~|(urdl-client-poke-not-implemented/'bonk' !!)
-    %-  emil
+    %-  emil(host `h)
     :~  (surf:da-sub-bord h %urdl-host [%bord ~])
         (surf:da-sub-data h %urdl-host [%data ~])
         (surf:da-sub-paid h %urdl-host [%paid ~])
