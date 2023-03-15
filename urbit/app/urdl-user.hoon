@@ -7,107 +7,8 @@
 ::    - offline between 8AM GMT and 10AM
 ::    - able to support additional words
 ::
-/-  *urdl
+/-  *urdl, bord, data, paid
 /+  verb, dbug, default-agent, sss, all=urdl-dict, *mip
-::
-=>  |%
-    ++  out
-      |%
-      ::  $rock: our shared state, as a rocky coast
-      ::
-      +$  rock  board
-      ::  $wave: a broadcast from a host, as a wave
-      ::
-      +$  wave  daily
-      ::  +wash:
-      ::
-      ::    a subscription is like a rocky coast,
-      ::    battered by data diffs that shape and
-      ::    mold it.
-      ::
-      ++  wash
-        |=  [rok=rock wav=wave]
-        ^+  rok
-        %-  ~(rut by rok)
-        |=  [p=@p [pl=@ud st=streak to=totals]]
-        ?~  hav=(~(get by wav) p)  [pl st(now 0) to]
-        ?-  u.hav
-          %dnf  [+(pl) st(now 0) to]
-            %one
-          :-  +(pl)
-          :_  to(won +(won.to), one +(one.to))
-          st(now +(now.st), top (max top.st +(now.st)))
-            %two
-          :-  +(pl)
-          :_  to(won +(won.to), two +(two.to))
-          st(now +(now.st), top (max top.st +(now.st)))
-            %tre
-          :-  +(pl)
-          :_  to(won +(won.to), tre +(tre.to))
-          st(now +(now.st), top (max top.st +(now.st)))
-            %for
-          :-  +(pl)
-          :_  to(won +(won.to), for +(for.to))
-          st(now +(now.st), top (max top.st +(now.st)))
-            %fiv
-          :-  +(pl)
-          :_  to(won +(won.to), fiv +(fiv.to))
-          st(now +(now.st), top (max top.st +(now.st)))
-            %six
-          :-  +(pl)
-          :_  to(won +(won.to), six +(six.to))
-          st(now +(now.st), top (max top.st +(now.st)))
-        ==
-      --
-    ++  in
-      |%
-      +$  rock
-        $%  [[%leader %board ~] board]
-        ==
-      ::
-      +$  wave
-        $%  [[%leader %board ~] daily]
-        ==
-      ::
-      ++  wash
-        |=  [rok=rock wav=wave]
-        ^+  rok
-        ?>  =(-.rok -.wav)
-        :-  -.rok
-        %-  ~(rut by +.rok)
-        |=  [p=@p [pl=@ud st=streak to=totals]]
-        ?~  hav=(~(get by +.wav) p)  [pl st(now 0) to]
-        ?-  u.hav
-          %dnf  [+(pl) st(now 0) to]
-            %one
-          :-  +(pl)
-          :_  to(won +(won.to), one +(one.to))
-          st(now +(now.st), top (max top.st +(now.st)))
-            %two
-          :-  +(pl)
-          :_  to(won +(won.to), two +(two.to))
-          st(now +(now.st), top (max top.st +(now.st)))
-            %tre
-          :-  +(pl)
-          :_  to(won +(won.to), tre +(tre.to))
-          st(now +(now.st), top (max top.st +(now.st)))
-            %for
-          :-  +(pl)
-          :_  to(won +(won.to), for +(for.to))
-          st(now +(now.st), top (max top.st +(now.st)))
-            %fiv
-          :-  +(pl)
-          :_  to(won +(won.to), fiv +(fiv.to))
-          st(now +(now.st), top (max top.st +(now.st)))
-            %six
-          :-  +(pl)
-          :_  to(won +(won.to), six +(six.to))
-          st(now +(now.st), top (max top.st +(now.st)))
-        ==
-      --
-    --
-::
-=/  sss  (sss out in)
 ::
 |%
 ::
@@ -116,67 +17,83 @@
 +$  state-0
   $:  %0
       host=(unit @p)
-      day=@ud
       =ledger:user
       =history:user
-      secret=cord
-      accepting=?
-      =donors
   ==
 ::
 ::
 ::  boilerplate
 ::
-+$  card  card:sss
++$  card  card:agent:gall
 --
 ::
 %-  agent:dbug
 %+  verb  &
 ::
+=/  sub-bord  (mk-subs:sss bord ,[%bord ~])
+::
+=/  sub-data  (mk-subs:sss data ,[%data ~])
+::
+=/  sub-paid  (mk-subs:sss paid ,[%paid ~])
+::
 =|  state-0
 =*  state  -
 ::
-%-  mk-agent:sss
-^-  agent:sss
+^-  agent:gall
 ::
 =<
-  |_  $:  =bowl:gall
-          pub=(map path rock:out)
-          sub=(map [ship dude:gall path] [? rock:in])
-      ==
+  |_  =bowl:gall
   +*  this  .
       def  ~(. (default-agent this %|) bowl)
-      eng   ~(. +> [bowl pub sub ~])
-  ++  on-rock
-    |=  [d=dude:gall r=rock:in w=(unit wave:in)]
-    ^-  (quip card _this)
-    ~>  %bout.[0 '%urdl-user +on-rock']
-    =^  cards  state  abet:(wear:eng d r w)
-    [cards this]
+      eng   ~(. +> [bowl sub-bord sub-data sub-paid ~])
   ++  on-init
     ^-  (quip card _this)
     ~>  %bout.[0 '%urdl-user +on-init']
-    =^  cards  state  abet:init:eng
-    [cards this]
+    =+  ^-  %+  pair  (list card)
+            [bor=_sub-bord det=_sub-data pid=_sub-paid sta=_state]
+        abet:init:eng
+    :-  p
+    %=  this
+      state     sta.q
+      sub-bord  bor.q
+      sub-data  det.q
+      sub-paid  pid.q
+    ==
   ::
   ++  on-save
     ^-  vase
     ~>  %bout.[0 '%urdl-user +on-save']
-    !>(state)
+    save:eng
   ::
   ++  on-load
     |=  ole=vase
     ~>  %bout.[0 '%urdl-user +on-load']
     ^-  (quip card _this)
-    =^  cards  state  abet:(load:eng ole)
-    [cards this]
+    =+  ^-  %+  pair  (list card)
+            [bor=_sub-bord det=_sub-data pid=_sub-paid sta=_state]
+        abet:(load:eng ole)
+    :-  p
+    %=  this
+      state     sta.q
+      sub-bord  bor.q
+      sub-data  det.q
+      sub-paid  pid.q
+    ==
   ::
   ++  on-poke
-    |=  [mar=mark vaz=vase]
+    |=  cag=cage
     ~>  %bout.[0 '%urdl-user +on-poke']
     ^-  (quip card _this)
-    =^  cards  state  abet:(poke:eng mar vaz)
-    [cards this]
+    =+  ^-  %+  pair  (list card)
+            [bor=_sub-bord det=_sub-data pid=_sub-paid sta=_state]
+        abet:(poke:eng cag)
+    :-  p
+    %=  this
+      state     sta.q
+      sub-bord  bor.q
+      sub-data  det.q
+      sub-paid  pid.q
+    ==
   ::
   ++  on-peek
     |=  pat=path
@@ -184,26 +101,50 @@
     ^-  (unit (unit cage))
     (peek:eng pat)
   ::
-  ++  on-agent
-    |=  [wir=wire sig=sign:agent:gall]
-    ~>  %bout.[0 '%urdl-user +on-agent']
-    ^-  (quip card _this)
-    =^  cards  state  abet:(dude:eng wir sig)
-    [cards this]
-  ::
   ++  on-arvo
     |=  [wir=wire sig=sign-arvo]
     ~>  %bout.[0 '%urdl-user +on-arvo']
     ^-  (quip card _this)
-    =^  cards  state  abet:(arvo:eng wir sig)
-    [cards this]
+    =+  ^-  %+  pair  (list card)
+            [bor=_sub-bord det=_sub-data pid=_sub-paid sta=_state]
+        abet:(arvo:eng wir sig)
+    :-  p
+    %=  this
+      state     sta.q
+      sub-bord  bor.q
+      sub-data  det.q
+      sub-paid  pid.q
+    ==
   ::
   ++  on-watch
     |=  pat=path
     ~>  %bout.[0 '%urdl-user +on-watch']
     ^-  (quip card _this)
-    =^  cards  state  abet:(peer:eng pat)
-    [cards this]
+    =+  ^-  %+  pair  (list card)
+            [bor=_sub-bord det=_sub-data pid=_sub-paid sta=_state]
+        abet:(peer:eng pat)
+    :-  p
+    %=  this
+      state     sta.q
+      sub-bord  bor.q
+      sub-data  det.q
+      sub-paid  pid.q
+    ==
+  ::
+  ++  on-agent
+    |=  [wir=wire sig=sign:agent:gall]
+    ~>  %bout.[0 '%urdl-user +on-agent']
+    ^-  (quip card _this)
+    =+  ^-  %+  pair  (list card)
+            [bor=_sub-bord det=_sub-data pid=_sub-paid sta=_state]
+        abet:(dude:eng wir sig)
+    :-  p
+    %=  this
+      state     sta.q
+      sub-bord  bor.q
+      sub-data  det.q
+      sub-paid  pid.q
+    ==
   ::
   ++  on-fail
     ~>  %bout.[0 '%urdl-user +on-fail']
@@ -214,16 +155,49 @@
     on-leave:def
   --
 |_  $:  bol=bowl:gall
-        pob=(map path rock:out)
-        sob=(map [ship dude:gall path] [? rock:in])
+        bor=_sub-bord
+        det=_sub-data
+        pid=_sub-paid
         dek=(list card)
     ==
 +*  dat  .
     dok  [(need host) %urdl-host]
     dir  /(scot %p our.bol)/urdl/(scot %da now.bol)
+++  da-sub-bord
+  =/  da  (da:sss bord ,[%bord ~])
+  ~(. da bor bol -:!>(*result:da) -:!>(*from:da))
+++  da-sub-data
+  =/  da  (da:sss data ,[%data ~])
+  ~(. da det bol -:!>(*result:da) -:!>(*from:da))
+++  da-sub-paid
+  =/  da  (da:sss paid ,[%paid ~])
+  ~(. da pid bol -:!>(*result:da) -:!>(*from:da))
 ++  emit  |=(c=card dat(dek [c dek]))
 ++  emil  |=(lac=(list card) dat(dek (welp lac dek)))
-++  abet  ^-((quip card _state) [(flop dek) state])
+++  abet
+  ^-  (quip card [_bor _det _pid _state])
+  [(flop dek) [bor det pid state]]
+++  take
+  |%
+  ++  bord
+    ^-  (unit rock:^bord)
+    =;  sub=(unit [gud=? rok=rock:^bord])
+      ?~(sub ~ ?.(-.u.sub ~ `rok.u.sub))
+    %-  ~(get by read:da-sub-bord)
+    [(need host) %urdl-host [%bord ~]]
+  ++  data
+    ^-  (unit rock:^data)
+    =;  sub=(unit [gud=? rok=rock:^data])
+      ?~(sub ~ ?.(-.u.sub ~ `rok.u.sub))
+    %-  ~(get by read:da-sub-data)
+    [(need host) %urdl-host [%data ~]]
+  ++  paid
+    ^-  (unit rock:^paid)
+    =;  sub=(unit [gud=? rok=rock:^paid])
+      ?~(sub ~ ?.(-.u.sub ~ `rok.u.sub))
+    %-  ~(get by read:da-sub-paid)
+    [(need host) %urdl-host [%paid ~]]
+  --
 ::  +show: handle show-ui
 ::
 ++  show
@@ -232,86 +206,57 @@
 ::
 ++  behn
   ^+  dat
-  =+  when=`@da`(add ~h7.m30 (sub now.bol (mod now.bol ~d1)))
-  =/  then=@da
-    ?:((gth when now.bol) when (add ~d1 when))
-  (emit %pass /auto/send %arvo %b %wait `@da`then)
+  =+  today=(sub now.bol (mod now.bol ~d1))
+  =+  shut=(add ~d1 today)
+  ::  restore in production
+  (emit %pass /auto/send %arvo %b %wait `@da`shut)
 ::  +send: send submission
 ::
 ++  send
   |=  o=outcome
-  %-  emit(ledger (~(put by ledger) day [o %.n]))
-  =-  [%pass /outcome/(scot %ud day) %agent -]
-  [dok %poke urdl-submit+!>(`submit`[day secret o])]
+  ^+  dat
+  =+  rok=data:take
+  ?~  rok
+    ((slog 'urdl-panic-no-host-data' ~) dat)
+  %-  emit(ledger (~(put by ledger) day.u.rok [o %.n]))
+  =-  [%pass /outcome/(scot %ud day.u.rok) %agent dok %poke -]
+  urdl-submit+!>(`submit`[day.u.rok word.u.rok o])
 ::  +init: handle on-init
 ::
 ++  init
   ^+  dat
-  %-  poke:behn(accepting %|)
-  urdl-user-action+!>(`action:user`[%unite ~zod])
+  (poke:behn urdl-user-action+!>(`action:user`[%unite ~zod]))
+::  +save: handle on-save
+::
+++  save  !>([bor det pid state])
 ::  +load: handle on-load
 ::
 ++  load
   |=  vaz=vase
   ^+  dat
-  ?>  ?=([%0 *] q.vaz)
-  dat(state !<(state-0 vaz))
-::  +wear: handle on-rock
-::
-++  wear
-  |=  [dud=dude:gall rok=rock:in wav=(unit wave:in)]
-  ?>  ?=([%leader %board ~] -.rok)
-  dat
+  =/  old
+    !<([=_bor =_det =_pid ver=versioned-state] vaz)
+  ?>  ?=([%0 *] ver.old)
+  %=  dat
+    bor    bor.old
+    det    det.old
+    pid    pid.old
+    state  ver.old
+  ==
 ::  +dude: handle on-agent
 ::
 ++  dude
   |=  [pol=(pole knot) sig=sign:agent:gall]
+  ^+  dat
   ?+    pol  ~|(urdl-panic-bad-dude/[pol sig] !!)
     ~  dat
-      [%urdl-host who=@ ~]
-    =+  hos=(slav %p who.pol)
-    ?~  host
-      (emit %pass pol %agent [hos %urdl-host] %leave ~)
-    ?.  =((need host) hos)
-      (emit %pass pol %agent [hos %urdl-host] %leave ~)
-    ?+    -.sig  ~|(urdl-panic-bad-dude/[pol sig] !!)
-        %fact
-      ?+    -.cage.sig
-        ~|(urdl-panic-strange-fact/-.cage.sig !!)
-      ::
-          %urdl-data
-        =+  data=!<(data q.cage.sig)
-        %=  dat
-          day        -.data
-          secret     +<.data
-          history    (~(put by history) -.data [~ ~])
-          accepting  +>.data
-        ==
-      ::
-          %urdl-user-donors
-        =+  dons=!<((map @p ?(%gold %jule)) q.cage.sig)
-        (show(donors dons) cage.sig)
-      ==
-    ::
-        %watch-ack
-      %.  dat
-      ?~(p.sig same (slog 'urdl-panic-host-failed' u.p.sig))
-    ::
-        %kick
-      %-  emit
-      :+  %pass
-        /urdl-host/(scot %p (need host))
-      [%agent [(need host) %urdl-host] %watch /urdl-host]
-    ==
   ::
-      [%outcome day=@ ~]
-    =+  date=(slav %ud day.pol)
-    =+  have=(~(got by ledger) date)  
-    ?>  ?=(%poke-ack -.sig)
-    ?~  p.sig
-      dat(ledger (~(put by ledger) date -.have %&))
-    %-  (slog 'urdl-panic-bad-response-from-host' ~)
-    dat(ledger (~(put by ledger) date -.have %|))
+      [~ %sss %on-rock aeon=@ ship=@ dude=@ rest=*]
+    ?+    rest.pol  ~|(urdl-panic-sss/[pol sig] !!)
+      [%bord ~]  dat(bor (chit:da-sub-bord |3:pol sig))
+      [%data ~]  dat(det (chit:da-sub-data |3:pol sig))
+      [%paid ~]  dat(pid (chit:da-sub-paid |3:pol sig))
+    ==
   ==
 ::  +arvo: handle on-arvo
 ::
@@ -319,10 +264,21 @@
   |=  [pol=(pole knot) sig=sign-arvo]
   ^+  dat
   ?+    pol  ~|(urdl-host-panic-arvo/[pol sig] !!)
+      [~ %sss %behn aeon=@ ship=@ dude=@ rest=*]
+    ?+    rest.pol  ~|(urdl-panic-sss/[pol sig] !!)
+      [%bord ~]  (emil (behn:da-sub-bord |3:pol))
+      [%data ~]  (emil (behn:da-sub-data |3:pol))
+      [%paid ~]  (emil (behn:da-sub-paid |3:pol))
+    ==
+  ::
       [%auto %send ~]
-    ?^  hav=(~(get by ledger) day)
-      (send:behn -.u.hav)
-    (send:behn(ledger (~(put by ledger) day %dnf %|)) %dnf)
+    =+  rok=data:take
+    ?~  rok
+      ((slog 'urdl-panic-no-host-data' ~) dat)
+    =?    ledger
+        !(~(has by ledger) day.u.rok)
+      (~(put by ledger) day.u.rok %dnf %|)
+    (send:behn -:(~(got by ledger) day.u.rok))
   ==
 ::  +peer: handle on-watch
 ::
@@ -333,34 +289,40 @@
       [%web-ui ~]
     ?~  host
       (show urdl-user-host+!>(`(unit @p)`host))
-    =/  lb=[? rock:in]
-      (~(got by sob) [~zod %urdl-host /leader/board])
-    =~  (show urdl-leader+!>(`board`+>.lb))
-        (show urdl-user-host+!>(`(unit @p)`host))
-        (show urdl-user-day+!>(`@ud`day))
+    =~  (show urdl-user-host+!>(`(unit @p)`host))
         (show urdl-user-ledger+!>(`_ledger`ledger))
-        (show urdl-user-accepting+!>(`?`accepting))
         :: (show urdl-user-words+!>(`(list @t)`allow:all))
       ::
-        ?~  hav=(~(get by history) day)
-          (show urdl-user-the-word+!>(*(unit @t)))
-        %-  show
-        urdl-user-the-word+!>(`(unit @t)`the-word.u.hav)
+        =+  rok=bord:take
+        ?~  rok
+          (show urdl-leader+!>(`rock:bord`*rock:bord))
+        (show urdl-leader+!>(`rock:bord`u.rok))
       ::
-        ?~  hav=(~(get by history) day)
+        =+  rok=data:take
+        ?~  rok  (show urdl-user-day+!>(`@ud`0))
+        (show urdl-user-day+!>(`@ud`day.u.rok))
+      ::
+        =+  rok=data:take
+        ?~  rok  (show urdl-user-accepting+!>(`?`%|))
+        (show urdl-user-accepting+!>(`?`open.u.rok))
+      ::
+        =+  rok=data:take
+        ?~  rok
+          (show urdl-user-the-word+!>(*(unit @t)))
+        (show urdl-user-the-word+!>(`(unit @t)``word.u.rok))
+      ::
+        =+  rok=data:take
+        ?~  rok
+          (show urdl-user-signals+!>(*(list signal)))
+        ?~  hav=(~(get by history) day.u.rok)
           (show urdl-user-signals+!>(*(list signal)))
         =-  (show urdl-user-signals+!>(`(list signal)`-))
-        (flop (turn attempts.u.hav (curr check:poke secret)))
+        (flop (turn attempts.u.hav (curr check:poke word.u.rok)))
       ::
-        =/  when=@da
-          (add ~h7.m30 (sub now.bol (mod now.bol ~d1)))
-        =/  stop=@da
-          ?:((gth when now.bol) when (add ~d1 when))
-        =/  open=@da
-          ?.  (gth (add ~h2.m30 when) now.bol)
-            (add ~h2.m30 when)
-          (add ~d1.h2.m30 when)
-        (show urdl-user-open+!>(`[@da @da]`[stop open]))
+        =+  today=(sub now.bol (mod now.bol ~d1))
+        =+  open=(add ~h2 today)
+        =+  shut=(add ~d1 today)
+        (show urdl-user-open+!>(`[@da @da]`[open shut]))
     ==
   ==
 ::  +peek: handle on-peek
@@ -378,31 +340,32 @@
       [%x %host ~]
     ``urdl-user-host+!>(`(unit @p)`host)
       [%x %day ~]
-    ``urdl-user-day+!>(`@ud`day)
+    =+  rok=data:take
+    ?~  rok  ``urdl-user-day+!>(`@ud`0)
+    ``urdl-user-day+!>(`@ud`day.u.rok)
       [%x %ledger ~]
     ``urdl-user-ledger+!>(`_ledger`ledger)
       [%x %history ~]
     ``urdl-user-history+!>(`_history`history)
       [%x %current ~]
-    ?~  hav=(~(get by history) day)
-      ``urdl-user-signals+!>(~)
+    =+  rok=data:take
+    ?~  rok
+      ``urd-user-signals+!>(*(list signal))
+    ?~  hav=(~(get by history) day.u.rok)
+      ``urdl-user-signals+!>(*(list signal))
     =-  ``urdl-user-signals+!>(`(list signal)`-)
-    (flop (turn attempts.u.hav (curr check:poke secret)))
+    (flop (turn attempts.u.hav (curr check:poke word.u.rok)))
       [%x %leader ~]
-    =+  lb=(~(got by sob) [~zod %urdl-host /leader/board])
-    ``urdl-leader+!>(`board`+>.lb)
+    =+  rok=bord:take
+    ?~  rok  ``urdl-leader+!>(*rock:bord)
+    ``urdl-leader+!>(`rock:bord`u.rok)
       [%x %leader %formatted ~]
     !!  ::  coming
       [%x %season ~]
-    =/  when=@da
-      (add ~h7.m30 (sub now.bol (mod now.bol ~d1)))
-    =/  stap=@da
-      ?:((gth when now.bol) when (add ~d1 when))
-    =/  opan=@da
-      ?.  (gth (add ~h2.m30 when) now.bol)
-        (add ~h2.m30 when)
-      (add ~d1.h2.m30 when)
-    ``urdl-user-open+!>(`[@da @da]`[stap opan])
+    =+  today=(sub now.bol (mod now.bol ~d1))
+    =+  open=(add ~h2 today)
+    =+  shut=(add ~d1 today)
+    ``urdl-user-open+!>(`[@da @da]`[open shut])
   ==
 ::  +poke: handle on-poke
 ::
@@ -420,22 +383,32 @@
         %unite  (unite +.act)
         %avoid  avoid
       ==
+    ::
+        %sss-bord
+      =^  cards  bor
+        (apply:da-sub-bord !<(into:da-sub-bord (fled:sss vaz)))
+      (emil cards)
+        %sss-data
+      =^  cards  det
+        (apply:da-sub-data !<(into:da-sub-data (fled:sss vaz)))
+      (emil cards)
+        %sss-paid
+      =^  cards  pid
+        (apply:da-sub-paid !<(into:da-sub-paid (fled:sss vaz)))
+      (emil cards)
     ==
   ::
   ++  avoid  ~|('urdl-client-poke-not-implemented' !!)
   ::
   ++  unite
     |=  h=@p
-    ?~  host
-      =~  %-  emit(host `h)
-          [%pass /start/surf %agent [h %urdl-host] %surf /leader/board]
-        ::
-          %-  emit
-          :+  %pass
-            /urdl-host/(scot %p (need host))
-          [%agent [(need host) %urdl-host] %watch /urdl-host]
-      ==
-    ~|(urdl-client-poke-not-implemented/'bonk' !!)
+    ?^  host
+      ~|(urdl-client-poke-not-implemented/'bonk' !!)
+    %-  emil
+    :~  (surf:da-sub-bord h %urdl-host [%bord ~])
+        (surf:da-sub-data h %urdl-host [%data ~])
+        (surf:da-sub-paid h %urdl-host [%paid ~])
+    ==
   ::
   ++  check
     |=  [ges=@t sec=@t]
@@ -472,27 +445,32 @@
   ::
   ++  guess
     |=  g=^guess
-    ?>  &(=(5 (met 3 g)) accepting !(~(has by ledger) day))
+    =+  rok=data:take
     =/  error=_dat
       (show urdl-user-signal+!>((check 'zzzzz' 'aaaaa')))
-    ?:  (~(has by ledger) day)      error
-    ?~  (find [g]~ allow:all)       error
-    =+  (~(got by history) day)
-    ?^  the-word                    error
-    ?:  (gth +((lent attempts)) 6)  error
+    ?~  rok                           error
+    ?>  ?&  open.u.rok
+            =(5 (met 3 g))
+            !(~(has by ledger) day.u.rok)
+        ==
+    ?:  (~(has by ledger) day.u.rok)  error
+    ?~  (find [g]~ allow:all)         error
+    =+  (~(got by history) day.u.rok)
+    ?^  the-word                      error
+    ?:  (gth +((lent attempts)) 6)    error
     =.  dat
-      (show urdl-user-signal+!>(`signal`(check g secret)))
-    ?.  =(g secret)
+      (show urdl-user-signal+!>(`signal`(check g word.u.rok)))
+    ?.  =(g word.u.rok)
       ?:  =(6 +((lent attempts)))
         =.  history
-          (~(put by history) day [[g attempts] `secret])
+          (~(put by history) day.u.rok [[g attempts] `word.u.rok])
         (send %dnf)
       %=  dat
           history
-        (~(put by history) day [[g attempts] the-word])
+        (~(put by history) day.u.rok [[g attempts] the-word])
       ==
     =.  history
-      (~(put by history) day [[g attempts] `secret])
+      (~(put by history) day.u.rok [[g attempts] `word.u.rok])
     =+  guesses=+((lent attempts))
     ?+  guesses  (send %dnf)
       %1  (send %one)
