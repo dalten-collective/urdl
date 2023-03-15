@@ -4,7 +4,7 @@
 ::  features:
 ::
 ::    - solid state subscription pattern
-::    - offline between 8AM GMT and 10AM FIX
+::    - offline between 8AM GMT and 10AM  FIX
 ::    - able to support additional words
 ::
 /-  *urdl, bord, data, paid

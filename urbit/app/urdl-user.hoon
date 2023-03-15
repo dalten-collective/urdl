@@ -28,7 +28,7 @@
 --
 ::
 %-  agent:dbug
-%+  verb  &
+%+  verb  |
 ::
 =/  sub-bord  (mk-subs:sss bord ,[%bord ~])
 ::
@@ -181,20 +181,20 @@
   |%
   ++  bord
     ^-  (unit rock:^bord)
-    =;  sub=(unit [gud=? rok=rock:^bord])
-      ?~(sub ~ ?.(-.u.sub ~ `rok.u.sub))
+    =;  sub=(unit [bad=? rok=rock:^bord])
+      ?~(sub ~ ?:(-.u.sub ~ `rok.u.sub))
     %-  ~(get by read:da-sub-bord)
     [(need host) %urdl-host [%bord ~]]
   ++  data
     ^-  (unit rock:^data)
-    =;  sub=(unit [gud=? rok=rock:^data])
-      ?~(sub ~ ?.(-.u.sub ~ `rok.u.sub))
+    =;  sub=(unit [bad=? rok=rock:^data])
+      ?~(sub ~ ?:(-.u.sub ~ `rok.u.sub))
     %-  ~(get by read:da-sub-data)
     [(need host) %urdl-host [%data ~]]
   ++  paid
     ^-  (unit rock:^paid)
-    =;  sub=(unit [gud=? rok=rock:^paid])
-      ?~(sub ~ ?.(-.u.sub ~ `rok.u.sub))
+    =;  sub=(unit [bad=? rok=rock:^paid])
+      ?~(sub ~ ?:(-.u.sub ~ `rok.u.sub))
     %-  ~(get by read:da-sub-paid)
     [(need host) %urdl-host [%paid ~]]
   --
@@ -248,9 +248,14 @@
 ++  dude
   |=  [pol=(pole knot) sig=sign:agent:gall]
   ^+  dat
-  ~&  >  [%dude pol]
   ?+    pol  ~|(urdl-panic-bad-dude/[pol sig] !!)
     [~ %sss %request *]  dat
+  ::
+      [%outcome day=@ ~]
+    ?>  ?=(%poke-ack -.sig)
+    %.  dat
+    ?~  p.sig  same
+    (slog 'urdl-panic-guess-rejected' ~)
   ::
       [~ %sss %on-rock aeon=@ ship=@ dude=@ rest=*]
     ?+    rest.pol  ~|(urdl-panic-sss/[pol sig] !!)
@@ -264,10 +269,8 @@
 ++  arvo
   |=  [pol=(pole knot) sig=sign-arvo]
   ^+  dat
-  ~&  >>>  [%pol pol]
   ?+    pol  ~|(urdl-host-panic-arvo/[pol sig] !!)
       [~ %sss %behn ship=@ dude=@ aeon=@ rest=*]
-    ~&  >>  [%arvo ship.pol dude.pol aeon.pol]
     ?+    rest.pol  ~|(urdl-panic-sss/[pol sig] !!)
       [%bord ~]  (emil (flop (behn:da-sub-bord |3:pol)))
       [%data ~]  (emil (flop (behn:da-sub-data |3:pol)))
@@ -335,11 +338,14 @@
   ^-  (unit (unit cage))
   ?+    pol  !!
     ::  XX: re-instate this
-    ::   [%x %dbug %state ~]
-    :: =+  lb=(~(got by sob) [~zod %urdl-host /leader/board])
-    :: =-  ``[%state !>([%0 -])]
-    :: :+  day=day  ledger=ledger
-    :: [history=history leader=+>.lb accepting=accepting]
+      [%x %dbug %state ~]
+    =+  buk=bord:take
+    =+  duk=data:take
+    =+  bonk=`rock:bord`?^(buk u.buk ~)
+    =+  donk=`rock:data`?^(duk u.duk [0 'early' %|])
+    =-  ``[%state !>([%0 -])]
+    :+  day=day.donk  accepting=open.donk
+    [history=history leader=bonk ledger=ledger]
       [%x %host ~]
     ``urdl-user-host+!>(`(unit @p)`host)
       [%x %day ~]
@@ -377,7 +383,6 @@
   |%
   ++  poke
     |=  [mar=mark vaz=vase]
-    ~&  >>  [%mark mar]
     ^+  dat
     ?+    mar  ~|(urdl-panic-bad-poke/[mar vaz] !!)
         %urdl-user-action
@@ -402,18 +407,17 @@
       ==
     ::
         %sss-bord
-      ~&  >>  %in-sss-bord
       =^  cards  bor
         (apply:da-sub-bord !<(into:da-sub-bord (fled:sss vaz)))
       (emil (flop cards))
         %sss-data
       =^  cards  det
         (apply:da-sub-data !<(into:da-sub-data (fled:sss vaz)))
-      dat  ::  (emil (flop cards))
+      (emil (flop cards))
         %sss-paid
       =^  cards  pid
         (apply:da-sub-paid !<(into:da-sub-paid (fled:sss vaz)))
-      dat  ::  (emil (flop cards))
+      (emil (flop cards))
     ==
   ::
   ++  avoid  ~|('urdl-client-poke-not-implemented' !!)
@@ -466,18 +470,29 @@
     =+  rok=data:take
     =/  error=_dat
       (show urdl-user-signal+!>((check 'zzzzz' 'aaaaa')))
+    ~&  >  1
     ?~  rok                           error
+    ~&  >  2
     ?>  ?&  open.u.rok
             =(5 (met 3 g))
             !(~(has by ledger) day.u.rok)
         ==
+    ~&  >  3
     ?:  (~(has by ledger) day.u.rok)  error
+    ~&  >  4
     ?~  (find [g]~ allow:all)         error
+    ~&  >  5
+    =?    history
+        !(~(has by history) day.u.rok)
+      (~(put by history) day.u.rok ~ ~)
     =+  (~(got by history) day.u.rok)
+    ~&  >  6
     ?^  the-word                      error
+    ~&  >  7
     ?:  (gth +((lent attempts)) 6)    error
     =.  dat
       (show urdl-user-signal+!>(`signal`(check g word.u.rok)))
+    ~&  >  "8 - proceeding on to send"
     ?.  =(g word.u.rok)
       ?:  =(6 +((lent attempts)))
         =.  history
