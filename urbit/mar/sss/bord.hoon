@@ -1,3 +1,3 @@
 /-  bord
 /+  *sss
-(mk-mar board)
+(mk-mar bord)

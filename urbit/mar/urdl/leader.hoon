@@ -1,14 +1,14 @@
-/-  u=urdl
+/-  u=urdl, bord
 /+  u-j=urdl-json
-|_  bord=board:u
+|_  bor=rock:bord
 ++  grad  %noun
 ++  grow
   |%
-  ++  noun  bord
-  ++  json  (leader:enjs:u-j bord)
+  ++  noun  bor
+  ++  json  (leader:enjs:u-j bor)
   --
 ++  grab
   |%
-  ++  noun  board:u
+  ++  noun  rock:bord
   --
 --

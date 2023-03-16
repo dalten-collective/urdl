@@ -1,6 +1,6 @@
-/-  u=urdl
+/-  u=urdl, data
 /+  u-j=urdl-json
-|_  dat=data:u
+|_  dat=rock:data
 ++  grad  %noun
 ++  grow
   |%
@@ -9,6 +9,6 @@
   --
 ++  grab
   |%
-  ++  noun  data:u
+  ++  noun  rock:data
   --
 --

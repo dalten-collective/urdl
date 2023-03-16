@@ -342,14 +342,14 @@
   ^-  (unit (unit cage))
   ?+    pol  !!
     ::  XX: re-instate this
-      [%x %dbug %state ~]
-    =+  buk=bord:take
-    =+  duk=data:take
-    =+  bonk=`rock:bord`?^(buk u.buk ~)
-    =+  donk=`rock:data`?^(duk u.duk [0 'early' %|])
-    =-  ``[%state !>([%0 -])]
-    :+  day=day.donk  accepting=open.donk
-    [history=history leader=bonk ledger=ledger]
+    ::   [%x %dbug %state ~]
+    :: =+  buk=bord:take
+    :: =+  duk=data:take
+    :: =+  bonk=`rock:bord`?^(buk u.buk ~)
+    :: =+  donk=`rock:data`?^(duk u.duk [0 'early' %|])
+    :: =-  ``[%state !>([%0 -])]
+    :: :+  day=day.donk  accepting=open.donk
+    :: [history=history leader=bonk ledger=ledger]
       [%x %host ~]
     ``urdl-user-host+!>(`(unit @p)`host)
       [%x %day ~]
@@ -363,7 +363,7 @@
       [%x %current ~]
     =+  rok=data:take
     ?~  rok
-      ``urd-user-signals+!>(*(list signal))
+      ``urdl-user-signals+!>(*(list signal))
     ?~  hav=(~(get by history) day.u.rok)
       ``urdl-user-signals+!>(*(list signal))
     =-  ``urdl-user-signals+!>(`(list signal)`-)
