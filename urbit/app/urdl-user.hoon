@@ -4,8 +4,12 @@
 ::  features:
 ::
 ::    - solid state subscription pattern
-::    - offline between 8AM GMT and 10AM FIX
-::    - able to support additional words
+::    - offline between 7AM GMT and 9AM
+::      > note: timers are set off of UTC
+::              but are thought of in PST
+::              12am through 2am blackout
+::    - word validity check
+::    - global leaderboard
 ::
 /-  *urdl, bord, data, paid
 /+  verb, dbug, default-agent, sss, all=urdl-dict, *mip
@@ -206,8 +210,8 @@
 ::
 ++  behn
   ^+  dat
-  =+  today=(sub now.bol (mod now.bol ~d1))
-  =+  shut=(add ~d1 today)
+  =+  today=(add ~h7.m30 (sub now.bol (mod now.bol ~d1)))
+  =+  shut=?.((gth now.bol today) today (add ~d1 today))
   ::  restore in production
   (emit %pass /auto/send %arvo %b %wait `@da`shut)
 ::  +send: send submission
@@ -325,10 +329,10 @@
         =-  (show urdl-user-signals+!>(`(list signal)`-))
         (flop (turn attempts.u.hav (curr check:poke word.u.rok)))
       ::
-        =+  today=(sub now.bol (mod now.bol ~d1))
-        =+  open=(add ~h2 today)
-        =+  shut=(add ~d1 today)
-        (show urdl-user-open+!>(`[@da @da]`[open shut]))
+        =+  today=(add ~h7 (sub now.bol (mod now.bol ~d1)))
+        =+  shut=?.((gth now.bol today) today (add ~d1 today))
+        =+  open=?.((gth now.bol today) (sub today ~h22) (add ~h2 today))
+        (show urdl-user-open+!>(`[@da @da]`[shut open]))
     ==
   ==
 ::  +peek: handle on-peek
@@ -371,9 +375,9 @@
       [%x %leader %formatted ~]
     !!  ::  coming
       [%x %season ~]
-    =+  today=(sub now.bol (mod now.bol ~d1))
-    =+  open=(add ~h2 today)
-    =+  shut=(add ~d1 today)
+    =+  today=(add ~h7 (sub now.bol (mod now.bol ~d1)))
+    =+  shut=?.((gth now.bol today) today (add ~d1 today))
+    =+  open=?.((gth now.bol today) (sub today ~h22) (add ~h2 today))
     ``urdl-user-open+!>(`[@da @da]`[open shut])
   ==
 ::  +poke: handle on-poke
