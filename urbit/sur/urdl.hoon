@@ -1,16 +1,15 @@
 /+  *mip
 |%
-+$  day     @ud
-+$  data    [@ud @t ?]
-+$  guess   cord
++$  day     _0
++$  word    _'early'
++$  open    _|
++$  guess   _'wrong'
 +$  color   ?(%green %yellow %grey)
 +$  daily   (map @p outcome)
-+$  board   (map @p [played=@ud =streak =totals])
 +$  submit  [day=@ud wor=cord out=outcome]
 +$  signal  (map @ud [let=@t col=color])
 +$  streak  [now=_0 top=_0]
 +$  totals  [won=_0 one=_0 two=_0 tre=_0 for=_0 fiv=_0 six=_0]
-+$  donors  (map @p ?(%gold %jule))
 ::
 +$  outcome  ?(%dnf %one %two %tre %for %fiv %six)
 ::

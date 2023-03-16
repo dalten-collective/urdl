@@ -1,4 +1,4 @@
-/-  u=urdl
+/-  u=urdl, bord, data, paid
 ::
 |%
 ++  enjs
@@ -19,8 +19,8 @@
       `json`(pairs ~[type+s/'SCRY' face+s/f fact+j])
     --
   ++  leader
-    ^-  $-(board:u json)
-    |=  boa=board:u
+    ^-  $-(rock:bord json)
+    |=  boa=rock:bord
     ~(scry pack ['LEADERBOARD' (board boa)])
   ++  signal
     ^-  $-(signal:u json)
@@ -57,8 +57,8 @@
         six+(play six.t)
     ==
   ++  board
-    ^-  $-(board:u json)
-    |=  b=board:u
+    ^-  $-(rock:bord json)
+    |=  b=rock:bord
     :-  %a
     %+  turn  ~(tap by b)
     |=  [p=@p [pl=@ud st=streak:u to=totals:u]]
@@ -131,6 +131,9 @@
     ++  open
       ^-  $-([@da @da] json)
       |=  [c=@da o=@da]
+      ?:  (gth c o)
+        %~  scry  pack
+        ['CURRENT-TIME-LIMITS' (pairs ~[open+(sect o) close+(sect c)])]
       %~  scry  pack
       ['CURRENT-TIME-LIMITS' (pairs ~[close+(sect c) open+(sect o)])]
     ++  host
