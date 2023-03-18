@@ -52,7 +52,6 @@
       eng   ~(. +> [bowl sub-bord sub-data sub-paid ~])
   ++  on-init
     ^-  (quip card _this)
-    ~>  %bout.[0 '%urdl-user +on-init']
     =+  ^-  %+  pair  (list card)
             [bor=_sub-bord det=_sub-data pid=_sub-paid sta=_state]
         abet:init:eng
@@ -66,12 +65,10 @@
   ::
   ++  on-save
     ^-  vase
-    ~>  %bout.[0 '%urdl-user +on-save']
     save:eng
   ::
   ++  on-load
     |=  ole=vase
-    ~>  %bout.[0 '%urdl-user +on-load']
     ^-  (quip card _this)
     =+  ^-  %+  pair  (list card)
             [bor=_sub-bord det=_sub-data pid=_sub-paid sta=_state]
@@ -86,7 +83,6 @@
   ::
   ++  on-poke
     |=  cag=cage
-    ~>  %bout.[0 '%urdl-user +on-poke']
     ^-  (quip card _this)
     =+  ^-  %+  pair  (list card)
             [bor=_sub-bord det=_sub-data pid=_sub-paid sta=_state]
@@ -101,13 +97,11 @@
   ::
   ++  on-peek
     |=  pat=path
-    ~>  %bout.[0 '%urdl-user +on-peek']
     ^-  (unit (unit cage))
     (peek:eng pat)
   ::
   ++  on-arvo
     |=  [wir=wire sig=sign-arvo]
-    ~>  %bout.[0 '%urdl-user +on-arvo']
     ^-  (quip card _this)
     =+  ^-  %+  pair  (list card)
             [bor=_sub-bord det=_sub-data pid=_sub-paid sta=_state]
@@ -122,7 +116,6 @@
   ::
   ++  on-watch
     |=  pat=path
-    ~>  %bout.[0 '%urdl-user +on-watch']
     ^-  (quip card _this)
     =+  ^-  %+  pair  (list card)
             [bor=_sub-bord det=_sub-data pid=_sub-paid sta=_state]
@@ -137,7 +130,6 @@
   ::
   ++  on-agent
     |=  [wir=wire sig=sign:agent:gall]
-    ~>  %bout.[0 '%urdl-user +on-agent']
     ^-  (quip card _this)
     =+  ^-  %+  pair  (list card)
             [bor=_sub-bord det=_sub-data pid=_sub-paid sta=_state]
@@ -151,11 +143,9 @@
     ==
   ::
   ++  on-fail
-    ~>  %bout.[0 '%urdl-user +on-fail']
     on-fail:def
   ::
   ++  on-leave
-    ~>  %bout.[0 '%urdl-user +on-leave']
     on-leave:def
   --
 |_  $:  bol=bowl:gall
@@ -257,9 +247,11 @@
   ::
       [%outcome day=@ ~]
     ?>  ?=(%poke-ack -.sig)
-    %.  dat
-    ?~  p.sig  same
-    (slog 'urdl-panic-guess-rejected' ~)
+    ?~  p.sig
+      =+  day=(slav %ud day.pol)
+      =+  hav=(~(got by ledger) day)
+      dat(ledger (~(put by ledger) day hav(ack %&)))
+    ((slog 'urdl-panic-guess-rejected' ~) dat)
   ::
       [~ %sss %on-rock aeon=@ ship=@ dude=@ rest=*]
     ?+    rest.pol  ~|(urdl-panic-sss/[pol sig] !!)
@@ -474,29 +466,21 @@
     =+  rok=data:take
     =/  error=_dat
       (show urdl-user-signal+!>((check 'zzzzz' 'aaaaa')))
-    ~&  >  1
     ?~  rok                           error
-    ~&  >  2
     ?>  ?&  open.u.rok
             =(5 (met 3 g))
             !(~(has by ledger) day.u.rok)
         ==
-    ~&  >  3
     ?:  (~(has by ledger) day.u.rok)  error
-    ~&  >  4
     ?~  (find [g]~ allow:all)         error
-    ~&  >  5
     =?    history
         !(~(has by history) day.u.rok)
       (~(put by history) day.u.rok ~ ~)
     =+  (~(got by history) day.u.rok)
-    ~&  >  6
     ?^  the-word                      error
-    ~&  >  7
     ?:  (gth +((lent attempts)) 6)    error
     =.  dat
       (show urdl-user-signal+!>(`signal`(check g word.u.rok)))
-    ~&  >  "8 - proceeding on to send"
     ?.  =(g word.u.rok)
       ?:  =(6 +((lent attempts)))
         =.  history

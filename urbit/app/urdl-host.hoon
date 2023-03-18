@@ -25,7 +25,7 @@
 --
 ::
 %-  agent:dbug
-%+  verb  &
+%+  verb  |
 ::
 =/  pub-bord  (mk-pubs:sss bord ,[%bord ~])
 ::
@@ -44,7 +44,6 @@
       eng   ~(. +> [bowl pub-bord pub-data pub-paid ~])
   ++  on-init
     ^-  (quip card _this)
-    ~>  %bout.[0 '%urdl-host +on-init']
     =+  ^-  %+  pair  (list card)
             [bor=_pub-bord det=_pub-data pid=_pub-paid sta=_state]
         abet:init:eng
@@ -58,12 +57,10 @@
   ::
   ++  on-save
     ^-  vase
-    ~>  %bout.[0 '%urdl-host +on-save']
     save:eng
   ::
   ++  on-load
     |=  ole=vase
-    ~>  %bout.[0 '%urdl-host +on-load']
     ^-  (quip card _this)
     =+  ^-  %+  pair  (list card)
             [bor=_pub-bord det=_pub-data pid=_pub-paid sta=_state]
@@ -78,7 +75,6 @@
   ::
   ++  on-poke
     |=  cag=cage
-    ~>  %bout.[0 '%urdl-host +on-poke']
     ^-  (quip card _this)
     =+  ^-  %+  pair  (list card)
             [bor=_pub-bord det=_pub-data pid=_pub-paid sta=_state]
@@ -93,13 +89,11 @@
   ::
   ++  on-peek
     |=  =path
-    ~>  %bout.[0 '%urdl-host +on-peek']
     ^-  (unit (unit cage))
     (peek:eng path)
   ::
   ++  on-arvo
     |=  [wir=wire sig=sign-arvo]
-    ~>  %bout.[0 '%urdl-host +on-arvo']
     ^-  (quip card _this)
     =+  ^-  %+  pair  (list card)
             [bor=_pub-bord det=_pub-data pid=_pub-paid sta=_state]
@@ -114,7 +108,6 @@
   ::
   ++  on-watch
     |=  pat=path
-    ~>  %bout.[0 '%urdl-host +on-watch']
     ^-  (quip card _this)
     =+  ^-  %+  pair  (list card)
             [bor=_pub-bord det=_pub-data pid=_pub-paid sta=_state]
@@ -129,13 +122,11 @@
   ::
   ++  on-agent
     |=  [wir=wire sig=sign:agent:gall]
-    ~>  %bout.[0 '%urdl-host +on-agent']
     ^-  (quip card _this)
     `this
   ::
   ++  on-fail
     |=  [=term =tang]
-    ~>  %bout.[0 '%urdl-host +on-fail']
     %.  `this
     (slog leaf+"error in {<dap.bowl>}" >term< tang)
   ::

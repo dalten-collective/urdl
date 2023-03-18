@@ -9,8 +9,8 @@
   =;  peb=_rok
     %-  ~(rep by wav)
     |=  [[p=@p o=outcome:u] r=_peb]
-    ~&  >  [%new %player p %outcome o]
     ?:  (~(has by peb) p)  r
+    ~&  >  [%new %player p %outcome o]
     ?-  o
       %dnf  (~(put by r) p [1 [0 0] [0 0 0 0 0 0 0]])
       %one  (~(put by r) p [1 [1 1] [1 1 0 0 0 0 0]])
