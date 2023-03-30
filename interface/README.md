@@ -1,5 +1,7 @@
 # Vite/Vue3/Typescript/Tailwind/Urbit template
 
+:urdl-host &urdl-host-action [%load /list/txt]
+
 With typed Vuex store, CompositionAPI and `setup`-style script tags.
 
 To install this elsewhere:

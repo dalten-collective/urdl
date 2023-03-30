@@ -1,5 +1,8 @@
 <template>
-  <div class="flex flex-col">
+  <div v-if="noHost">
+    {{ host }}
+  </div>
+  <div v-else class="flex flex-col">
     <div class="container mx-auto">
     <nav class="flex text-[var(--color-tone-2)] flex-row justify-between py-2 px-4 border-b border-[var(--color-tone-5)] items-center">
       <div class="flex items-center justify-start flex-1 text-left">
@@ -54,11 +57,29 @@ import { onMounted, onUnmounted, computed, ref } from 'vue';
 import { ActionTypes } from '@/store/action-types';
 import { useStore } from '@/store/store'
 
+import * as UR from '@/api/types/urdl-user-response'
+
+import { Scries } from '@/api/urdlAPI'
+
 const store = useStore()
 
+const host = ref('')
+
 onMounted(() => {
+  Scries.Host().then((r: UR.ScryCurrentHost | UR.ScryNoHost) => {
+    if (r.face === UR.UrdlUserResponseFaces.NoHost) {
+      host.value = 'UNSET'
+    } else if (r.face === UR.UrdlUserResponseFaces.CurrentHost) {
+      host.value = r.fact.host
+    }
+    console.log('r ', r)
+  })
   const deskname = 'urdl-user'
   startAirlock(deskname)
+})
+
+const noHost = computed(() => {
+  return (host.value === '' || host.value === 'UNSET')
 })
 
 const startAirlock = (deskname: string) => {
