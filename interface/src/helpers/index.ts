@@ -1,5 +1,6 @@
 import { unixToDa, decToUd, udToDec } from '@urbit/api'
 import * as T from '@/types'
+import * as U from '@/types/urdl'
 
 export const sigShip = (ship: string | T.Ship): T.Ship => {
   if (!ship) {
@@ -25,4 +26,13 @@ export const secondsToUd = (sects: number): string => {
 
 export const udToInt = (n: string): number => {
   return parseInt(udToDec(n))
+}
+
+export const sumGuessCount = (ledger: Array<U.Ledger>, guessCount: string): number => {
+  return ledger.reduce((acc, curr) => {
+    if (curr.outcome === guessCount) {
+      return acc + 1
+    }
+    return acc
+  }, 0)
 }

@@ -10,8 +10,16 @@
 
 
   <div v-if="!store.state.todayOpen">
-    TODO:
-    server downtime
+    <div class="flex flex-col items-center justify-around h-[80vh] mx-auto" style="max-width: 17rem;" >
+      <div class="text-center">
+        <p class="mb-4">
+        The host is tabulating the leaderboard and preparing tomorrow's game.
+      </p>
+        <p>
+        Check back soon.
+      </p>
+      </div>
+    </div>
   </div>
   <div v-else>
     <div class="m-auto" style="max-width: 17rem;" >

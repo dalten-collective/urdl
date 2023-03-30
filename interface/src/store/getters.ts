@@ -6,7 +6,7 @@ import * as T from '@/types'
 import * as L from '@/types/loading-types'
 import { GuessOutcome, LeaderboardEntry, Ledger } from '@/types/urdl'
 
-import { US } from '@/helpers'
+import { US, sumGuessCount } from '@/helpers'
 
 export type Getters = {
   [GetterTypes.EXAMPLE_WITH_ARG](state: State): (arg: string) => string | null
@@ -47,7 +47,8 @@ export const getters: GetterTree<State, State> & Getters = {
     const ledg = state.ledger
     const lb = state.leaderboard.find((le) => le.player === US())
 
-    let played, curStreak, maxStreak, scores
+    let played, curStreak, maxStreak, scores, won,
+      one, two, three, four, five, six
 
     if (ledg) {
       played = ledg.length
@@ -57,21 +58,38 @@ export const getters: GetterTree<State, State> & Getters = {
 
     // TODO: how to tell if in the middle of a game?
     // Or more importantly: JUST finished a game but scores aren't computed (next day)
-    if (lb) {
+
+    if (false) {
+    // if (lb) {
       curStreak = lb.streak['current-streak']
       maxStreak = lb.streak['max-streak']
       scores = lb.scores
     } else {
       curStreak = 0
       maxStreak = 0
+
+      won = ledg.reduce((acc, curr) => {
+        if (curr.outcome !== 'dnf') {
+          return acc + 1
+        }
+        return acc
+      }, 0)
+
+      one = sumGuessCount(ledg, 'one')
+      two = sumGuessCount(ledg, 'two')
+      three = sumGuessCount(ledg, 'tre')
+      four = sumGuessCount(ledg, 'for')
+      five = sumGuessCount(ledg, 'fiv')
+      six = sumGuessCount(ledg, 'six')
+
       scores = {
-        "games-won": 0,
-        "one": 0,
-        "two": 0,
-        "three": 0,
-        "four": 0,
-        "five": 0,
-        "six": 0,
+        "games-won": won,
+        one,
+        two,
+        three,
+        four,
+        five,
+        six,
       }
     }
 
