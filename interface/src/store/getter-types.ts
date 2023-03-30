@@ -8,6 +8,7 @@ export enum GetterTypes {
   LetterMap = 'LETTER_MAP',
 
   MyScores = 'MY_SCORES',
+  MyLedger = 'MY_LEDGER',
 
   ELEMENT_INITIAL = 'ELEMENT_INITIAL',
   ELEMENT_LOADING = 'ELEMENT_LOADING',

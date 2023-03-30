@@ -32,6 +32,11 @@ export type Mutations<S = State> = {
     payload: Array<U.Ledger>
   ): void;
 
+  [MutationTypes.LeaderboardSet](
+    state: S,
+    payload: Array<U.LeaderboardEntry>
+  ): void;
+
   [MutationTypes.SecretWordSet](
     state: S,
     payload: null | string
@@ -107,6 +112,13 @@ export const mutations: MutationTree<State> & Mutations = {
     payload: Parameters<Mutations[MutationTypes.LedgerSet]>[1]
   ) {
     state.ledger = payload
+  },
+
+  [MutationTypes.LeaderboardSet](
+    state,
+    payload: Parameters<Mutations[MutationTypes.LeaderboardSet]>[1]
+  ) {
+    state.leaderboard = payload
   },
 
   [MutationTypes.SecretWordSet](

@@ -10,6 +10,7 @@ export enum MutationTypes {
   CurrentDayGameStatusSet  = "CURRENT_DAY_GAME_STATUS_SET",
 
   LedgerSet  = "LEDGER_SET",
+  LeaderboardSet  = "LEADERBOARD_SET",
 
   SecretWordSet  = "SECRET_WORD_SET",
 

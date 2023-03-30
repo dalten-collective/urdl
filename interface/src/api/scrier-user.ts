@@ -1,6 +1,8 @@
 import urbitAPI from "./urbitAPI";
 import * as UR from "@/api/types/urdl-user-response"
+import { Ship } from "@/types"
 import * as Routes from "@/api/types/urdl-user-scry"
+import {Ledger} from "@/types/urdl";
 
 class MyScry {
   path: string;
@@ -27,6 +29,26 @@ export class ScryCurrentDatGameStatus extends MyScry {
   }
 
   scry(): Promise<UR.ScryCurrentDayGameStatus> {
+    return super.scry()
+  }
+}
+
+export class ScryCurrentHost extends MyScry {
+  constructor() {
+    super(Routes.ScryEndpoints.host)
+  }
+
+  scry(): Promise<Ship | null> {
+    return super.scry()
+  }
+}
+
+export class ScryUserLedger extends MyScry {
+  constructor() {
+    super(Routes.ScryEndpoints.ledger)
+  }
+
+  scry(): Promise<any> {
     return super.scry()
   }
 }

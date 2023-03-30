@@ -9,13 +9,19 @@
   </div>
 
 
+  <div v-if="!store.state.todayOpen">
+    TODO:
+    server downtime
+  </div>
+  <div v-else>
     <div class="m-auto" style="max-width: 17rem;" >
       <div style="display: grid; grid-gap: 5px; padding: 10px;" :style="`grid-template-rows: repeat(${ alow }, 1fr);`">
         <How />
       </div>
     </div>
-    <div class="container mx-auto" >
-      <GuessBoard class="mt-4" />
+      <div class="container mx-auto" >
+        <GuessBoard class="mt-4" />
+      </div>
     </div>
   </div>
 </template>

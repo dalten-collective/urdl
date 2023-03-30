@@ -63,3 +63,8 @@ export const IsCurrentTimeLimits = (r: UUR.UrdlUserResponse):
   r is UUR.ScryCurrentTimeLimits => {
   return (r.face === UUR.UrdlUserResponseFaces.CurrentTimeLimits)
 }
+
+export const IsLeaderboardResponse = (r: UUR.UrdlUserResponse):
+  r is UUR.ScryLeaderboard => {
+  return (r.face === UUR.UrdlUserResponseFaces.Leaderboard)
+}

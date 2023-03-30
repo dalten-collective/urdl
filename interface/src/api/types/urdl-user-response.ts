@@ -14,6 +14,7 @@ export enum UrdlUserResponseFaces {
   SecretWordFound = "SECRET-WORD-FOUND",
   CurrentDayGameStatus = "CURRENT-DAY-GAME-STATUS",
   CurrentTimeLimits = "CURRENT-TIME-LIMITS",
+  Leaderboard = "LEADERBOARD",
 }
 
 export interface ScryNoHost {
@@ -96,6 +97,12 @@ export interface FactGuessResult {
   };
 }
 
+export interface ScryLeaderboard {
+  type: Api.ResponseTypes.Scry;
+  face: UrdlUserResponseFaces.Leaderboard;
+  fact: Array<U.LeaderboardEntry>;
+}
+
 export type UrdlUserResponse =
   | FactGuessResult
   | ScryNoHost
@@ -106,4 +113,5 @@ export type UrdlUserResponse =
   | ScryAllowedWords
   | ScrySecretWord
   | ScryCurrentDayGameStatus
-  | ScryCurrentTimeLimits;
+  | ScryCurrentTimeLimits
+  | ScryLeaderboard;

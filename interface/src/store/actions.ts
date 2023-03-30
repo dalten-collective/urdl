@@ -93,6 +93,10 @@ export const actions: ActionTree<State, State> & Actions = {
           commit(MutationTypes.TodayOpenSet, data.fact);
         }
 
+        if (Api.IsLeaderboardResponse(data)) {
+          commit(MutationTypes.LeaderboardSet, data.fact);
+        }
+
         if (Api.IsUrdlUserGuessResponse(data)) {
           console.log('got guess response ', data.fact)
           // add to currentDayGameStatus
@@ -101,6 +105,10 @@ export const actions: ActionTree<State, State> & Actions = {
           dispatch(ActionTypes.ScryCurrentDatGameStatus)
             .then((data) => {
               commit(MutationTypes.CurrentDayGameStatusSet, data.fact);
+            })
+          dispatch(ActionTypes.ScryUserLedger)
+            .then((data) => {
+              commit(MutationTypes.LedgerSet, data.fact);
             })
         }
 
@@ -133,6 +141,11 @@ export const actions: ActionTree<State, State> & Actions = {
   [ActionTypes.ScryCurrentDatGameStatus]({ commit, getters }) {
     console.log("dispatching ScryCurrentDayGameStatus action...");
     return Scries.CurrentDatGameStatus()
+  },
+
+  [ActionTypes.ScryUserLedger]({ commit, getters }) {
+    console.log("dispatching ScryUserLedger action...");
+    return Scries.Ledger()
   },
 
   [ActionTypes.INITIAL_SET]({ commit }, payload: L.UIElement) {

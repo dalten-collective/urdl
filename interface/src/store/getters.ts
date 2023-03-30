@@ -4,7 +4,7 @@ import { State } from './state'
 
 import * as T from '@/types'
 import * as L from '@/types/loading-types'
-import { GuessOutcome, LeaderboardEntry } from '@/types/urdl'
+import { GuessOutcome, LeaderboardEntry, Ledger } from '@/types/urdl'
 
 import { US } from '@/helpers'
 
@@ -44,7 +44,50 @@ export const getters: GetterTree<State, State> & Getters = {
   },
 
   [GetterTypes.MyScores]: (state): LeaderboardEntry => {
-    return state.leaderboard.find((le) => le.player === US())
+    const ledg = state.ledger
+    const lb = state.leaderboard.find((le) => le.player === US())
+
+    let played, curStreak, maxStreak, scores
+
+    if (ledg) {
+      played = ledg.length
+    } else {
+      played = 0
+    }
+
+    // TODO: how to tell if in the middle of a game?
+    // Or more importantly: JUST finished a game but scores aren't computed (next day)
+    if (lb) {
+      curStreak = lb.streak['current-streak']
+      maxStreak = lb.streak['max-streak']
+      scores = lb.scores
+    } else {
+      curStreak = 0
+      maxStreak = 0
+      scores = {
+        "games-won": 0,
+        "one": 0,
+        "two": 0,
+        "three": 0,
+        "four": 0,
+        "five": 0,
+        "six": 0,
+      }
+    }
+
+    return {
+      player: US(),
+      played,
+      streak: {
+        "current-streak": curStreak,
+        "max-streak": maxStreak,
+      },
+      scores
+    }
+  },
+
+  [GetterTypes.MyLedger]: (state): Array<Ledger> => {
+    return state.ledger
   },
 
   [GetterTypes.LetterInGuesses]: (state) => (letter: string): Array<GuessOutcome> => {
