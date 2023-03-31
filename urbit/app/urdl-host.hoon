@@ -144,14 +144,11 @@
     dok  [our.bol %urdl-host]
     dir  /(scot %p our.bol)/urdl/(scot %da now.bol)
 ++  du-pub-bord
-  =/  du  (du:sss bord ,[%bord ~])
-  ~(. du bor bol -:!>(*result:du))
+  =/(du (du:sss bord ,[%bord ~]) (du bor bol -:!>(*result:du)))
 ++  du-pub-data
-  =/  du  (du:sss data ,[%data ~])
-  ~(. du det bol -:!>(*result:du))
+  =/(du (du:sss data ,[%data ~]) (du det bol -:!>(*result:du)))
 ++  du-pub-paid
-  =/  du  (du:sss paid ,[%paid ~])
-  ~(. du pid bol -:!>(*result:du))
+  =/(du (du:sss paid ,[%paid ~]) (du pid bol -:!>(*result:du)))
 ++  emit  |=(c=card dat(dek [c dek]))
 ++  emil  |=(lac=(list card) dat(dek (welp lac dek)))
 ++  abet
@@ -196,7 +193,7 @@
     ?.  (gth (lent list) day)  'death'
     =+  werd=(snag day list)
     ?.(=(5 (met 3 werd)) 'cheat' werd)
-  ?~(hav=(~(get by read:du-pub-data) [%data ~]) 0 day.u.hav)
+  ?~(hav=(~(get by read:du-pub-data) [%data ~]) 0 day.rock.u.hav)
 ::  +peer: handle on-watch
 ::
 ++  peer
@@ -206,9 +203,9 @@
   ?>  ?=([%web-ui ~] pol)
   :: (show urdl-host-wist+!>(`path`words))
   =/  det=[=day word=@t =open]
-    ?^(hav=(~(get by read:du-pub-data) [%data ~]) u.hav [0 'early' %|])
+    ?^(hav=(~(get by read:du-pub-data) [%data ~]) rock.u.hav [0 'early' %|])
   =/  bod=(map @p [played=@ud =streak =totals])
-    ?~(hav=(~(get by read:du-pub-bord) [%bord ~]) ~ u.hav)
+    ?~(hav=(~(get by read:du-pub-bord) [%bord ~]) ~ rock.u.hav)
   =~  [det=det bod=bod (show urdl-host-wist+!>(`path`words))]
     ::
       [det=det bod=bod (show urdl-data+!>(`_det`det))]
@@ -226,13 +223,19 @@
   |=  pol=(pole knot)
   ^-  (unit (unit cage))
   ?+    pol  !!
+      [%x %dbug %state ~]
+    =+  buk=rock:(~(got by read:du-pub-bord) [%bord ~])
+    =+  duk=rock:(~(got by read:du-pub-data) [%data ~])
+    =+  puk=rock:(~(got by read:du-pub-paid) [%paid ~])
+    =-  ``[%state !>([%0 -])]
+    [words=words ledger=ledger bord=buk data=duk paid=puk]
       [%x %today ~]
     =;  datum=[=day word=@t =open]
       ``urdl-data+!>(`_datum`datum)
-    ?^(hav=(~(get by read:du-pub-data) [%data ~]) u.hav [0 'early' %|])
+    ?^(hav=(~(get by read:du-pub-data) [%data ~]) rock.u.hav [0 'early' %|])
       [%x %leader ~]
     =/  board=(map @p [played=@ud =streak =totals])
-      ?~(hav=(~(get by read:du-pub-bord) [%bord ~]) ~ u.hav)
+      ?~(hav=(~(get by read:du-pub-bord) [%bord ~]) ~ rock.u.hav)
     ``urdl-leader+!>(`_board`board)
       [%x %ledger ~]
     ``urdl-host-ledger+!>(`_ledger`ledger)
@@ -268,12 +271,12 @@
       %urdl-submit
     =+  mit=!<(submit vaz)
     =+  (~(got by read:du-pub-data) [%data ~])
-    ?>  ?&  =(day day.mit)
+    ?>  ?&  =(day.rock day.mit)
             ::  accepting - we are commenting this out for late responses.
-            !(~(has bi ledger) day src.bol)
-            |(=(%dnf out.mit) =(word wor.mit))
+            !(~(has bi ledger) day.rock src.bol)
+            |(=(%dnf out.mit) =(word.rock wor.mit))
         ==
-    dat(ledger (~(put bi ledger) day src.bol out.mit))
+    dat(ledger (~(put bi ledger) day.rock src.bol out.mit))
   ::
       %urdl-host-action
     =+  act=!<(action:host vaz)
@@ -309,9 +312,8 @@
     ?>  ?=([%behn %wake *] sig)
     ?^  error.sig
       ((slog 'urdl-host-panic-arvo' u.error.sig) dat)
-    =+  hav=(~(get by read:du-pub-data) [%data ~])
     ?.  ?~  h=(~(get by read:du-pub-data) [%data ~])  %&
-        =(0 day.u.h)
+        =(0 day.rock.u.h)
       ((slog 'urdl-host-panic-drop-first' ~) dat)
     :: ::  testing
     =+  when=`@da`(add ~m3 now.bol)
@@ -348,18 +350,18 @@
     ?~  hav=(~(get by read:du-pub-data) [%data ~])
       ((slog 'urdl-host-panic-arvo-sss-error' ~) dat)
     =+  last=(slav %ud day.pol)
-    ?.  &(=(day.u.hav last) =(words pat.pol))
+    ?.  &(=(day.rock.u.hav last) =(words pat.pol))
       ((slog 'urdl-host-panic-changed-game' ~) dat)
     ::  testing
     =+  then=`@dr`~m1
     ::  production
     :: =+  then=`@dr`(sub (add ~h10 (sub now.bol (mod now.bol ~d1))) now.bol)
     =;  sta=_state
-      ~&  >>>  "day {<day.u.hav>} has ended"
+      ~&  >>>  "day {<day.rock.u.hav>} has ended"
       =^  cards  det  (give:du-pub-data [%data ~] ~)
       %+  behn:(emil(state sta) (flop cards))  then
-      (welp /next/(scot %ud day.u.hav) pat.pol)
-    state(ledger (~(put by ledger) +(day.u.hav) *daily))
+      (welp /next/(scot %ud day.rock.u.hav) pat.pol)
+    state(ledger (~(put by ledger) +(day.rock.u.hav) *daily))
   ::
       [%next day=@ pat=*]
     ~_  %urdl-panic-next-failed
@@ -369,9 +371,9 @@
     ?~  hav=(~(get by read:du-pub-data) [%data ~])
       ((slog 'urdl-host-panic-arvo-sss-failure' ~) dat)
     =+  last=(slav %ud day.pol)
-    ?.  &(=(day.u.hav last) =(words pat.pol))
+    ?.  &(=(day.rock.u.hav last) =(words pat.pol))
       ((slog 'urdl-host-panic-changed-game' ~) dat)
-    ~&  >>  "day {<+(day.u.hav)>}: the secret word is {<word>}"
+    ~&  >>  "day {<+(day.rock.u.hav)>}: the secret word is {<word>}"
     ::  testing
     =+  then=~m3
     ::  production
@@ -379,9 +381,9 @@
     :: =+  then=`@dr`(sub (add ~d1 (sub last now.bol)) now.bol)
     =^  cards  det  (give:du-pub-data [%data ~] `word)
     =^  dracs  bor
-      (give:du-pub-bord [%bord ~] (~(got by ledger) day.u.hav))
+      (give:du-pub-bord [%bord ~] (~(got by ledger) day.rock.u.hav))
     =~  :-  shuffle=(welp (flop dracs) (flop cards))
-        (behn then (welp /paws/(scot %ud +(day.u.hav)) words))
+        (behn then (welp /paws/(scot %ud +(day.rock.u.hav)) words))
       ::
         (emil shuffle)
     ==

@@ -159,13 +159,13 @@
     dir  /(scot %p our.bol)/urdl/(scot %da now.bol)
 ++  da-sub-bord
   =/  da  (da:sss bord ,[%bord ~])
-  ~(. da bor bol -:!>(*result:da) -:!>(*from:da))
+  (da bor bol -:!>(*result:da) -:!>(*from:da) -:!>(*fail:da))
 ++  da-sub-data
   =/  da  (da:sss data ,[%data ~])
-  ~(. da det bol -:!>(*result:da) -:!>(*from:da))
+  (da det bol -:!>(*result:da) -:!>(*from:da) -:!>(*fail:da))
 ++  da-sub-paid
   =/  da  (da:sss paid ,[%paid ~])
-  ~(. da pid bol -:!>(*result:da) -:!>(*from:da))
+  (da pid bol -:!>(*result:da) -:!>(*from:da) -:!>(*fail:da))
 ++  emit  |=(c=card dat(dek [c dek]))
 ++  emil  |=(lac=(list card) dat(dek (welp lac dek)))
 ++  abet
@@ -175,19 +175,19 @@
   |%
   ++  bord
     ^-  (unit rock:^bord)
-    =;  sub=(unit [bad=? rok=rock:^bord])
+    =;  sub=(unit [old=? bad=? rok=rock:^bord])
       ?~(sub ~ ?:(-.u.sub ~ `rok.u.sub))
     %-  ~(get by read:da-sub-bord)
     [(need host) %urdl-host [%bord ~]]
   ++  data
     ^-  (unit rock:^data)
-    =;  sub=(unit [bad=? rok=rock:^data])
+    =;  sub=(unit [old=? bad=? rok=rock:^data])
       ?~(sub ~ ?:(-.u.sub ~ `rok.u.sub))
     %-  ~(get by read:da-sub-data)
     [(need host) %urdl-host [%data ~]]
   ++  paid
     ^-  (unit rock:^paid)
-    =;  sub=(unit [bad=? rok=rock:^paid])
+    =;  sub=(unit [old=? bad=? rok=rock:^paid])
       ?~(sub ~ ?:(-.u.sub ~ `rok.u.sub))
     %-  ~(get by read:da-sub-paid)
     [(need host) %urdl-host [%paid ~]]
@@ -243,7 +243,7 @@
   |=  [pol=(pole knot) sig=sign:agent:gall]
   ^+  dat
   ?+    pol  ~|(urdl-panic-bad-dude/[pol sig] !!)
-    [~ %sss %request *]  dat
+    [~ %sss %scry-request *]  dat
   ::
       [%outcome day=@ ~]
     ?>  ?=(%poke-ack -.sig)
@@ -251,7 +251,7 @@
       =+  day=(slav %ud day.pol)
       =+  hav=(~(got by ledger) day)
       dat(ledger (~(put by ledger) day hav(ack %&)))
-    ((slog 'urdl-panic-guess-rejected' ~) dat)
+    ((slog 'urdl-panic-guess-rejected' u.p.sig) dat)
   ::
       [~ %sss %on-rock aeon=@ ship=@ dude=@ rest=*]
     ?+    rest.pol  ~|(urdl-panic-sss/[pol sig] !!)
@@ -311,6 +311,10 @@
         =+  rok=data:take
         ?~  rok
           (show urdl-user-the-word+!>(*(unit @t)))
+        ?~  hav=(~(get by ledger) day.u.rok)
+          (show urdl-user-the-word+!>(*(unit @t)))
+        ?.  ack.u.hav
+          (show urdl-user-the-word+!>(*(unit @t)))
         (show urdl-user-the-word+!>(`(unit @t)``word.u.rok))
       ::
         =+  rok=data:take
@@ -334,14 +338,14 @@
   ^-  (unit (unit cage))
   ?+    pol  !!
     ::  XX: re-instate this
-    ::   [%x %dbug %state ~]
-    :: =+  buk=bord:take
-    :: =+  duk=data:take
-    :: =+  bonk=`rock:bord`?^(buk u.buk ~)
-    :: =+  donk=`rock:data`?^(duk u.duk [0 'early' %|])
-    :: =-  ``[%state !>([%0 -])]
-    :: :+  day=day.donk  accepting=open.donk
-    :: [history=history leader=bonk ledger=ledger]
+      [%x %dbug %state ~]
+    =+  buk=bord:take
+    =+  duk=data:take
+    =+  bonk=`rock:bord`?^(buk u.buk ~)
+    =+  donk=`rock:data`?^(duk u.duk [0 'early' %|])
+    =-  ``[%state !>([%0 -])]
+    :+  day=day.donk  accepting=open.donk
+    [history=history leader=bonk ledger=ledger]
       [%x %host ~]
     ``urdl-user-host+!>(`(unit @p)`host)
       [%x %day ~]
@@ -422,11 +426,14 @@
     |=  h=@p
     ?^  host
       ~|(urdl-client-poke-not-implemented/'bonk' !!)
+    =^  cards  bor
+      (surf:da-sub-bord h %urdl-host [%bord ~])
+    =^  dracs  det
+      (surf:da-sub-data h %urdl-host [%data ~])
+    =^  crads  pid
+      (surf:da-sub-paid h %urdl-host [%paid ~])
     %-  emil(host `h)
-    :~  (surf:da-sub-bord h %urdl-host [%bord ~])
-        (surf:da-sub-data h %urdl-host [%data ~])
-        (surf:da-sub-paid h %urdl-host [%paid ~])
-    ==
+    :(welp (flop cards) (flop dracs) (flop crads))
   ::
   ++  check
     |=  [ges=@t sec=@t]

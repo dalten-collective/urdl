@@ -10,7 +10,6 @@
     %-  ~(rep by wav)
     |=  [[p=@p o=outcome:u] r=_peb]
     ?:  (~(has by peb) p)  r
-    ~&  >  [%new %player p %outcome o]
     ?-  o
       %dnf  (~(put by r) p [1 [0 0] [0 0 0 0 0 0 0]])
       %one  (~(put by r) p [1 [1 1] [1 1 0 0 0 0 0]])
@@ -23,7 +22,6 @@
   %-  ~(rut by rok)
   |=  [p=@p [pl=@ud st=streak:u to=totals:u]]
   ?~  hav=(~(get by wav) p)  [pl st(now 0) to]
-  ~&  >>  [%existing %player p %outcome u.hav]
   ?-  u.hav
     %dnf  [+(pl) st(now 0) to]
       %one
