@@ -76,6 +76,10 @@ body {
   @apply cursor-pointer;
   @apply rounded-md;
   @apply shadow-md;
+  @apply bg-[var(--absent)];
+}
+.btn:hover {
+  @apply opacity-75;
 }
 
 .modal-wrap {

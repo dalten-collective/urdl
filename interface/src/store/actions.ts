@@ -118,10 +118,10 @@ export const actions: ActionTree<State, State> & Actions = {
             .then((data) => {
               commit(MutationTypes.LedgerSet, data.fact);
             })
-          dispatch(ActionTypes.ScryWord)
-            .then((data) => {
-              commit(MutationTypes.SecretWordSet, data.fact);
-            })
+          // dispatch(ActionTypes.ScryWord)
+          //   .then((data) => {
+          //     commit(MutationTypes.SecretWordSet, data.fact);
+          //   })
         }
 
         if (Api.IsCurrentTimeLimits(data)) {

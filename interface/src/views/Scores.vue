@@ -2,15 +2,11 @@
   <main class="container flex flex-col p-2 md:mx-auto">
 
     <nav class="flex flex-row justify-around mb-4">
-      <h3 class="text-2xl" @click="viewStats">My Stats</h3>
-      <h3 class="text-2xl" @click="viewLeaderboard">Leaderboard</h3>
+      <h3 class="text-2xl cursor-pointer" @click="viewStats" :class="viewingStats ? 'underline' : 'opacity-50'">My Stats</h3>
+      <h3 class="text-2xl cursor-pointer" @click="viewLeaderboard" :class="!viewingStats ? 'underline' : 'opacity-50'">Leaderboard</h3>
     </nav>
 
     <div v-if="viewingStats">
-      <header class="flex flex-row justify-around mb-4">
-        <h3 class="text-2xl">Statistics</h3>
-      </header>
-
       <div v-if="myLedger">
 
       <section class="mt-4 mb-8">
@@ -182,10 +178,6 @@
           </div>
         </div>
       </section>
-
-      <pre>
-        {{ myScore }}
-      </pre>
     </div>
 
     <div v-else>
@@ -194,11 +186,7 @@
   </div> <!-- my stats -->
 
   <div v-if="!viewingStats">
-    best streak,
-    highest percent (ordered by games played descending),
-    <pre>
-      {{ allScores }}
-    </pre>
+    <Leaderboard />
   </div>
 
 
@@ -214,6 +202,7 @@ import { ActionTypes } from '@/store/action-types'
 import { udToInt, US, threeLetterToScore } from '@/helpers'
 import {current} from 'immer';
 
+import Leaderboard from '@/components/Leaderboard.vue'
 
 const store = useStore()
 
@@ -276,10 +265,6 @@ const myScore = computed(() => {
 
 const myLedger = computed(() => {
   return store.getters[GetterTypes.MyLedger]
-})
-
-const allScores = computed(() => {
-  return store.state.leaderboard
 })
 
 const winPercent = computed(() => {
