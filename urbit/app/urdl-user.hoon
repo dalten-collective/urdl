@@ -298,7 +298,7 @@
         =+  rok=bord:take
         ?~  rok
           (show urdl-leader+!>(`rock:bord`*rock:bord))
-        (show urdl-leader+!>(`rock:bord`u.rok))
+        (show urdl-leader+!>(u.rok))
       ::
         =+  rok=data:take
         ?~  rok  (show urdl-user-day+!>(`@ud`0))

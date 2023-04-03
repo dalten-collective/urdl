@@ -60,8 +60,18 @@
     ^-  $-(rock:bord json)
     |=  b=rock:bord
     :-  %a
-    %+  turn  ~(tap by b)
-    |=  [p=@p [pl=@ud st=streak:u to=totals:u]]
+    :: %+  turn  ~(tap by b)
+    :: |=  [p=@p [pl=@ud st=streak:u to=totals:u]]
+    :: %-  pairs
+    :: ~&  >>  to
+    :: :~  player+(ship p)
+    ::     played+(play pl)
+    ::     streak+(stryk st)
+    ::     scores+(total to)
+    :: ==
+    %-  ~(rep by b)
+    |=  [[p=@p [pl=@ud st=streak:u to=totals:u]] a=(list json)]
+    :_  a
     %-  pairs
     :~  player+(ship p)
         played+(play pl)
