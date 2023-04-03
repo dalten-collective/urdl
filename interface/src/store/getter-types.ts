@@ -5,6 +5,8 @@ export enum GetterTypes {
   LetterInGuesses = 'LETTER_IN_GUESSES',
   BestColorForLetterInGuesses = 'BEST_COLOR_FOR_LETTER_IN_GUESSES',
 
+  IsGameFinished = 'IS_GAME_FINISHED',
+
   LetterMap = 'LETTER_MAP',
 
   MyScores = 'MY_SCORES',

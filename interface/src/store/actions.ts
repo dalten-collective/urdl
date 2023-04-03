@@ -38,6 +38,10 @@ export interface Actions {
     payload: string
   ): void;
 
+  [ActionTypes.ScryLeaderboard](
+    { commit }: AugmentedActionContext
+  ): void;
+
   [ActionTypes.LOADING_STATE_RESET](
     { commit }: AugmentedActionContext,
     payload: L.UIElement
@@ -85,6 +89,10 @@ export const actions: ActionTree<State, State> & Actions = {
           commit(MutationTypes.LedgerSet, data.fact);
         }
 
+        if (Api.IsDonorResponse(data)) {
+          commit(MutationTypes.DonorsSet, data.fact);
+        }
+
         if (Api.IsSecretWordFound(data) || Api.IsSecretWordUnknown(data)) {
           commit(MutationTypes.SecretWordSet, data.fact);
         }
@@ -94,7 +102,7 @@ export const actions: ActionTree<State, State> & Actions = {
         }
 
         if (Api.IsLeaderboardResponse(data)) {
-          commit(MutationTypes.LeaderboardSet, data.fact);
+          // commit(MutationTypes.LeaderboardSet, data.fact);
         }
 
         if (Api.IsUrdlUserGuessResponse(data)) {
@@ -109,6 +117,10 @@ export const actions: ActionTree<State, State> & Actions = {
           dispatch(ActionTypes.ScryUserLedger)
             .then((data) => {
               commit(MutationTypes.LedgerSet, data.fact);
+            })
+          dispatch(ActionTypes.ScryWord)
+            .then((data) => {
+              commit(MutationTypes.SecretWordSet, data.fact);
             })
         }
 
@@ -146,6 +158,18 @@ export const actions: ActionTree<State, State> & Actions = {
   [ActionTypes.ScryUserLedger]({ commit, getters }) {
     console.log("dispatching ScryUserLedger action...");
     return Scries.Ledger()
+  },
+
+  [ActionTypes.ScryWord]({ commit, getters }) {
+    console.log("dispatching ScryWord action...");
+    return Scries.Word()
+  },
+
+  [ActionTypes.ScryLeaderboard]({ commit, getters }) {
+    console.log("dispatching ScryLeaderboard action...");
+    return Scries.Leaderboard().then((r) => {
+      commit(MutationTypes.LeaderboardSet, r.fact)
+    })
   },
 
   [ActionTypes.INITIAL_SET]({ commit }, payload: L.UIElement) {

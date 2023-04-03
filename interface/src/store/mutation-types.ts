@@ -11,6 +11,7 @@ export enum MutationTypes {
 
   LedgerSet  = "LEDGER_SET",
   LeaderboardSet  = "LEADERBOARD_SET",
+  DonorsSet  = "DONORS_SET",
 
   SecretWordSet  = "SECRET_WORD_SET",
 

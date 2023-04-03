@@ -15,6 +15,7 @@ export enum UrdlUserResponseFaces {
   CurrentDayGameStatus = "CURRENT-DAY-GAME-STATUS",
   CurrentTimeLimits = "CURRENT-TIME-LIMITS",
   Leaderboard = "LEADERBOARD",
+  PaidDonors = "PAID-DONORS",
 }
 
 export interface ScryNoHost {
@@ -27,6 +28,14 @@ export interface ScryCurrentHost {
   type: Api.ResponseTypes.Scry;
   face: UrdlUserResponseFaces.CurrentHost;
   fact: { host: T.Ship };
+}
+
+export interface ScryPaidDonors {
+  type: Api.ResponseTypes.Scry;
+  face: UrdlUserResponseFaces.PaidDonors;
+  fact: {
+    [key: T.Ship]: "gold" | "jule";
+  }
 }
 
 export interface ScryCurrentDay {
@@ -114,4 +123,5 @@ export type UrdlUserResponse =
   | ScrySecretWord
   | ScryCurrentDayGameStatus
   | ScryCurrentTimeLimits
-  | ScryLeaderboard;
+  | ScryLeaderboard
+  | ScryPaidDonors;

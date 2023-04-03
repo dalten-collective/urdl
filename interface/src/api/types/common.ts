@@ -68,3 +68,8 @@ export const IsLeaderboardResponse = (r: UUR.UrdlUserResponse):
   r is UUR.ScryLeaderboard => {
   return (r.face === UUR.UrdlUserResponseFaces.Leaderboard)
 }
+
+export const IsDonorResponse = (r: UUR.UrdlUserResponse):
+  r is UUR.ScryPaidDonors => {
+  return (r.face === UUR.UrdlUserResponseFaces.PaidDonors)
+}

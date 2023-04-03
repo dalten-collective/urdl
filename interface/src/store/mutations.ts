@@ -37,6 +37,13 @@ export type Mutations<S = State> = {
     payload: Array<U.LeaderboardEntry>
   ): void;
 
+  [MutationTypes.DonorsSet](
+    state: S,
+    payload: {
+      [key: T.Ship]: "gold" | "jule";
+    }
+  ): void;
+
   [MutationTypes.SecretWordSet](
     state: S,
     payload: null | string
@@ -119,6 +126,13 @@ export const mutations: MutationTree<State> & Mutations = {
     payload: Parameters<Mutations[MutationTypes.LeaderboardSet]>[1]
   ) {
     state.leaderboard = payload
+  },
+
+  [MutationTypes.DonorsSet](
+    state,
+    payload: Parameters<Mutations[MutationTypes.DonorsSet]>[1]
+  ) {
+    state.donorList = payload
   },
 
   [MutationTypes.SecretWordSet](

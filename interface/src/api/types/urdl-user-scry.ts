@@ -6,4 +6,5 @@ export enum ScryEndpoints {
   history = '/history',
   leader = '/leader',
   season = '/season',
+  word = '/word',
 }

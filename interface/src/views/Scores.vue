@@ -43,6 +43,9 @@
             </div>
             <div>
               Current Streak
+              <div v-if="gameFinished">
+                (check back tomorrow)
+              </div>
             </div>
           </div>
 
@@ -52,6 +55,9 @@
             </div>
             <div>
               Max Streak
+              <div v-if="gameFinished">
+                (check back tomorrow)
+              </div>
             </div>
           </div>
         </div>
@@ -178,11 +184,6 @@
       </section>
 
       <pre>
-        ledger: {{ myLedger }}
-        played: {{ myScore.played }}
-        win %: {{ winPercent }}%
-        current streak: {{ myScore.streak['current-streak'] }}
-        max streak: {{ myScore.streak['max-streak'] }}
         {{ myScore }}
       </pre>
     </div>
@@ -208,8 +209,9 @@
 import { useStore } from '@/store/store'
 import {computed, onMounted, ref} from 'vue';
 import { GetterTypes } from '@/store/getter-types'
+import { ActionTypes } from '@/store/action-types'
 
-import { udToInt, US } from '@/helpers'
+import { udToInt, US, threeLetterToScore } from '@/helpers'
 import {current} from 'immer';
 
 
@@ -220,10 +222,15 @@ const countdownNext = ref({})
 const viewingStats = ref(true)
 
 onMounted(() => {
+  getLeaderboard()
   setInterval(() => {
     countdownEnd.value = countdown(gameEnd.value)
     countdownNext.value = countdown(nextGame.value)
   }, 1000)
+})
+
+const gameFinished = computed(() => {
+  return store.getters[GetterTypes.IsGameFinished]
 })
 
 const gameEnd = computed(() => {
@@ -281,7 +288,7 @@ const winPercent = computed(() => {
   }
 
   const total = myScore.value.played 
-  const won = myScore.value.scores['games-won'] 
+  const won = myScore.value.scores['games-won']
   return Math.round((won / total) * 100)
 })
 
@@ -295,6 +302,11 @@ const maxTries = computed(() => {
     myScore.value.scores.six,
   ])
 })
+
+
+const getLeaderboard = () => {
+  store.dispatch(ActionTypes.ScryLeaderboard)
+}
 
 const viewLeaderboard = () => {
   viewingStats.value = false
@@ -313,18 +325,23 @@ const tryPercent = (tryCount) => {
 
 const barColor = (num) => {
   // TODO: get recent game guess number from ledger
-  const recentGame = 'three'
+  let recentGame = 'dnf'
+  if (myLedger.value && myLedger.value.length > 0) {
+    const lastDay = myLedger.value.reduce((prev, curr) => {
+      return parseInt(curr.day) > parseInt(prev.day) ? curr : prev;
+    })
+    recentGame = threeLetterToScore(lastDay.outcome)
+  }
 
   if (recentGame === num) {
     return "rite"
-    return "bg-green-700"
   }
   return "bg-[var(--color-tone-3)]"
 }
 
 const barWidth = (num) => {
   if (tryPercent(myScore.value.scores[num]) <= 5) {
-    return '8%';
+    return '26px';
   }
   return `${ tryPercent(myScore.value.scores[num])}%`
 }

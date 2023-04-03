@@ -15,6 +15,8 @@ export type Getters = {
   [GetterTypes.LetterInGuesses](state: State): (arg: string) => Array<GuessOutcome>
   [GetterTypes.BestColorForLetterInGuesses](state: State): (arg: string) => string
 
+  [GetterTypes.IsGameFinished](state: State): boolean
+
   [GetterTypes.LetterMap](state: State): { [key: string]: string }
 
   [GetterTypes.MyScores](state: State): LeaderboardEntry
@@ -58,15 +60,17 @@ export const getters: GetterTree<State, State> & Getters = {
 
     // TODO: how to tell if in the middle of a game?
     // Or more importantly: JUST finished a game but scores aren't computed (next day)
+    // ans: open === true and secret-word-found is present
+    // TODO: pending /word scry
 
-    if (false) {
-    // if (lb) {
+    if (lb) {
       curStreak = lb.streak['current-streak']
       maxStreak = lb.streak['max-streak']
-      scores = lb.scores
+      // scores = lb.scores
     } else {
       curStreak = 0
       maxStreak = 0
+    }
 
       won = ledg.reduce((acc, curr) => {
         if (curr.outcome !== 'dnf') {
@@ -91,7 +95,7 @@ export const getters: GetterTree<State, State> & Getters = {
         five,
         six,
       }
-    }
+    // } // if using lb conditional for scores
 
     return {
       player: US(),
@@ -140,6 +144,10 @@ export const getters: GetterTree<State, State> & Getters = {
       return 'grey'
     }
     return ''
+  },
+
+  [GetterTypes.IsGameFinished]: (state): boolean => {
+    return (state.todayOpen && !!state.todaysSecretWord)
   },
 
   [GetterTypes.LetterMap]: (state): { [key: string]: string } => {

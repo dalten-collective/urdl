@@ -8,7 +8,6 @@
     <button @click="guess()">guess</button>
   </div>
 
-
   <div v-if="!store.state.todayOpen">
     <div class="flex flex-col items-center justify-around h-[80vh] mx-auto" style="max-width: 17rem;" >
       <div class="text-center">
@@ -39,6 +38,8 @@ import { onMounted, onUnmounted, computed, ref } from 'vue';
 import { useStore } from '@/store/store'
 import { ActionTypes } from '@/store/action-types';
 import { GetterTypes } from '@/store/getter-types';
+
+import {Scries} from '@/api/urdlAPI';
 
 import How from '@/components/How.vue'
 import GuessBoard from '@/components/GuessBoard.vue'
@@ -78,6 +79,7 @@ const startAirlock = (deskname: string) => {
 const closeAirlock = () => {
   // Maybe you want this.
 }
+
 </script>
 
 

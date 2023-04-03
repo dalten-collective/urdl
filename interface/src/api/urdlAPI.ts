@@ -12,7 +12,9 @@ export const Pokes = {
 export const Scries = {
   CurrentDatGameStatus() { return scryCurrentDatGameStatus() },
   Host() { return scryCurrentHost() },
-  Ledger() { return scryUserLedger() }
+  Ledger() { return scryUserLedger() },
+  Leaderboard() { return scryLeader() },
+  Word() { return scryWord() },
 }
 
 //// Pokes
@@ -36,5 +38,15 @@ function scryCurrentHost(): Promise<Ship | null> {
 
 function scryUserLedger(): Promise<any> {
   const scrier = new SU.ScryUserLedger()
+  return scrier.scry()
+}
+
+function scryLeader(): Promise<any> {
+  const scrier = new SU.ScryLeader()
+  return scrier.scry()
+}
+
+function scryWord(): Promise<any> {
+  const scrier = new SU.ScryWord()
   return scrier.scry()
 }

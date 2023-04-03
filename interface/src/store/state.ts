@@ -20,6 +20,7 @@ export const state = {
   todaysSecretWord: null as string | null,
   todayOpen: false as boolean,
   leaderboard: [] as Array<U.LeaderboardEntry>,
+  donorList: {} as { [key: T.Ship]: "gold" | "jule" },
 
   loadingStates: uiElementLoadingState as L.UILoaderState,
 }

@@ -52,3 +52,23 @@ export class ScryUserLedger extends MyScry {
     return super.scry()
   }
 }
+
+export class ScryLeader extends MyScry {
+  constructor() {
+    super(Routes.ScryEndpoints.leader)
+  }
+
+  scry(): Promise<any> {
+    return super.scry()
+  }
+}
+
+export class ScryWord extends MyScry {
+  constructor() {
+    super(Routes.ScryEndpoints.word)
+  }
+
+  scry(): Promise<any> {
+    return super.scry()
+  }
+}

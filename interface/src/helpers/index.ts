@@ -36,3 +36,16 @@ export const sumGuessCount = (ledger: Array<U.Ledger>, guessCount: string): numb
     return acc
   }, 0)
 }
+
+export const threeLetterToScore = (threeLetter: string): string => {
+  switch (threeLetter) {
+    case 'tre':
+      return 'three'
+    case 'for':
+      return 'four'
+    case 'fiv':
+      return 'five'
+    default:
+      return threeLetter
+  }
+}
