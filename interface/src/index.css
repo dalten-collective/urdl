@@ -82,6 +82,14 @@ body {
   @apply opacity-75;
 }
 
+#explainer section {
+  @apply my-4;
+}
+
+#explainer p {
+  @apply my-2;
+}
+
 .modal-wrap {
   @apply fixed;
   @apply w-screen;
