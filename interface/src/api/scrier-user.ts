@@ -15,7 +15,6 @@ class MyScry {
 
   scry(): Promise<any> {
     const path = this.path
-    console.log('scry path ', path)
     return urbitAPI.scry({
       app: 'urdl-user',
       path

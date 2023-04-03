@@ -111,7 +111,6 @@ export const actions: ActionTree<State, State> & Actions = {
         }
 
         if (Api.IsUrdlUserGuessResponse(data)) {
-          console.log('got guess response ', data.fact)
           // add to currentDayGameStatus
           // must key it with the next number...
           // OR: just scry
@@ -130,7 +129,6 @@ export const actions: ActionTree<State, State> & Actions = {
         }
 
         if (Api.IsCurrentTimeLimits(data)) {
-          console.log('times ' , data)
           commit(MutationTypes.CurrentTimeOpenSet, data.fact.open);
           commit(MutationTypes.CurrentTimeCloseSet, data.fact.close);
         }
@@ -143,35 +141,28 @@ export const actions: ActionTree<State, State> & Actions = {
   },
 
   [ActionTypes.EXAMPLE]({ commit, getters }, payload: string) {
-    console.log("dispatching EXAMPLE action...");
-    console.log("getters ", getters); // Access to getters
     commit(MutationTypes.EXAMPLE, "test");
   },
 
   [ActionTypes.PokeGuess]({ commit, getters }, guess: string) {
-    console.log("dispatching PokeGuess action...");
     Pokes.GuessPoke(guess).then(() => {
       commit(MutationTypes.DraftWipe, null)
     })
   },
 
   [ActionTypes.ScryCurrentDatGameStatus]({ commit, getters }) {
-    console.log("dispatching ScryCurrentDayGameStatus action...");
     return Scries.CurrentDatGameStatus()
   },
 
   [ActionTypes.ScryUserLedger]({ commit, getters }) {
-    console.log("dispatching ScryUserLedger action...");
     return Scries.Ledger()
   },
 
   [ActionTypes.ScryWord]({ commit, getters }) {
-    console.log("dispatching ScryWord action...");
     return Scries.Word()
   },
 
   [ActionTypes.ScryLeaderboard]({ commit, getters }) {
-    console.log("dispatching ScryLeaderboard action...");
     return Scries.Leaderboard().then((r) => {
       commit(MutationTypes.LeaderboardSet, r.fact)
     })

@@ -75,7 +75,6 @@ onMounted(() => {
     } else if (r.face === UR.UrdlUserResponseFaces.CurrentHost) {
       host.value = r.fact.host
     }
-    console.log('r ', r)
   })
   const deskname = 'urdl-user'
   startAirlock(deskname)

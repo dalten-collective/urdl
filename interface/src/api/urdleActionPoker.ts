@@ -14,7 +14,6 @@ class UrdlUserAction {
 
   poke(): Promise<any> {
     const json = this.payload
-    console.log('json ', json)
     return urbitAPI.poke({
       app: 'urdl-user',
       mark: UrdlUserActionMark,
