@@ -295,6 +295,11 @@
         (show urdl-user-ledger+!>(`_ledger`ledger))
         :: (show urdl-user-words+!>(`(list @t)`allow:all))
       ::
+        =+  rok=paid:take
+        ?~  rok
+          (show urdl-paid+!>(`rock:paid`*rock:paid))
+        (show urdl-paid+!>(`rock:paid`u.rok))
+      ::
         =+  rok=bord:take
         ?~  rok
           (show urdl-leader+!>(`rock:bord`*rock:bord))
@@ -368,6 +373,13 @@
     =+  rok=bord:take
     ?~  rok  ``urdl-leader+!>(*rock:bord)
     ``urdl-leader+!>(`rock:bord`u.rok)
+      [%x %the-word ~]
+    =+  rok=data:take
+    ?~  rok  ``urdl-user-the-word+!>(*(unit @t))
+    ?~  hav=(~(get by ledger) day.u.rok)
+      ``urdl-user-the-word+!>(*(unit @t))
+    ?.  ack.u.hav  ``urdl-user-the-word+!>(*(unit @t))
+    ``urdl-user-the-word+!>(`(unit @t)``word.u.rok)
       [%x %leader %formatted ~]
     !!  ::  coming
       [%x %season ~]

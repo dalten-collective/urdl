@@ -18,6 +18,14 @@
     ++  scry
       `json`(pairs ~[type+s/'SCRY' face+s/f fact+j])
     --
+  ++  paid
+    ^-  $-(rock:^paid json)
+    |=  pai=rock:^paid
+    =-  ~(scry pack ['PAID-DONORS' -])
+    %-  pairs
+    %-  ~(rep by pai)
+    |=  [[p=@p q=?(%gold %jule)] j=(list [@t json])]
+    [[(scot %p p) s/q] j]
   ++  leader
     ^-  $-(rock:bord json)
     |=  boa=rock:bord
