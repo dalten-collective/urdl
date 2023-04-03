@@ -68,6 +68,9 @@ export interface Actions {
 
 export const actions: ActionTree<State, State> & Actions = {
   [ActionTypes.AIRLOCK_OPEN]({ commit, dispatch }, deskName: string) {
+
+    commit(MutationTypes.LoadingStateSet, { uiElement: L.UIElements.overall, currentState: L.loaderStates.loading })
+
     airlock.openAirlockTo(
       deskName,
 
@@ -79,6 +82,8 @@ export const actions: ActionTree<State, State> & Actions = {
 
         if (Api.IsCurrentDay(data)) {
           commit(MutationTypes.CurrentDaySet, data.fact);
+          // take off overall loader
+          commit(MutationTypes.LoadingStateSet, { uiElement: L.UIElements.overall, currentState: L.loaderStates.initial })
         }
 
         if (Api.IsCurrentDayGameStatus(data)) {

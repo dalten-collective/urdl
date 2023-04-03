@@ -2,6 +2,7 @@
   <div v-if="noHost">
     {{ host }}
   </div>
+
   <div v-else class="flex flex-col">
     <div class="container mx-auto">
     <nav class="flex text-[var(--color-tone-2)] flex-row justify-between py-2 px-4 border-b border-[var(--color-tone-5)] items-center">

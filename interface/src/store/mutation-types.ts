@@ -1,7 +1,7 @@
 export enum MutationTypes {
   EXAMPLE = "EXAMPLE",
 
-  LOADING_STATE_SET = "LOADING_STATE_SET",
+  LoadingStateSet = "LOADING_STATE_SET",
 
   CurrentHostSet = "CURRENT_HOST_SET",
 

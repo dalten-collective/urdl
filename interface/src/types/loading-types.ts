@@ -3,7 +3,11 @@ export type LoaderState =
 
 export type UIElement =
   'yourElementHere' |
-  'anotherElement'
+  'overall'
+
+export const UIElements = {
+  overall: 'overall',
+}
 
 export interface UILoader {
   [key: string]: LoaderState

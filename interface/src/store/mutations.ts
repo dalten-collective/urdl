@@ -63,7 +63,7 @@ export type Mutations<S = State> = {
     payload: number
   ): void;
 
-  [MutationTypes.LOADING_STATE_SET](
+  [MutationTypes.LoadingStateSet](
     state: S,
     payload: { uiElement: L.UIElement, currentState: L.LoaderState }
   ): void;
@@ -162,7 +162,7 @@ export const mutations: MutationTree<State> & Mutations = {
     state.currentTimeClose = payload
   },
 
-  [MutationTypes.LOADING_STATE_SET](
+  [MutationTypes.LoadingStateSet](
     state,
     payload: { uiElement: L.UIElement, currentState: L.LoaderState }
   ) {
