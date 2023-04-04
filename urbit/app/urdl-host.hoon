@@ -316,9 +316,9 @@
         =(0 day.rock.u.h)
       ((slog 'urdl-host-panic-drop-first' ~) dat)
     :: ::  testing
-    =+  when=`@da`(add ~m3 now.bol)
-    :: ::  production
-    :: :: =+  when=`@da`(add ~h8 (sub now.bol (mod now.bol ~d1)))
+    ::  =+  when=`@da`(add ~m3 now.bol)
+    ::  production
+    =+  when=`@da`(add ~h8 (sub now.bol (mod now.bol ~d1)))
     =/  then=@dr
       ?.  (gth now.bol when)
         (sub when now.bol)
@@ -353,9 +353,9 @@
     ?.  &(=(day.rock.u.hav last) =(words pat.pol))
       ((slog 'urdl-host-panic-changed-game' ~) dat)
     ::  testing
-    =+  then=`@dr`~m1
+    ::  =+  then=`@dr`~m1
     ::  production
-    :: =+  then=`@dr`(sub (add ~h10 (sub now.bol (mod now.bol ~d1))) now.bol)
+    =+  then=`@dr`(sub (add ~h10 (sub now.bol (mod now.bol ~d1))) now.bol)
     =;  sta=_state
       ~&  >>>  "day {<day.rock.u.hav>} has ended"
       =^  cards  det  (give:du-pub-data [%data ~] ~)
@@ -375,10 +375,10 @@
       ((slog 'urdl-host-panic-changed-game' ~) dat)
     ~&  >>  "day {<+(day.rock.u.hav)>}: the secret word is {<word>}"
     ::  testing
-    =+  then=~m3
+    ::  =+  then=~m3
     ::  production
-    :: =+  last=`@da`(add ~h8 (sub now.bol (mod now.bol ~d1)))
-    :: =+  then=`@dr`(sub (add ~d1 (sub last now.bol)) now.bol)
+    =+  last=`@da`(add ~h8 (sub now.bol (mod now.bol ~d1)))
+    =+  then=`@dr`(sub (add ~d1 (sub last now.bol)) now.bol)
     =^  cards  det  (give:du-pub-data [%data ~] `word)
     =^  dracs  bor
       (give:du-pub-bord [%bord ~] (~(got by ledger) day.rock.u.hav))
