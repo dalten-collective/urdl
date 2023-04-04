@@ -322,7 +322,7 @@
     =/  then=@dr
       ?.  (gth now.bol when)
         (sub when now.bol)
-      (add ~d1 (sub when now.bol))
+      (sub (add when ~d1) now.bol)
     ?.  ?&  .^(? %cu (welp dir pat.pol))
             =(~.txt (rear pat.pol))
         ==
