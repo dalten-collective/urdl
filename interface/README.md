@@ -1,28 +1,16 @@
-# Vite/Vue3/Typescript/Tailwind/Urbit template
+# Urdl UI
 
-:urdl-host &urdl-host-action [%load /list/txt]
+Created with [Quartus's Vue3 Urbit
+Template](https://github.com/vcavallo/vite-vue-urbit-template/tree/vue3-typed-store)
 
-With typed Vuex store, CompositionAPI and `setup`-style script tags.
+## Setup
 
-To install this elsewhere:
-
-```
-npx degit vcavallo/vite-vue-urbit-template#vue3-typed-store your-project-name
-cd your-project-name
-
-npm install
-```
-
-Then:
-
-- Define a .env file, copied from env.example
-  - Set the port based on your running fakeship
-  - Set the desk name to the name of your desk
-- Check out `src/components/Start.vue`
-- There are some example actions, mutations, getters in `src/store/`
-- Make sure to update `src/api/airlock.ts`'s `path` entry to match your desk's
-- Update the history function in `src/router/index.ts`
-implementation
-- `npm run serve`
-- Visit the URL that the vite server output shows (probably `localhost:3000`)
-- Log in with your `+code`
+- Create a `.env` file copied from `env.example` and updated to match your
+environment
+- Start locals fakezods: a game server and a game client running `%urdl-host`
+and `%urdl-user`.
+- From the root directory of the repo:
+  - `bin/install-js-dependencies.sh`
+  - `bin/serve-interface.sh` (if you need to point this interface at a different
+  urbit port, use `VITE_URBIT_TARGET="http://localhost:yourPortHere"
+  bin/serve-interface.sh` (or wherever you need to point it)
