@@ -1,9 +1,10 @@
 :~  title+'urdl'
     info+'better than wrdu by at least one letter.'
-    color+0xff.4400
-    image+'https://freedom-club.sfo2.digitaloceanspaces.com/props/quartus/long-logo/ab_Quartus-05_only.png'
-    version+[0 0 1]
+    color+0x81.8384
+    image+'https://nyc3.digitaloceanspaces.com/sogrum-savluc/sogrum-savluc/2023.4.04..14.42.37-tiles.png'
+    glob-http+['https://nyc3.digitaloceanspaces.com/sogrum-savluc/sogrum-savluc/2023.4.04..14.18.21-glob-0v5.oq4k8.lo8oc.lq60t.ipken.c21cd.glob' 0v5.oq4k8.lo8oc.lq60t.ipken.c21cd]
+    base+'urdl'
+    version+[2 0 0]
     website+'https://dalten.org/'
     license+'REKT'
-    site+/apps/mine
 ==
