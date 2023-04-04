@@ -8,6 +8,7 @@ export enum ActionTypes {
   ScryUserLedger = 'SCRY_USER_LEDGER',
   ScryLeaderboard = 'SCRY_LEADERBOARD',
   ScryWord = 'SCRY_WORD',
+  GetCurrentDayStats = 'GET_CURRENT_DAY_STATS',
 
   LOADING_STATE_RESET   = 'LOADING_STATE_RESET',
   INITIAL_SET = 'INITIAL_SET',

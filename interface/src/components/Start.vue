@@ -10,7 +10,10 @@
     </div>
 
     <div v-if="!ready" class="h-full">
-      <div v-if="overallStatus.loading" class="flex flex-col items-center justify-around h-[80vh] mx-auto">
+      <div
+        v-if="overallStatus.loading"
+        class="flex flex-col items-center justify-around h-[80vh] mx-auto"
+      >
         <div></div>
         <div class="">
           <div role="status">
@@ -31,9 +34,7 @@
               />
             </svg>
           </div>
-          <div class="mt-4">
-          Loading...
-        </div>
+          <div class="mt-4">Loading...</div>
         </div>
         <div></div>
       </div>
@@ -45,8 +46,8 @@
         >
           <div class="text-center">
             <p class="mb-4">
-              The host is tabulating the leaderboard and preparing
-              tomorrow's game.
+              The host is tabulating the leaderboard and preparing tomorrow's
+              game.
             </p>
             <p>Check back soon.</p>
           </div>
@@ -64,14 +65,63 @@
         </div>
       </div>
       <div class="container mx-auto">
-        <GuessBoard class="mt-4" />
+        <div class="mt-4 text-center">
+        </div>
+        <div v-if="!todaysWord">
+          <GuessBoard class="mt-4" />
+        </div>
+
+        <div
+          :class="showDone ? '' : 'hidden'"
+          class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full"
+        >
+          <div class="relative w-full h-full max-w-2xl mx-auto mt-12 md:h-auto">
+            <!-- Modal content -->
+            <div class="relative bg-[var(--midGray)] rounded-lg shadow">
+              <!-- Modal header -->
+              <div
+                class="flex items-center justify-around p-4 border-b rounded-t border-[var(--midGray)]"
+              >
+                <h3 class="text-xl font-semibold text-center">
+                  <span v-if="won">
+                    You Won!
+                  </span>
+                  <span v-else>
+                    Sorry...
+                  </span>
+                </h3>
+              </div>
+              <!-- Modal body -->
+              <div class="p-6 text-center space-y-6">
+                <span class="text-4xl">{{ todaysWord }}</span>
+              </div>
+
+              <div class="my-6">
+                <Share />
+              </div>
+
+              <div
+                class="flex items-center justify-end p-6 border-t border-[var(--midGray)] rounded-b space-x-2 dark:border-gray-600"
+              >
+                <button
+                  @click="showDone = false"
+                  class="btn"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
+
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, computed, ref } from "vue";
+import { watch, onMounted, onUnmounted, computed, ref } from "vue";
 import { useStore } from "@/store/store";
 import { ActionTypes } from "@/store/action-types";
 import { GetterTypes } from "@/store/getter-types";
@@ -81,13 +131,18 @@ import { Scries } from "@/api/urdlAPI";
 
 import How from "@/components/How.vue";
 import GuessBoard from "@/components/GuessBoard.vue";
+import Share from "@/components/Share.vue";
+
+import { initFlowbite } from 'flowbite'
 
 const store = useStore();
 
 const newGuess = ref("");
 const alow = ref(6);
+const showDone = ref(false)
 
 onMounted(() => {
+  initFlowbite();
   // const deskname = 'urdl-user'
   // startAirlock(deskname)
 });
@@ -105,6 +160,33 @@ const fromGetters = computed(() => {
 const ready = computed(() => {
   return !overallStatus.value.loading && store.state.todayOpen;
 });
+
+const todaysWord = computed(() => {
+  return store.state.todaysSecretWord
+})
+
+watch(todaysWord, (newval, oldval) => {
+  if (newval) {
+    showDone.value = true
+  }
+})
+
+const todaysLedger = computed(() => {
+  const todayLedg = store.state.ledger.find(
+    (l) => parseInt(l.day) === parseInt(store.state.currentDay)
+  );
+  if (todayLedg && todayLedg.acknowledged) {
+    return todayLedg;
+  }
+  return null;
+});
+
+const won = computed(() => {
+  if (!todaysLedger.value) {
+    return false
+  }
+  return todaysLedger.value.outcome !== 'dnf'
+})
 
 const overallStatus = computed(() => {
   return store.getters[GetterTypes.ELEMENT_STATUS_MAP]("overall");

@@ -42,6 +42,10 @@ export interface Actions {
     { commit }: AugmentedActionContext
   ): void;
 
+  [ActionTypes.GetCurrentDayStats](
+    { commit }: AugmentedActionContext
+  ): void;
+
   [ActionTypes.LOADING_STATE_RESET](
     { commit }: AugmentedActionContext,
     payload: L.UIElement
@@ -122,10 +126,10 @@ export const actions: ActionTree<State, State> & Actions = {
             .then((data) => {
               commit(MutationTypes.LedgerSet, data.fact);
             })
-          // dispatch(ActionTypes.ScryWord)
-          //   .then((data) => {
-          //     commit(MutationTypes.SecretWordSet, data.fact);
-          //   })
+          dispatch(ActionTypes.ScryWord)
+            .then((data) => {
+              commit(MutationTypes.SecretWordSet, data.fact);
+            })
         }
 
         if (Api.IsCurrentTimeLimits(data)) {
@@ -152,6 +156,13 @@ export const actions: ActionTree<State, State> & Actions = {
 
   [ActionTypes.ScryCurrentDatGameStatus]({ commit, getters }) {
     return Scries.CurrentDatGameStatus()
+  },
+
+  [ActionTypes.GetCurrentDayStats]({commit, dispatch}) {
+    dispatch(ActionTypes.ScryCurrentDatGameStatus)
+      .then((data) => {
+        commit(MutationTypes.CurrentDayGameStatusSet, data.fact);
+      })
   },
 
   [ActionTypes.ScryUserLedger]({ commit, getters }) {

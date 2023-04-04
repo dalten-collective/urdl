@@ -182,9 +182,9 @@
       </section>
 
       <section class="mt-4 mb-8">
-        <div class="flex flex-row">
+        <div class="flex flex-row items-center">
 
-          <div class="flex flex-col flex-1 text-center">
+          <div v-if="!todaysWord" class="flex flex-col flex-1 text-center">
             <div>
               <h3 class="text-3xl">
                 Game Ends
@@ -205,6 +205,48 @@
               {{ countdownNext.hours }}:{{ countdownNext.minutes }}:{{ countdownNext.seconds }}
             </div>
           </div>
+
+          <div v-if="todaysWord" class="flex flex-col flex-1 text-center">
+            <div>
+              <button
+                class="flex items-center text-2xl large btn green"
+                @click="showShare = true"
+              >
+                Share
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 ml-2">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
+</svg>
+
+              </button>
+            </div>
+          </div>
+
+        <div
+          :class="showShare ? '' : 'hidden'"
+          class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full"
+        >
+          <div class="relative w-full h-full max-w-2xl mx-auto mt-12 md:h-auto">
+            <!-- Modal content -->
+            <div class="relative bg-[var(--midGray)] rounded-lg shadow">
+              <!-- Modal body -->
+              <div class="p-6 text-center space-y-6">
+                <span class="text-4xl">{{ todaysWord }}</span>
+              </div>
+              <Share />
+              <div
+                class="flex items-center justify-end p-6 border-t border-gray-200 rounded-b space-x-2 dark:border-gray-600"
+              >
+                <button
+                  @click="showShare = false"
+                  class="btn"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         </div>
       </section>
     </div>
@@ -232,12 +274,14 @@ import { udToInt, US, threeLetterToScore } from '@/helpers'
 import {current} from 'immer';
 
 import Leaderboard from '@/components/Leaderboard.vue'
+import Share from '@/components/Share.vue'
 
 const store = useStore()
 
 const countdownEnd = ref({})
 const countdownNext = ref({})
 const viewingStats = ref(true)
+const showShare = ref(false)
 
 onMounted(() => {
   getLeaderboard()
@@ -254,6 +298,10 @@ const gameFinished = computed(() => {
 const gameEnd = computed(() => {
   const clos = new Date(store.state.currentTimeClose * 1000)
   return new Date(clos)
+})
+
+const todaysWord = computed(() => {
+  return store.state.todaysSecretWord
 })
 
 const nextGame = computed(() => {

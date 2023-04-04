@@ -81,6 +81,16 @@ body {
 .btn:hover {
   @apply opacity-75;
 }
+.btn.light {
+  @apply bg-[var(--color-tone-2)];
+}
+.btn.green {
+  @apply bg-[var(--green)];
+}
+.btn.large {
+  @apply px-10;
+  @apply py-6;
+}
 
 #explainer section {
   @apply my-4;
