@@ -219,7 +219,7 @@
 ::
 ++  init
   ^+  dat
-  (poke:behn urdl-user-action+!>(`action:user`[%unite ~zod]))
+  (poke:behn urdl-user-action+!>(`action:user`[%unite ~mister-dozzod-dalten]))
 ::  +save: handle on-save
 ::
 ++  save  !>([bor det pid state])
