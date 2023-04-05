@@ -378,7 +378,7 @@
     ::  =+  then=~m3
     ::  production
     =+  last=`@da`(add ~h8 (sub now.bol (mod now.bol ~d1)))
-    =+  then=`@dr`(sub (add ~d1 (sub last now.bol)) now.bol)
+    =+  then=`@dr`(sub (sub (add ~d1 last) now.bol) now.bol)
     =^  cards  det  (give:du-pub-data [%data ~] `word)
     =^  dracs  bor
       (give:du-pub-bord [%bord ~] (~(got by ledger) day.rock.u.hav))
