@@ -219,7 +219,7 @@
 ::
 ++  init
   ^+  dat
-  (poke:behn urdl-user-action+!>(`action:user`[%unite ~mister-dozzod-dalten]))
+  (poke:behn urdl-user-action+!>(`action:user`[%unite ~zod]))
 ::  +save: handle on-save
 ::
 ++  save  !>([bor det pid state])
@@ -277,10 +277,10 @@
     =+  rok=data:take
     ?~  rok
       ((slog 'urdl-panic-no-host-data' ~) dat)
-    =?    ledger
-        !(~(has by ledger) day.u.rok)
-      (~(put by ledger) day.u.rok %dnf %|)
-    (send:behn -:(~(got by ledger) day.u.rok))
+    ?^  hav=(~(get by ledger) day.u.rok)
+      ?:(ack.u.hav dat (send:behn outcome.u.hav))
+    %.  %dnf
+    send:behn(ledger (~(put by ledger) day.u.rok %dnf %|))
   ==
 ::  +peer: handle on-watch
 ::
