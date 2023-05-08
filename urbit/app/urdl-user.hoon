@@ -16,7 +16,14 @@
 ::
 |%
 ::
-+$  versioned-state  $%(state-0)
++$  versioned-state  $%(state-0 state-1)
+::
++$  state-1
+  $:  %1
+      host=(unit @p)
+      =ledger:user
+      =history:user
+  ==
 ::
 +$  state-0
   $:  %0
@@ -40,7 +47,7 @@
 ::
 =/  sub-paid  (mk-subs:sss paid ,[%paid ~])
 ::
-=|  state-0
+=|  state-1
 =*  state  -
 ::
 ^-  agent:gall
@@ -230,12 +237,26 @@
   ^+  dat
   =/  old
     !<([=_bor =_det =_pid ver=versioned-state] vaz)
-  ?>  ?=([%0 *] ver.old)
-  %=  dat
-    bor    bor.old
-    det    det.old
-    pid    pid.old
-    state  ver.old
+  ?-    ver.old
+      [%0 *]
+    %=  dat
+      bor  (mk-subs:sss bord ,[%bord ~])
+      det  (mk-subs:sss data ,[%data ~])
+      pid  (mk-subs:sss paid ,[%paid ~])
+      state  [%1 ~ ~ ~]
+    ==
+  ::
+      [%1 *]
+    =.  dat
+      %=  dat
+        bor    bor.old
+        det    det.old
+        pid    pid.old
+        state  ver.old
+      ==
+    ?:  (~(has by read:da-sub-bord) ~zod %urdl-host [%bord ~])
+      dat
+    (poke:behn urdl-user-action+!>(`action:user`[%unite ~zod]))
   ==
 ::  +dude: handle on-agent
 ::
@@ -348,7 +369,7 @@
     =+  duk=data:take
     =+  bonk=`rock:bord`?^(buk u.buk ~)
     =+  donk=`rock:data`?^(duk u.duk [0 'early' %|])
-    =-  ``[%state !>([%0 -])]
+    =-  ``[%state !>([%1 -])]
     :+  day=day.donk  accepting=open.donk
     [history=history leader=bonk ledger=ledger]
       [%x %host ~]

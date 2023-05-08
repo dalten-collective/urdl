@@ -12,7 +12,13 @@
 ::
 |%
 ::
-+$  versioned-state  $%(state-0)
++$  versioned-state  $%(state-0 state-1)
+::
++$  state-1
+  $:  %1
+      words=path
+      =ledger:host
+  ==
 ::
 +$  state-0
   $:  %0
@@ -33,7 +39,7 @@
 ::
 =/  pub-paid  (mk-pubs:sss paid ,[%paid ~])
 ::
-=|  state-0
+=|  state-1
 =*  state  -
 ::
 ^-  agent:gall
@@ -176,12 +182,24 @@
   ^+  dat
   =/  old
     !<([=_bor =_det =_pid ver=versioned-state] vaz)
-  ?>  ?=([%0 *] ver.old)
-  %=  dat
-    bor    bor.old
-    det    det.old
-    pid    pid.old
-    state  ver.old
+  ?-    ver.old
+      [%0 *]
+    %=  dat
+      bor  (mk-pubs:sss bord ,[%bord ~])
+      det  (mk-pubs:sss data ,[%data ~])
+      pid  (mk-pubs:sss paid ,[%paid ~])
+      state  [%1 / ~]
+    ==
+  ::
+      [%1 *]
+    ?:  (~(has by read:du-pub-bord) [%bord ~])
+      !!
+    %=  dat
+      bor    bor.old
+      det    det.old
+      pid    pid.old
+      state  ver.old
+    ==
   ==
 ::  +word: get daily words
 ::
@@ -227,7 +245,7 @@
     =+  buk=rock:(~(got by read:du-pub-bord) [%bord ~])
     =+  duk=rock:(~(got by read:du-pub-data) [%data ~])
     =+  puk=rock:(~(got by read:du-pub-paid) [%paid ~])
-    =-  ``[%state !>([%0 -])]
+    =-  ``[%state !>([%1 -])]
     [words=words ledger=ledger bord=buk data=duk paid=puk]
       [%x %today ~]
     =;  datum=[=day word=@t =open]
